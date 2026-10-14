@@ -108,3 +108,22 @@ test('相位计算边界', () => {
   assert.equal(out[0].aspect, 'trine');
   assert.equal(out[0].orb, 0.5);
 });
+
+import { readNatal } from '../site/js/core/natal-reading.mjs';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+test('本命盘解读：readNatal 结构与内容（基准盘 2000-08-16 北京）', () => {
+  const n = castNatal({ year: 2000, month: 8, day: 16, hour: 12, minute: 0, lat: 39.9042, lon: 116.4074, tzOffsetHours: 8 });
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const rd = readNatal(n, interp);
+  assert.ok(rd.inHouses.length >= 9, '行星落宫主题应覆盖 9+ 颗星');
+  assert.ok(rd.inHouses.every((x) => x.line.includes('主题') && x.line.includes('宫')), '落宫句式完整');
+  assert.ok(rd.aspectLines.every((x) => ['merge', 'harmony', 'tension'].includes(x.nature)), '相位 nature 三分类合法');
+  const orbs = rd.aspectLines.map((x) => x.orb);
+  assert.deepEqual(orbs, [...orbs].sort((a, b) => a - b), '相位按容许度升序');
+  assert.ok(['火', '土', '风', '水'].includes(rd.elements.dominant));
+  assert.ok(rd.elements.line.length > 10);
+  assert.ok(['本位', '固定', '变动'].includes(rd.modality.dominant));
+  assert.ok(rd.summary.includes('太阳在') && rd.summary.includes('上升'), 'summary 含三巨头');
+});

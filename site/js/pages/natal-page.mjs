@@ -2,6 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal, SIGNS, computeSky } from '../core/astro.mjs';
+import { readNatal } from '../core/natal-reading.mjs';
 import { interAspects, strengthsAndChallenges } from '../core/astro-synastry.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
 import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
@@ -10,9 +11,10 @@ import { setAISource } from '../ui/ai-panel.mjs';
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
-const [interp, synInterp] = await Promise.all([
+const [interp, synInterp, natalInterp] = await Promise.all([
   loadData('../data/interpret-horoscope.json'),
   loadData('../data/interpret-synastry.json'),
+  loadData('../data/interpret-natal.json'),
 ]);
 let lastRendered = false;
 
@@ -75,6 +77,28 @@ function render(n) {
       <p><b>月亮 · ${moon.cn}</b>：${moon.trait}</p>
       <p><b>上升 · ${asc.cn}</b>：${asc.trait}（上升是你呈现给世界的第一层气质。）</p>
       <p class="note">${interp.disclaimer}</p>
+    </div>
+    ${readingCard(n)}`;
+}
+
+/** 深入解读卡：综合判词 + 元素/模式 + 行星落宫主题 + 关键相位判词（readNatal 规则引擎） */
+function readingCard(n) {
+  const rd = readNatal(n, natalInterp);
+  const houseItems = rd.inHouses.map((x) => `<p><b>${x.cn}</b>（${x.signCn}，第 ${x.house} 宫）：${x.line}</p>`).join('');
+  const aspectItems = rd.aspectLines.slice(0, 6).map((x) =>
+    `<p style="color:${x.nature === 'harmony' ? 'var(--good)' : x.nature === 'tension' ? 'var(--bad)' : ''}"><b>${x.aCn} ${x.aspectCn} ${x.bCn}</b>（容许 ${x.orb}°）：${x.line}</p>`).join('');
+  return `
+    <div class="card"><h3>深入解读 <span class="src-tag">规则引擎</span></h3>
+      <p style="color:var(--accent);font-weight:700;">${rd.summary}</p>
+      <p><b>元素分布：</b>${rd.elements.detail}——${rd.elements.line}</p>
+      <p><b>三态分布：</b>${rd.modality.line}</p>
+      <details style="margin-top:8px;" open><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">行星落宫主题</summary>
+        ${houseItems}
+      </details>
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">关键相位判词（最紧 ${Math.min(6, rd.aspectLines.length)} 条）</summary>
+        ${aspectItems || '<p class="hint">本盘无主要相位。</p>'}
+      </details>
+      <p class="note">${natalInterp.disclaimer}</p>
     </div>`;
 }
 
