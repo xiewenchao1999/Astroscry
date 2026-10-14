@@ -1,7 +1,7 @@
 // natal-page.mjs — 西方本命盘页胶水
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { renderBirthForm } from '../ui/birth-form.mjs';
-import { castNatal } from '../core/astro.mjs';
+import { castNatal, SIGNS } from '../core/astro.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
 
 renderLayout();
@@ -21,6 +21,10 @@ function render(n) {
   const asc = interp.signs[n.ascSignKey];
   const elTotal = Object.values(n.elements).reduce((a, b) => a + b, 0) || 1;
   const elBar = Object.entries(n.elements).map(([k, v]) => `<span class="pill">${k}象 ${Math.round(v / elTotal * 100)}%</span>`).join('');
+  // 三态（本位/固定/变动）统计：按行星落座
+  const modality = { 本位: 0, 固定: 0, 变动: 0 };
+  for (const p of Object.values(n.planets)) modality[SIGNS[p.signIndex].modality]++;
+  const modBar = Object.entries(modality).map(([k, v]) => `<span class="pill gold">${k} ${v}</span>`).join('');
 
   els.result.innerHTML = `
     <div class="card"><h3>星盘总览</h3>
@@ -37,7 +41,8 @@ function render(n) {
     <div class="grid grid-2">
       <div class="card"><h3>行星落座落宫</h3><table class="plain"><tr><th>星体</th><th>星座</th><th>宫位</th></tr>${planetRows}</table></div>
       <div class="card"><h3>主要相位</h3><table class="plain"><tr><th>相位</th><th>容许度</th></tr>${aspectRows || '<tr><td colspan="2" style="color:var(--muted)">无主要相位</td></tr>'}</table>
-        <div style="margin-top:10px;">${elBar}</div></div>
+        <div style="margin-top:10px;">${elBar}</div>
+        <div style="margin-top:6px;" title="本位主动开创、固定主持续深耕、变动主灵活调适">${modBar}</div></div>
     </div>
     <div class="card"><h3>三要素解读 <span class="src-tag">释义</span></h3>
       <p><b>太阳 · ${sun.cn}</b>：${sun.trait}</p>

@@ -57,6 +57,8 @@ function render(z) {
       <p style="color:var(--muted)">命宫在 ${ming.stemBranch}，${ming.majorStars.length ? '主星：' + ming.majorStars.map((s) => s.name + (s.brightness || '') + (s.mutagen || '')).join('、') : '无主星'}</p>
       <p>${mingText}</p>
       ${ming.majorStars.filter((s) => s.mutagen).map((s) => `<p style="font-size:13.5px;color:var(--muted)">▸ ${s.name}化${s.mutagen}：${interp.mutagen[s.mutagen]}</p>`).join('')}
+      <h3 style="margin-top:14px">本命四化图例</h3>
+      <div>${['禄', '权', '科', '忌'].map((k) => `<span class="pill ${k === '忌' ? 'bad' : 'good'}">${k}</span><span style="font-size:12.5px;color:var(--muted);margin-right:12px;">${interp.mutagen[k]}</span>`).join('')}</div>
       <p style="font-size:13.5px;color:var(--muted)">▸ ${interp.bodyPalaceNote}（身宫在${z.shenGong.name}）</p>
       <p class="note">${interp.fiveElementsNote.replace('{cls}', z.fiveElementsClass)}</p>
       <p class="note">${interp.disclaimer}</p>
