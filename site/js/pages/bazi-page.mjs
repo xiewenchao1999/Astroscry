@@ -162,7 +162,10 @@ function render(b) {
       </div>
       ${b.solarCorrection ? `<div class="note">已按出生地经度做真太阳时校正：${b.solarCorrection.minutes >= 0 ? '+' : ''}${b.solarCorrection.minutes} 分钟 → 校正后 ${b.solarCorrection.corrected}</div>` : ''}
     </div>
-    <div class="card"><h3>四柱</h3>${pillarTable(b)}</div>
+    <div class="card"><h3>四柱</h3>${pillarTable(b)}
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);">四柱宫位详解</summary>
+        ${Object.entries(interp.pillarsDetail).map(([k, v]) => `<p style="font-size:13.5px;"><b>${k}：</b>${v}</p>`).join('')}
+      </details></div>
     ${strengthCard(b)}
     ${relationCard(b)}
     <div class="grid grid-2">

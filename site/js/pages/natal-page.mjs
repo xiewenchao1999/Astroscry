@@ -38,7 +38,7 @@ function transitsCard(n) {
 function render(n) {
   setAISource('natal', n);
   const planetRows = Object.values(n.planets).map((p) => `
-    <tr><td>${p.cn}${p.retrograde ? '<span class="pill retro" style="margin-left:4px">℞逆行</span>' : ''}</td>
+    <tr><td>${p.cn}${p.retrograde ? `<span class="pill retro" style="margin-left:4px" title="${(natalInterp.retrograde[p.key] ?? natalInterp.retrograde.general)}">℞逆行</span>` : ''}</td>
     <td>${p.signCn} ${Math.floor(p.degInSign)}°${String(Math.floor((p.degInSign % 1) * 60)).padStart(2, '0')}′</td>
     <td>第 ${p.house} 宫</td></tr>`).join('');
   const aspectRows = n.aspects.sort((a, b) => a.orb - b.orb).slice(0, 14).map((a) => `

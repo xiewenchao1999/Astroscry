@@ -25,7 +25,7 @@ function palaceCell(p) {
   const major = p.majorStars.map((s) => `<div class="p-major">${s.name}${s.brightness ? `<small style="font-weight:400">(${s.brightness})</small>` : ''}${s.mutagen ? `<span style="color:${s.mutagen === '忌' ? 'var(--bad)' : 'var(--good)'}">${s.mutagen}</span>` : ''}</div>`).join('');
   const minor = p.minorStars.length ? `<div class="p-minor">${p.minorStars.map((s) => s.name + (s.mutagen || '')).join(' ')}</div>` : '';
   const adj = p.adjectiveStars.length ? `<div class="p-adj">${p.adjectiveStars.slice(0, 5).join('·')}</div>` : '';
-  return `<div class="palace ${p.name === '命宫' ? 'ming' : ''}" ${p.name === '命宫' ? 'title="命宫：全盘核心，代表先天格局与本性"' : ''}>
+  return `<div class="palace ${p.name === '命宫' ? 'ming' : ''}" ${interp.palaces[p.name] ? `title="${p.name}宫：${interp.palaces[p.name]}"` : ''}>
     <div class="p-head"><b>${p.name}${p.isBodyPalace ? '<span style="color:var(--accent)">✦身宫</span>' : ''}</b><span>${p.stemBranch}</span></div>
     ${major}${minor}${adj}
     ${p.decadal ? `<div class="p-decade" title="大限：${p.decadal.range[0]}~${p.decadal.range[1]} 虚岁行此宫（每步十年）">限 ${p.decadal.range[0]}-${p.decadal.range[1]}</div>` : ''}
@@ -69,7 +69,10 @@ function render(z) {
 
   els.result.innerHTML = `
     <div class="card"><h3>命盘</h3><div class="palace-grid">${parts.join('')}</div>
-      <div class="note">金色高亮为<b>命宫</b>（全盘核心）；「✦身宫」为后天发力点所在宫。宫内底部「限 X-Y」＝行至此宫的大限起讫虚岁（每步十年，随五行局起限不同）。悬停可查看说明。</div></div>
+      <div class="note">金色高亮为<b>命宫</b>（全盘核心）；「✦身宫」为后天发力点所在宫。宫内底部「限 X-Y」＝行至此宫的大限起讫虚岁（每步十年，随五行局起限不同）。悬停宫格可查看宫职说明。</div>
+      <details style="margin-top:10px;"><summary style="cursor:pointer;color:var(--accent2);">十二宫职速查</summary>
+        ${Object.entries(interp.palaces).map(([k, v]) => `<p style="font-size:13.5px;"><b>${k}宫：</b>${v}</p>`).join('')}
+      </details></div>
     <div class="card"><h3>命宫解读 <span class="src-tag">释义</span></h3>
       <p style="color:var(--muted)">命宫在 ${ming.stemBranch}，${ming.majorStars.length ? '主星：' + ming.majorStars.map((s) => s.name + (s.brightness || '') + (s.mutagen || '')).join('、') : '无主星'}</p>
       <p>${mingText}</p>
