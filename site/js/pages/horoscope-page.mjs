@@ -2,6 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { loadProfile } from '../ui/birth-profile.mjs';
 import { SIGNS, dailyFortune, computeSky, sunSignByDate } from '../core/astro.mjs';
+import { revealCards, animateMeters, stagger } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -43,15 +44,19 @@ function renderSky() {
   els.sky.innerHTML = `<h3>今日天象</h3>
     <p>${interp.moonPhaseIntro.replace('{phase}', sky.moonPhase.name).replace('{angle}', sky.moonPhase.angle.toFixed(1)).replace('{illum}', (sky.moonPhase.illumination * 100).toFixed(0)).replace('{moonSign}', sky.planets.moon.signCn)}</p>
     <p>${(retros.length ? interp.retroNote.replace('{planets}', retros.join('、')) : interp.noRetro)}</p>`;
+  revealCards(els.sky);
 }
 
 function renderAll() {
   els.all.innerHTML = fortune.map((f) => `
     <div class="card" style="cursor:pointer;margin-bottom:0" onclick="window.__pick('${f.signKey}')">
       <h3>${f.signCn} <span class="pill ${f.level === '旺' || f.level === '顺' ? 'good' : f.level === '滞' ? 'bad' : 'gold'}">${f.level} ${f.score}</span></h3>
-      <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:6px;">
-        <div style="width:${f.score}%;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent2),var(--accent))"></div></div>
+      <div class="meter" style="background:rgba(255,255,255,0.06);border-radius:6px;height:6px;">
+        <i style="width:0;background:linear-gradient(90deg,var(--accent2),var(--accent))" data-w="${f.score}"></i></div>
     </div>`).join('');
+  stagger(els.all, '.card');
+  revealCards(els.all);
+  animateMeters(els.all);
   window.__pick = (key) => { els.sign.value = key; renderDetail(key); };
 }
 
@@ -65,6 +70,7 @@ function renderDetail(signKey) {
     <h3 style="margin-top:14px">评分因子（透明可查）</h3>
     ${f.factors.length ? f.factors.map((x) => `<span class="pill">${x}</span>`).join('') : '<span class="pill">今日无显著行运相位作用于守护星</span>'}
     <p class="note">${interp.disclaimer}</p>`;
+  revealCards(els.detail);
 }
 
 els.sign.addEventListener('change', () => renderDetail(els.sign.value));

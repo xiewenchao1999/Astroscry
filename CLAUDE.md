@@ -25,7 +25,7 @@ Astroscry/
 │   ├── assets/css/        # base.css（全站主题）；命名 kebab-case
 │   ├── js/
 │   │   ├── core/          # 纯计算模块（无 DOM、无网络）：bazi.mjs ziwei.mjs astro.mjs tarot.mjs calendar.mjs（农历↔公历）
-│   │   ├── ui/            # 可复用组件：layout.mjs birth-profile.mjs（共享出生信息，localStorage）wheel.mjs（星盘 SVG 自绘）
+│   │   ├── ui/            # 可复用组件：layout.mjs birth-profile.mjs（共享出生信息，localStorage）wheel.mjs（星盘 SVG 自绘）motion.mjs（动效/忙碌态/无障碍播报）
 │   │   └── pages/         # 页面胶水层：监听表单 → 调 core → 渲染（*-page.mjs）
 │   ├── vendor/            # lunar.js iztro.min.js astronomy.min.js（不改动，注明版本）
 │   └── data/              # interpret-*.json（解读语料）、cities.json、tarot.json

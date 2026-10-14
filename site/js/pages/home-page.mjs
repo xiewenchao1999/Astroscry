@@ -1,6 +1,7 @@
 // home-page.mjs — 首页：出生信息卡片（一次填写全站通用）+ 今日干支/月相摘要
 import { renderLayout } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
+import { stagger, revealCards } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -30,3 +31,8 @@ document.getElementById('today').innerHTML = `
     <div><span>农历</span><b>${lunarText || '—'}</b></div>
     <div><span>今日月相</span><b>${moonText || '—'}</b></div>
   </div>`;
+
+// 内容就绪后再入场（先渲染后动画，避免动效作用在空盒子上）
+document.querySelectorAll('.grid').forEach((g) => stagger(g, '.entry'));
+revealCards(document.querySelector('.wrap'), '.card');
+stagger(document.querySelector('.wrap'), '.entry');

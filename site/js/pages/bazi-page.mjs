@@ -3,6 +3,7 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
 import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../core/bazi-analysis.mjs';
+import { revealCards, withBusy, animateMeters, announce } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -23,8 +24,8 @@ function wuxingBar(five) {
   const colors = { 金: '#cbd5e1', 木: '#86efac', 水: '#7dd3fc', 火: '#fca5a5', 土: '#f0c86d' };
   return Object.entries(five).map(([k, v]) => `
     <div style="margin:6px 0;"><span style="font-size:13px;">${k} · ${v}（${Math.round(v / total * 100)}%）</span>
-    <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:8px;margin-top:3px;">
-      <div style="width:${v / total * 100}%;height:100%;border-radius:6px;background:${colors[k]}"></div></div></div>`).join('');
+    <div class="meter" style="background:rgba(255,255,255,0.06);border-radius:6px;height:8px;margin-top:3px;">
+      <i style="width:0;background:${colors[k]}" data-w="${(v / total * 100).toFixed(1)}"></i></div></div>`).join('');
 }
 
 function pillarTable(b) {
@@ -57,9 +58,9 @@ function strengthCard(b) {
         <div><span>净值</span><b>${s.net}</b></div>
         <div><span>判档</span><b style="color:var(--accent)">${s.band.cn}</b></div>
       </div>
-      <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:10px;margin:12px 0;display:flex;overflow:hidden;">
-        <div style="width:${s.support / total * 100}%;background:linear-gradient(90deg,#86efac,#4ade80)"></div>
-        <div style="width:${s.drain / total * 100}%;background:linear-gradient(90deg,#fca5a5,#f87171)"></div>
+      <div class="meter" style="background:rgba(255,255,255,0.06);border-radius:6px;height:10px;margin:12px 0;display:flex;overflow:hidden;">
+        <i style="width:0;background:linear-gradient(90deg,#86efac,#4ade80)" data-w="${(s.support / total * 100).toFixed(1)}"></i>
+        <i style="width:0;background:linear-gradient(90deg,#fca5a5,#f87171)" data-w="${(s.drain / total * 100).toFixed(1)}"></i>
       </div>
       <p>${interp.strengthAdvice.result.replace('{support}', s.support).replace('{drain}', s.drain).replace('{net}', s.net)}</p>
       <p><b>${s.band.cn}</b>：${s.band.advice}</p>
@@ -184,16 +185,21 @@ function render(b) {
 }
 
 function cast() {
-  try {
-    const p = card.get();
-    if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
-    const b = castBazi({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender, longitude: els.solar.checked ? p.lon : undefined });
-    render(b);
-    lastRendered = true;
-    els.result.scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    showError(els.result, `排盘出错：${e.message}`);
-  }
+  const p = card.get();
+  if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
+  withBusy(els.btn, '排盘中…', () => {
+    try {
+      const b = castBazi({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender, longitude: els.solar.checked ? p.lon : undefined });
+      render(b);
+      revealCards(els.result);
+      animateMeters(els.result);
+      announce(els.result, `排盘完成：${b.solar.date} ${b.solar.time}，日主${b.dayGan}（${b.dayGanWuXing}）`);
+      lastRendered = true;
+      els.result.scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      showError(els.result, `排盘出错：${e.message}`);
+    }
+  });
 }
 
 els.btn.addEventListener('click', cast);

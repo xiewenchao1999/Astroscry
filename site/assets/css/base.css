@@ -192,3 +192,75 @@ table.plain th { color: var(--muted); font-weight: 500; }
 .chart-box { display: flex; justify-content: center; overflow-x: auto; }
 .loading { text-align: center; color: var(--muted); padding: 30px 0; }
 .error-box { border: 1px solid #fca5a555; background: #fca5a50d; border-radius: 10px; padding: 12px 16px; color: var(--bad); font-size: 14px; }
+
+/* ================= 动效层 =================
+   原则：动效只服务「状态可感知」——结果出现、操作确认、焦点可见。
+   不用位移制造眩晕；所有动画在 prefers-reduced-motion 下关闭（可访问性硬要求）。 */
+
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+@keyframes pop-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes shimmer { from { background-position: -200% 0; } to { background-position: 200% 0; } }
+@keyframes glow-pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+
+/* 结果卡入场：由 motion.mjs 设置 --i 实现依次浮现 */
+.card.reveal, .reveal {
+  animation: fade-up 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation-delay: calc(var(--i, 0) * 65ms);
+}
+/* 首页入口卡错峰入场 */
+.entry { animation: fade-up 0.55s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 70ms); }
+.entry:hover .e-ico { transform: translateY(-2px) scale(1.12); }
+.entry .e-ico { display: inline-block; transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1); }
+.entry { transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.22s, box-shadow 0.22s; }
+.entry:hover { box-shadow: 0 10px 30px -12px rgba(240, 200, 109, 0.28); }
+
+/* 按钮：悬停微光 + 按下回弹 */
+.btn { transition: filter 0.2s, transform 0.12s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.25s; }
+.btn:hover { box-shadow: 0 6px 22px -8px rgba(240, 200, 109, 0.55); }
+.btn:active { transform: scale(0.97); }
+.btn[disabled] { filter: grayscale(0.35) brightness(1.02); cursor: progress; }
+.btn.ghost:hover { background: rgba(142, 168, 255, 0.12); }
+
+/* 卡片：悬停仅提升边界亮度，不位移（避免阅读时抖动） */
+.card { transition: border-color 0.25s, background 0.25s; }
+.card:hover { border-color: rgba(255, 255, 255, 0.2); }
+
+/* 分段控件（公历/农历、性别）：滑动感由过渡承担 */
+.seg-group button { transition: background 0.2s, color 0.2s; }
+.seg-group button:not(.active):hover { color: var(--text); background: rgba(255, 255, 255, 0.06); }
+
+/* 数据条：填充动画（渲染即过渡到目标宽度） */
+.meter > i { display: block; height: 100%; border-radius: 6px; transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* 塔罗：发牌落位 + 翻牌保持 */
+.tarot-card { animation: pop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 110ms); }
+.tarot-card:focus-visible .inner { box-shadow: 0 0 0 2px var(--accent), 0 0 22px -6px rgba(240, 200, 109, 0.6); }
+.tarot-card:hover .inner { transform: translateY(-6px) rotateY(var(--flip, 0deg)); }
+.tarot-card.open:hover .inner { --flip: 180deg; }
+
+/* 表格行悬停提示（不改变布局） */
+table.plain tbody tr:hover, table.plain tr:hover { background: rgba(255, 255, 255, 0.03); }
+table.plain tr { transition: background 0.15s; }
+
+/* 焦点可见（键盘导航必须能看见焦点在哪） */
+:focus-visible { outline: 2px solid var(--accent2); outline-offset: 2px; border-radius: 6px; }
+input:focus-visible, select:focus-visible { outline-offset: 1px; }
+
+/* 顶栏品牌微光 */
+.brand { transition: text-shadow 0.35s, letter-spacing 0.35s; }
+.brand:hover { letter-spacing: 3px; text-shadow: 0 0 18px rgba(240, 200, 109, 0.45); }
+
+/* 处理中骨架 */
+.skeleton { background: linear-gradient(90deg, rgba(255,255,255,0.05), rgba(255,255,255,0.12), rgba(255,255,255,0.05)); background-size: 200% 100%; animation: shimmer 1.3s linear infinite; border-radius: 8px; }
+.pulse { animation: glow-pulse 1.6s ease-in-out infinite; }
+
+/* 回落：尊重系统「减少动态效果」设置 */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+  .entry:hover .e-ico, .tarot-card:hover .inner, .btn:active { transform: none !important; }
+}

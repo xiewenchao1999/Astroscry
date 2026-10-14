@@ -2,6 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castZiwei } from '../core/ziwei.mjs';
+import { revealCards, withBusy, announce } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -70,16 +71,20 @@ function render(z) {
 }
 
 function cast() {
-  try {
-    const p = card.get();
-    if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
-    const z = castZiwei({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender });
-    render(z);
-    lastRendered = true;
-    els.result.scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    showError(els.result, `起盘出错：${e.message}`);
-  }
+  const p = card.get();
+  if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
+  withBusy(els.btn, '起盘中…', () => {
+    try {
+      const z = castZiwei({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender });
+      render(z);
+      revealCards(els.result);
+      announce(els.result, `起盘完成：命主${z.soul}，身主${z.body}，${z.fiveElementsClass}`);
+      lastRendered = true;
+      els.result.scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      showError(els.result, `起盘出错：${e.message}`);
+    }
+  });
 }
 
 els.btn.addEventListener('click', cast);

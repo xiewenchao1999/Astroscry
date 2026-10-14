@@ -3,6 +3,7 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal, SIGNS } from '../core/astro.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
+import { revealCards, withBusy, animateMeters, announce } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -56,17 +57,22 @@ function render(n) {
 }
 
 function cast() {
-  try {
-    const p = card.get();
-    if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
-    if (p.lat == null) { showError(els.result, '出生信息缺少城市：请点击「修改」补充出生城市（计算上升点需要经纬度）'); return; }
-    const n = castNatal({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, lat: p.lat, lon: p.lon, tzOffsetHours: p.tz, cityName: p.cityName });
-    render(n);
-    lastRendered = true;
-    els.result.scrollIntoView({ behavior: 'smooth' });
-  } catch (e) {
-    showError(els.result, `绘制出错：${e.message}`);
-  }
+  const p = card.get();
+  if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
+  if (p.lat == null) { showError(els.result, '出生信息缺少城市：请点击「修改」补充出生城市（计算上升点需要经纬度）'); return; }
+  withBusy(els.btn, '绘制中…', () => {
+    try {
+      const n = castNatal({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, lat: p.lat, lon: p.lon, tzOffsetHours: p.tz, cityName: p.cityName });
+      render(n);
+      revealCards(els.result);
+      animateMeters(els.result);
+      announce(els.result, `星盘完成：太阳${n.planets.sun.signCn}，月亮${n.planets.moon.signCn}，上升${n.ascSign}`);
+      lastRendered = true;
+      els.result.scrollIntoView({ behavior: 'smooth' });
+    } catch (e) {
+      showError(els.result, `绘制出错：${e.message}`);
+    }
+  });
 }
 
 els.btn.addEventListener('click', cast);
