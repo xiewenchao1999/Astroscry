@@ -3,6 +3,8 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal } from '../core/astro.mjs';
 import { interAspects, compatibilityScore, compatibilityDimensions, strengthsAndChallenges, pairKey, houseOverlay } from '../core/astro-synastry.mjs';
+import { castBazi } from '../core/bazi.mjs';
+import { matchBazi } from '../core/bazi-synastry.mjs';
 import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -12,7 +14,11 @@ const els = { me: document.getElementById('form-me'), other: document.getElement
 
 const cardMe = mountBirthCard(els.me, {});
 const cardOther = mountBirthCard(els.other, { storageKey: 'astroscry.partner.v1' });
-const interp = await loadData('../data/interpret-synastry.json');
+const [interp, baziInterp, weights] = await Promise.all([
+  loadData('../data/interpret-synastry.json'),
+  loadData('../data/interpret-bazi.json'),
+  loadData('../data/wuxing-weights.json'),
+]);
 
 function castOne(card, label) {
   const p = card.get();
@@ -22,6 +28,20 @@ function castOne(card, label) {
 }
 
 const bandOf = (score) => interp.scoreBands.find((b) => score >= b.min);
+
+/** 八字合婚卡：生肖/夫妻宫/日干五合/五行互补（matchBazi 规则引擎）；失败静默降级为空 */
+function baziMatchCard(pA, pB) {
+  try {
+    const opt = (p) => ({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender });
+    const m = matchBazi(castBazi(opt(pA)), castBazi(opt(pB)), weights, baziInterp);
+    return `
+      <div class="card"><h3>八字合婚 <span class="src-tag">规则引擎</span></h3>
+        <p style="color:var(--accent);font-weight:700;">${m.summary}</p>
+        ${m.items.map((x) => `<p><b>${x.area}${x.typeCn ? '·' + x.typeCn : ''}${x.pair ? '（' + x.pair + '）' : ''}：</b>${x.verdict}</p>`).join('')}
+        <p class="hint">与上方星盘合盘相互独立：星盘看心理互动，八字合婚看气场结构。${baziInterp.synastry.intro}</p>
+      </div>`;
+  } catch { /* 八字合婚失败不影响星盘合盘主流程 */ return ''; }
+}
 
 function render(nA, nB, pA, pB) {
   const { items, summary } = interAspects(nA.planets, nB.planets);
@@ -58,6 +78,7 @@ function render(nA, nB, pA, pB) {
       <p style="margin-top:10px;">${band.text}</p>
       <div style="margin-top:8px;">${Object.entries(summary.byType).map(([k, v]) => `<span class="pill">${k} × ${v}</span>`).join('')}</div>
     </div>
+    ${baziMatchCard(pA, pB)}
     <div class="card"><h3>${interp.dimensionsTitle}</h3>
       <table class="plain"><tr><th>维度</th><th>评分</th><th>档位</th><th>最强互动</th></tr>
       ${Object.values(dims).map((d) => `<tr>
