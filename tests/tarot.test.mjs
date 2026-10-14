@@ -1,6 +1,6 @@
-// 塔罗核心回归测试 — 牌组完整性（78 张）+ 洗牌确定性 + 牌阵结构（数据驱动，六牌阵）
+// 塔罗核心回归测试 — 牌组完整性（78 张）+ 洗牌确定性 + 牌阵结构（数据驱动，六牌阵）+ 自抽牌准备
 import { readFileSync } from 'fs';
-import { drawSpread, mulberry32, shuffle, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
+import { drawSpread, mulberry32, prepareSpread, shuffle, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../site/js/core/tarot-reading.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -65,6 +65,26 @@ test('抽牌无重复、逆位概率合理（多种子统计）', () => {
   }
   const ratio = revCount / trials;
   assert.ok(ratio > 0.35 && ratio < 0.65, `逆位率 ${ratio.toFixed(2)} 应≈0.5`);
+});
+
+test('自抽牌准备：确定性牌序 + 逆位标记与 drawSpread 同源', () => {
+  // 同 seed 同结果，异 seed 异结果
+  const p1 = prepareSpread(deck, spreadByKey.get('three'), 42);
+  const p2 = prepareSpread(deck, spreadByKey.get('three'), 42);
+  const p3 = prepareSpread(deck, spreadByKey.get('three'), 43);
+  assert.deepEqual(p1.deck.map((c) => c.id), p2.deck.map((c) => c.id));
+  assert.deepEqual(p1.reversals, p2.reversals);
+  assert.notDeepEqual(p1.deck.map((c) => c.id), p3.deck.map((c) => c.id));
+  // 结构：整副 78 张、逆位标记一一对应且为布尔
+  assert.equal(p1.deck.length, 78);
+  assert.equal(p1.reversals.length, 78);
+  assert.ok(p1.reversals.every((r) => typeof r === 'boolean'));
+  assert.deepEqual(p1.deck.map((c) => c.id).sort(), deck.map((c) => c.id).sort(), '洗牌不得丢牌');
+  // 同源约定：drawSpread 同 seed 结果 = prepareSpread 牌序前 N 张 + 对应逆位
+  const d = drawSpread(deck, spreadByKey.get('three'), 42);
+  assert.deepEqual(d.cards.map((c) => c.card.id), p1.deck.slice(0, 3).map((c) => c.id));
+  assert.deepEqual(d.cards.map((c) => c.reversed), p1.reversals.slice(0, 3));
+  assert.equal(d.seed, p1.seed);
 });
 
 test('解读分析：结构特征与分档正确', () => {

@@ -40,23 +40,35 @@ export function shuffle(deck, rng) {
 }
 
 /**
- * 抽牌阵。spread 为数据驱动的牌阵对象（见 data/tarot-spreads.json）。
+ * 洗牌准备：确定性洗出整副牌序 + 每张的逆位标记（按牌序一一对应）。
+ * 供「用户自抽牌」交互使用：页面先洗牌，用户从扇形牌堆中自选 N 张，
+ * 抽取哪张由用户决定，但牌序与正逆仍由 seed 确定性给出。
  * 同 seed 同结果（确定性）；无 seed 用 crypto 随机。
  */
-export function drawSpread(deck, spread, seed) {
+export function prepareSpread(deck, spread, seed) {
   validateSpread(spread);
   const s = seed ?? (globalThis.crypto ? [...globalThis.crypto.getRandomValues(new Uint32Array(1))][0] : Math.floor(Math.random() * 2 ** 31));
   const rng = mulberry32(s);
   const shuffled = shuffle(deck, rng);
-  if (shuffled.length < spread.positions.length) throw new Error('牌库不足');
+  const reversals = shuffled.map(() => rng() < 0.5);
+  return { spread: spread.key, spreadCn: spread.cn, seed: s, deck: shuffled, reversals };
+}
+
+/**
+ * 抽牌阵（自动抽前 N 张）。spread 为数据驱动的牌阵对象（见 data/tarot-spreads.json）。
+ * 与 prepareSpread 同源：同 seed 下 drawSpread 的结果 = prepareSpread 牌序的前 N 张。
+ */
+export function drawSpread(deck, spread, seed) {
+  const p = prepareSpread(deck, spread, seed);
+  if (p.deck.length < spread.positions.length) throw new Error('牌库不足');
   const cards = spread.positions.map((pos, i) => ({
-    card: shuffled[i],
+    card: p.deck[i],
     position: pos.key,
     positionCn: pos.cn,
     positionDuty: pos.duty,
-    reversed: rng() < 0.5,
+    reversed: p.reversals[i],
   }));
-  return { spread: spread.key, spreadCn: spread.cn, seed: s, cards };
+  return { spread: p.spread, spreadCn: p.spreadCn, seed: p.seed, cards };
 }
 
 /** 数据完整性校验（加载 tarot.json 后调用） */

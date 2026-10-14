@@ -164,6 +164,57 @@ table.plain th { color: var(--muted); font-weight: 500; }
 .tarot-card .front.rev-tag .c-name::after { content: ' ⚡逆位'; color: var(--bad); font-size: 12px; }
 .tarot-pos { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 6px; }
 
+/* 塔罗：真实牌面图（300×527 扫描图铺满正面，逆位整图旋转 180°，题注保持正立） */
+.tarot-card .front { padding: 8px; gap: 5px; }
+.tarot-card .c-img { flex: 1; width: 100%; min-height: 0; object-fit: cover; border-radius: 7px; display: block; }
+.tarot-card .c-img.img-rev { transform: rotate(180deg); }
+.tarot-card .front .c-name { font-size: 13.5px; }
+.tarot-card .front .c-kw { font-size: 11px; line-height: 1.35; }
+
+/* 塔罗：洗牌动画（双叠牌堆交替飞切；reduced-motion 下由全局回落关闭） */
+.tarot-shuffle { position: relative; height: 210px; max-width: 430px; margin: 18px auto 6px; }
+.tarot-shuffle i {
+  position: absolute; left: 50%; top: 10px; width: 118px; height: 196px; margin-left: -59px;
+  border-radius: 12px; display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #2b3468 0%, #141a3a 70%);
+  border: 1.5px solid #f0c86d55; color: var(--accent); letter-spacing: 4px; font-style: normal;
+  animation: riffle 0.5s ease-in-out infinite alternate;
+}
+.tarot-shuffle i:nth-child(odd) { animation-delay: -0.25s; }
+.tarot-shuffle i:nth-child(3n) { animation-duration: 0.6s; }
+.tarot-shuffle i:nth-child(4n) { animation-duration: 0.44s; }
+.tarot-shuffle i:nth-child(5n) { animation-delay: -0.12s; }
+@keyframes riffle { from { transform: translateX(-42px) rotate(-8deg); } to { transform: translateX(42px) rotate(8deg); } }
+
+/* 塔罗：待抽牌位（虚线空槽 → 落位实槽） */
+.tarot-slots { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; padding: 12px 0 4px; }
+.tarot-slot { width: 84px; }
+.tarot-slot .box {
+  width: 84px; height: 146px; border: 1.5px dashed var(--card-border); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center; color: var(--muted); font-size: 12px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.tarot-slot .box.filled {
+  border: 1.5px solid #f0c86d55; color: var(--accent); font-size: 22px; letter-spacing: 2px;
+  background: radial-gradient(circle at 50% 40%, #2b3468 0%, #141a3a 70%);
+}
+
+/* 塔罗：扇形抽牌堆（78 张背面牌绕远轴心展开成弧；抽走即移除留缺口） */
+.tarot-fan { position: relative; height: 235px; max-width: 960px; margin: 10px auto 0; }
+.fan-card {
+  position: absolute; left: 50%; top: 12px; width: 92px; height: 162px; border-radius: 10px;
+  background: radial-gradient(circle at 50% 40%, #2b3468 0%, #141a3a 70%);
+  border: 1.5px solid #f0c86d55; cursor: pointer;
+  transform-origin: 50% 300px; transform: rotate(var(--r, 0deg));
+  transition: transform 0.18s ease-out;
+}
+.fan-card:hover, .fan-card:focus-visible { transform: rotate(var(--r, 0deg)) translateY(-26px) scale(1.07); z-index: 99; }
+@media (max-width: 640px) {
+  .fan-card { width: 62px; height: 110px; transform-origin: 50% 210px; }
+  .tarot-fan { height: 165px; }
+}
+/* ponytail: 扇形堆 78 张按桌面尺寸展开，窄屏两侧会被容器裁掉但中心牌始终可点、键盘可达；升级路径为按容器宽度动态算角度步长 */
+
 /* 首页 */
 .hero { text-align: center; padding: 46px 0 30px; }
 .hero h1 { font-size: 44px; margin-bottom: 4px; }

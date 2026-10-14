@@ -1,13 +1,15 @@
-// tarot-page.mjs — 塔罗页胶水：多牌阵 + 洗牌发牌 + 翻牌 + 结构化解读
-import { renderLayout, loadData, showError, esc } from '../ui/layout.mjs';
-import { drawSpread, validateSpread, SUITS } from '../core/tarot.mjs';
+// tarot-page.mjs — 塔罗页胶水：洗牌动画 + 用户自抽牌 + 翻牌 + 结构化解读
+import { renderLayout, loadData, showError, esc, SITE_ROOT } from '../ui/layout.mjs';
+import { prepareSpread } from '../core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../core/tarot-reading.mjs';
-import { stagger, revealCards, withBusy } from '../ui/motion.mjs';
+import { stagger, revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 
 renderLayout();
 
 const els = { spread: document.getElementById('spread'), question: document.getElementById('question'), draw: document.getElementById('draw'), stage: document.getElementById('stage') };
 let deck, spreads, interp, reading = null;
+let pending = null; // prepareSpread 结果：确定性牌序 + 逆位标记，等待用户自抽
+let picks = [];     // 用户抽中的牌在 pending.deck 中的下标（按落位顺序）
 
 try {
   [deck, spreads, interp] = await Promise.all([
@@ -24,11 +26,75 @@ els.spread.value = 'three';
 els.draw.addEventListener('click', () => {
   withBusy(els.draw, '洗牌中…', () => {
     try {
-      reading = drawSpread(deck, spreadByKey.get(els.spread.value));
-      render();
+      const spread = spreadByKey.get(els.spread.value);
+      pending = prepareSpread(deck, spread); // 牌序与正逆由 seed 确定性给出；抽哪几张由用户决定
+      picks = [];
+      renderShuffle();
     } catch (e) { showError(els.stage, `抽牌出错：${e.message}`); }
   });
 });
+
+/** 阶段一：洗牌动画（reduced-motion 下几乎瞬时跳过） */
+function renderShuffle() {
+  els.stage.innerHTML = `
+    <div class="tarot-shuffle" aria-hidden="true">${'<i>✦</i>'.repeat(12)}</div>
+    <p class="hint" style="text-align:center;">洗牌中…</p>`;
+  announce(els.stage, '正在洗牌，请稍候');
+  setTimeout(renderFan, reducedMotion() ? 80 : 1500);
+}
+
+/** 阶段二：牌位待抽 + 扇形牌堆，用户自抽 N 张 */
+function renderFan() {
+  const total = pending.spread ? spreadByKey.get(pending.spread).positions.length : 0;
+  const spread = spreadByKey.get(pending.spread);
+  els.stage.innerHTML = `
+    <p class="hint" style="text-align:center;">${interp.fanHint.replace('{total}', total)}</p>
+    <div class="tarot-slots">${spread.positions.map((p) => `
+      <div class="tarot-slot"><div class="tarot-pos">${esc(p.cn)}</div>
+        <div class="box"><span>${interp.slotEmpty}</span></div></div>`).join('')}
+    </div>
+    <p class="hint" style="text-align:center;" data-pick-count>${interp.picked.replace('{picked}', 0).replace('{total}', total)}</p>
+    <div class="tarot-fan">${pending.deck.map((_, i) => `
+      <div class="fan-card" data-i="${i}" role="button" tabindex="0"
+           style="--r:${((i - (pending.deck.length - 1) / 2) * 1.85).toFixed(2)}deg"
+           aria-label="牌堆第 ${i + 1} 张（背面朝上），点击或按 Enter 抽取这张"></div>`).join('')}
+    </div>`;
+  announce(els.stage, interp.fanHint.replace('{total}', total));
+
+  const pick = (el) => {
+    const i = +el.dataset.i;
+    el.remove(); // 从牌堆移除（同时防重复抽取），留下自然缺口
+    const slot = els.stage.querySelector('.tarot-slot .box:not(.filled)');
+    if (slot) { slot.classList.add('filled'); slot.innerHTML = '<span>✦</span>'; }
+    picks.push(i);
+    els.stage.querySelector('[data-pick-count]').textContent = interp.picked.replace('{picked}', picks.length).replace('{total}', total);
+    if (picks.length === total) setTimeout(finishPick, 350); // 稍作停顿让最后一张落位可见
+  };
+  els.stage.querySelectorAll('.fan-card').forEach((el) => {
+    el.addEventListener('click', () => pick(el));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); pick(el); }
+    });
+  });
+}
+
+/** 阶段三：全部抽齐 → 组装 reading，进入翻牌流程 */
+function finishPick() {
+  const spread = spreadByKey.get(pending.spread);
+  reading = {
+    spread: pending.spread,
+    spreadCn: pending.spreadCn,
+    seed: pending.seed,
+    cards: picks.map((deckIdx, i) => ({
+      card: pending.deck[deckIdx],
+      position: spread.positions[i].key,
+      positionCn: spread.positions[i].cn,
+      positionDuty: spread.positions[i].duty,
+      reversed: pending.reversals[deckIdx], // 正逆由洗牌序确定性给出，翻牌时揭晓
+    })),
+  };
+  render();
+}
 
 function render() {
   const q = els.question.value.trim();
@@ -43,8 +109,8 @@ function render() {
         <div class="inner">
           <div class="face back">✦ ✦ ✦</div>
           <div class="face front ${c.reversed ? 'rev-tag' : ''}">
+            <img class="c-img ${c.reversed ? 'img-rev' : ''}" src="${SITE_ROOT}assets/tarot/${c.card.id}.png" alt="${esc(c.card.name)}" loading="lazy">
             <div class="c-name">${c.card.cn}</div>
-            <div class="c-en">${c.card.name}</div>
             <div class="c-kw">${(c.reversed ? c.card.kwRev : c.card.kwUp).join(' · ')}</div>
           </div>
         </div></div>
