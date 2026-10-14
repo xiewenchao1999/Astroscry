@@ -18,19 +18,20 @@ export function solarTimeCorrection(hhmm, longitude) {
   return { corrected: `${pad(Math.floor(total / 60))}:${pad(total % 60)}`, minutes: offsetMin };
 }
 
-function pillarInfo(ganZhi, dayGan, LunarUtil) {
+function pillarInfo(ganZhi, dayGan, LunarUtil, isDayPillar) {
   const gan = ganZhi[0];
   const zhi = ganZhi[1];
   const hides = LunarUtil.ZHI_HIDE_GAN[zhi] || [];
-  const shiShen = (g) => (g === dayGan ? '日主' : (LunarUtil.SHI_SHEN[dayGan + g] || ''));
+  // 「日主」仅指日柱本身的日干；其他位置与日干相同的天干按十神规则为「比肩」
   return {
     ganZhi,
     gan, zhi,
     ganWuXing: GAN_WUXING[gan],
     zhiWuXing: ZHI_WUXING[zhi],
     naYin: LunarUtil.NAYIN[ganZhi] || '',
-    ganShiShen: shiShen(gan),
-    hideGans: hides.map((hg) => ({ gan: hg, wuXing: GAN_WUXING[hg], shiShen: shiShen(hg) })),
+    ganShiShen: isDayPillar ? '日主' : (LunarUtil.SHI_SHEN[dayGan + gan] || ''),
+    // 藏干一律按十神规则推导（与日干相同者为比肩）
+    hideGans: hides.map((hg) => ({ gan: hg, wuXing: GAN_WUXING[hg], shiShen: LunarUtil.SHI_SHEN[dayGan + hg] || (hg === dayGan ? '比肩' : '') })),
     animal: ZHI_ANIMAL[zhi],
   };
 }
@@ -59,10 +60,10 @@ export function castBazi(input) {
   const dayGan = ec.getDay()[0];
 
   const pillars = {
-    year: pillarInfo(ec.getYear(), dayGan, LunarUtil),
-    month: pillarInfo(ec.getMonth(), dayGan, LunarUtil),
-    day: pillarInfo(ec.getDay(), dayGan, LunarUtil),
-    time: pillarInfo(ec.getTime(), dayGan, LunarUtil),
+    year: pillarInfo(ec.getYear(), dayGan, LunarUtil, false),
+    month: pillarInfo(ec.getMonth(), dayGan, LunarUtil, false),
+    day: pillarInfo(ec.getDay(), dayGan, LunarUtil, true),
+    time: pillarInfo(ec.getTime(), dayGan, LunarUtil, false),
   };
 
   // 大运：男阳女阴顺排、男阴女阳逆排；DaYun[0] 为起运前，其后 getStartAge（周岁）起每 10 年一步
@@ -83,6 +84,9 @@ export function castBazi(input) {
     lunar: {
       text: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,
       leapMonth: lunar.getMonth() < 0,
+      monthNum: lunar.getMonth(),   // 闰月为负（约定与 calendar.mjs 一致）
+      dayNum: lunar.getDay(),
+      yearNum: lunar.getYear(),
     },
     animal: lunar.getYearShengXiao(),
     dayGan,

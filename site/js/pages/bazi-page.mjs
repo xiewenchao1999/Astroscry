@@ -1,12 +1,19 @@
-// bazi-page.mjs — 八字页胶水：出生信息卡（共享）→ castBazi → 渲染
+// bazi-page.mjs — 八字页胶水：出生信息卡（共享）→ castBazi + 分析层 → 渲染
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
+import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../core/bazi-analysis.mjs';
 
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast'), solar: document.getElementById('solarTime') };
-const interp = await loadData('../data/interpret-bazi.json');
+const [interp, weights, chengguData, celebData] = await Promise.all([
+  loadData('../data/interpret-bazi.json'),
+  loadData('../data/wuxing-weights.json'),
+  loadData('../data/chenggu.json'),
+  loadData('../data/celebrity-cases.json'),
+]);
+const caseLibrary = buildCaseLibrary(celebData.cases, castBazi);
 let lastRendered = false;
 
 const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
@@ -29,6 +36,102 @@ function pillarTable(b) {
     <tr><th>纳音</th>${cols.map((c) => `<td>${c[1].naYin}</td>`).join('')}</tr>
     <tr><th>五行</th>${cols.map((c) => `<td>${c[1].ganWuXing}/${c[1].zhiWuXing}</td>`).join('')}</tr>
     <tr><th>宫位</th>${cols.map((c) => `<td style="color:var(--muted)">${c[2]}</td>`).join('')}</tr></table>`;
+}
+
+function strengthCard(b) {
+  const s = analyzeStrength(b, weights);
+  const geju = detectGeju(b, interp);
+  const total = s.support + s.drain || 1;
+  const rows = s.contributions
+    .slice()
+    .sort((a, b2) => Math.abs(b2.value) - Math.abs(a.value))
+    .slice(0, 10)
+    .map((c) => `<tr><td>${c.source}</td><td style="color:var(--muted)">${c.shiShen}</td><td style="color:${c.value > 0 ? 'var(--good)' : 'var(--bad)'}">${c.value > 0 ? '+' : ''}${c.value}</td></tr>`)
+    .join('');
+  return `
+    <div class="card"><h3>日主强弱量化 <span class="src-tag">释义</span></h3>
+      <div class="kv">
+        <div><span>日主</span><b>${b.dayGan}（${b.dayGanWuXing}）</b></div>
+        <div><span>生扶合计</span><b style="color:var(--good)">${s.support}</b></div>
+        <div><span>克耗合计</span><b style="color:var(--bad)">${s.drain}</b></div>
+        <div><span>净值</span><b>${s.net}</b></div>
+        <div><span>判档</span><b style="color:var(--accent)">${s.band.cn}</b></div>
+      </div>
+      <div style="background:rgba(255,255,255,0.06);border-radius:6px;height:10px;margin:12px 0;display:flex;overflow:hidden;">
+        <div style="width:${s.support / total * 100}%;background:linear-gradient(90deg,#86efac,#4ade80)"></div>
+        <div style="width:${s.drain / total * 100}%;background:linear-gradient(90deg,#fca5a5,#f87171)"></div>
+      </div>
+      <p>${interp.strengthAdvice.result.replace('{support}', s.support).replace('{drain}', s.drain).replace('{net}', s.net)}</p>
+      <p><b>${s.band.cn}</b>：${s.band.advice}</p>
+      <p><b>月令取格 · ${geju.shiShen || '—'}</b>：${geju.name}${geju.reason ? `<span style="color:var(--muted)">（${geju.reason}）</span>` : ''}</p>
+      <table class="plain" style="margin-top:10px;"><tr><th>分项</th><th>十神</th><th>分值</th></tr>${rows}</table>
+      <p class="note">${interp.strengthAdvice.intro}</p>
+      <p class="note">${interp.strengthAdvice.note} ${interp.geju.note}</p>
+    </div>`;
+}
+
+function relationCard(b) {
+  const r = analyzeRelations(b, weights);
+  const typeColor = { he: 'good', chong: 'bad', xing: 'bad', hai: 'bad' };
+  const typeText = { he: interp.relations.he, chong: interp.relations.chong, xing: interp.relations.xing, hai: interp.relations.hai };
+  return `
+    <div class="card"><h3>四柱关系 · 合冲刑害</h3>
+      ${r.hasAny
+      ? `<table class="plain"><tr><th>关系</th><th>组合</th><th>位置</th><th>说明</th></tr>
+         ${r.items.map((x) => `<tr><td><span class="pill ${typeColor[x.type]}">${x.typeCn}</span></td>
+           <td><b>${x.pair}</b>${x.element ? `<span style="color:var(--muted)">化${x.element}</span>` : ''}${x.cn ? `<span style="color:var(--muted)">·${x.cn}</span>` : ''}</td>
+           <td style="color:var(--muted)">${x.positions.join(' + ')}</td>
+           <td style="color:var(--muted);font-size:12.5px">${typeText[x.type]}</td></tr>`).join('')}
+         </table>`
+      : `<p style="color:var(--muted)">${interp.relations.none}</p>`}
+      <p class="note">${interp.relations.heNote}</p>
+    </div>`;
+}
+
+function chengguCard(b) {
+  let cg;
+  try { cg = castChenggu(b, weights, chengguData); } catch (e) { return `<div class="card"><h3>称骨</h3><p class="note">${e.message}</p></div>`; }
+  const t = cg.tier;
+  return `
+    <div class="card"><h3>袁天罡称骨 <span class="src-tag">古籍</span></h3>
+      <p>${interp.chenggu.detailLine.replace('{year}', cg.parts.year.qian).replace('{month}', cg.parts.month.qian).replace('{day}', cg.parts.day.qian).replace('{hour}', cg.parts.hour.qian).replace('{total}', cg.totalQian).replace('{label}', t.label)}</p>
+      <p style="font-size:17px;color:var(--accent);letter-spacing:1px;">${t.verse}</p>
+      <div style="margin:10px 0;">
+        <span class="pill gold">${t.label}</span>
+        <span class="pill ${t.grade === '高' ? 'good' : t.grade === '低' ? 'bad' : 'gold'}">${t.grade}</span>
+        ${t.career ? `<span class="pill">事业 ${t.career}</span>` : ''}
+        ${t.wealth ? `<span class="pill">财运 ${t.wealth}</span>` : ''}
+        ${t.marriage ? `<span class="pill">婚姻 ${t.marriage}</span>` : ''}
+        ${(t.tags || []).map((x) => `<span class="pill">${x}</span>`).join('')}
+      </div>
+      <table class="plain"><tr><th>项</th><th>取值</th><th>骨重</th></tr>
+        <tr><td>年（干支）</td><td>${cg.parts.year.ganzhi}</td><td>${cg.parts.year.qian} 钱</td></tr>
+        <tr><td>月（农历）</td><td>${cg.parts.month.lunarMonth} 月</td><td>${cg.parts.month.qian} 钱</td></tr>
+        <tr><td>日（农历）</td><td>${cg.parts.day.lunarDay} 日</td><td>${cg.parts.day.qian} 钱</td></tr>
+        <tr><td>时（时辰）</td><td>${cg.parts.hour.zhi} 时</td><td>${cg.parts.hour.qian} 钱</td></tr></table>
+      ${cg.notes.length ? `<p class="note">口径：${cg.notes.join('；')}</p>` : ''}
+      <p class="note">${interp.chenggu.note} ${interp.chenggu.gradeNote}</p>
+    </div>`;
+}
+
+function caseLibraryCard() {
+  const groups = new Map();
+  for (const c of caseLibrary) {
+    if (!groups.has(c.category)) groups.set(c.category, []);
+    groups.get(c.category).push(c);
+  }
+  return `
+    <div class="card"><h3>名人命盘参照 <span class="src-tag">案例库</span></h3>
+      <p class="hint">按出生日期计算的年/月/日三柱（不含时柱——史料时辰与异地时区不可靠），仅作参照，非命理比对结论。</p>
+      ${[...groups.entries()].map(([cat, list]) => `
+        <details style="margin-top:10px;"><summary style="cursor:pointer;color:var(--accent2)">${cat}（${list.length}）</summary>
+          <table class="plain" style="margin-top:8px;"><tr><th>人物</th><th>年柱</th><th>月柱</th><th>日柱</th><th>日主</th></tr>
+          ${list.map((c) => `<tr><td>${c.name}</td><td>${c.pillars[0]}</td><td>${c.pillars[1]}</td><td>${c.pillars[2]}</td><td>${c.dayGan}（${c.dayGanWuXing}）</td></tr>`).join('')}
+          </table>
+          ${list.map((c) => `<p class="note">▸ <b>${c.name}</b>：${c.note}</p>`).join('')}
+        </details>`).join('')}
+      <p class="note">素材来源：life-kline celebrity_cases（自用）；描述为原案例库的复盘笔记，不代表本项目的推断。</p>
+    </div>`;
 }
 
 function render(b) {
@@ -57,6 +160,8 @@ function render(b) {
       ${b.solarCorrection ? `<div class="note">已按出生地经度做真太阳时校正：${b.solarCorrection.minutes >= 0 ? '+' : ''}${b.solarCorrection.minutes} 分钟 → 校正后 ${b.solarCorrection.corrected}</div>` : ''}
     </div>
     <div class="card"><h3>四柱</h3>${pillarTable(b)}</div>
+    ${strengthCard(b)}
+    ${relationCard(b)}
     <div class="grid grid-2">
       <div class="card"><h3>五行分布（含藏干）</h3>${wuxingBar(b.fiveElements)}</div>
       <div class="card"><h3>大运（每步十年）</h3>
@@ -66,6 +171,7 @@ function render(b) {
         <div class="note">起运：出生后 ${b.qiYun.years} 年 ${b.qiYun.months} 个月 ${b.qiYun.days} 天（${b.qiYun.solar}）。高亮为当前所行大运。</div>
       </div>
     </div>
+    ${chengguCard(b)}
     <div class="card"><h3>规则式解读 <span class="src-tag">释义</span></h3>
       <p><b>日主${b.dayGan}</b>：${interp.gan[b.dayGan]}</p>
       <p>${interp.wuXingStrong.replace('{wx}', strongest[0]).replace('{trait}', interp.wuXing[strongest[0]])}${strongest[0] !== weakest[0] ? '<br>' + interp.wuXingWeak.replace('{wx}', weakest[0]).replace('{trait}', interp.wuXing[weakest[0]]) : ''}</p>
@@ -73,7 +179,8 @@ function render(b) {
       ${Object.entries(b.pillars).map(([k, p]) => p.ganShiShen !== '日主' && interp.shiShen[p.ganShiShen] ? `<p style="font-size:13.5px;color:var(--muted)">▸ ${k === 'year' ? '年柱' : k === 'month' ? '月柱' : '时柱'}${p.ganShiShen}：${interp.shiShen[p.ganShiShen]}</p>` : '').join('')}
       <p class="note">${interp.naYin} ${interp.qiYunNote.replace('{minutes}', b.solarCorrection ? b.solarCorrection.minutes : 0)}</p>
       <p class="note">${interp.disclaimer}</p>
-    </div>`;
+    </div>
+    ${caseLibraryCard()}`;
 }
 
 function cast() {
