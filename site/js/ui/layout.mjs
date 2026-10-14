@@ -1,4 +1,5 @@
-// layout.mjs — 顶栏 + 页脚注入（每页引入一次）
+// layout.mjs — 顶栏 + 页脚 + AI 解读悬浮栏注入（每页引入一次）
+import { mountAIPanel } from './ai-panel.mjs';
 
 // 导航链接需按当前页面位置生成前缀：根目录 index.html 上要用 pages/ 前缀，pages/ 下则不用
 const atRoot = /\/index\.html$/.test(location.pathname) || location.pathname.endsWith('/');
@@ -34,6 +35,8 @@ export function renderLayout() {
     <div>星卜 Astroscry · 传统术数文化的算法呈现 · 全部计算在你的浏览器本地完成，生日数据不离开设备</div>
     <div class="note">结果仅供文化参考，不构成任何现实决策建议 · 数据来源与许可见 <a href="${P}about.html">关于页</a></div>`;
   document.body.append(footer);
+
+  mountAIPanel(); // 全站常驻 AI 解读悬浮栏（右侧，收起态只有一个圆钮）
 }
 
 /** 通用：加载站点 JSON 数据 */

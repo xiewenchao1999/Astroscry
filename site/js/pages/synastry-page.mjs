@@ -4,6 +4,7 @@ import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal } from '../core/astro.mjs';
 import { interAspects, compatibilityScore, compatibilityDimensions, strengthsAndChallenges, pairKey, houseOverlay } from '../core/astro-synastry.mjs';
 import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -29,6 +30,12 @@ function render(nA, nB, pA, pB) {
   const overlay = houseOverlay(nA, nB);
   const { harmonious, challenging, neutral } = strengthsAndChallenges(items, 4);
   const band = bandOf(score);
+  // AI 数据源：双方盘只瘦身传落座/落宫，相位/评分/宫位叠加全传
+  const slimNatal = (n) => ({
+    sun: n.planets.sun.signCn, moon: n.planets.moon.signCn, asc: n.ascSign,
+    planets: Object.fromEntries(Object.entries(n.planets).map(([k, p]) => [k, { sign: p.signCn, house: p.house }])),
+  });
+  setAISource('synastry', { a: slimNatal(nA), b: slimNatal(nB), aspects: items, score, dims, overlay }, `${score} 分 · ${band?.cn ?? ''}`);
 
   const row = (x) => `<tr><td>${x.aCn} ${x.aspectCn} ${x.bCn}</td><td style="color:var(--muted)">容许度 ${x.orb}°</td><td>${x.strength}</td></tr>`;
   const pairText = (x) => interp.pairs[pairKey(x.a, x.b)] ?? interp.pairFallback.replace('{aCn}', x.aCn).replace('{bCn}', x.bCn).replace('{aspectCn}', x.aspectCn).replace('{natureText}', interp.natureTexts[x.nature]);

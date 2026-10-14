@@ -3,6 +3,7 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castZiwei } from '../core/ziwei.mjs';
 import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -32,6 +33,17 @@ function palaceCell(p) {
 }
 
 function render(z) {
+  // AI 数据源：iztro 完整盘过大，只瘦身传关键字段（主星含四化/亮度、辅星、宫干支）
+  setAISource('ziwei', {
+    lunarDate: z.lunarDate, chineseDate: z.chineseDate, timeText: z.timeText,
+    fiveElementsClass: z.fiveElementsClass, soul: z.soul, body: z.body, sign: z.sign, zodiac: z.zodiac,
+    palaces: z.palaces.map((p) => ({
+      name: p.name, isBodyPalace: !!p.isBodyPalace, stemBranch: p.stemBranch,
+      majorStars: p.majorStars.map((s) => `${s.name}${s.mutagen ? `化${s.mutagen}` : ''}${s.brightness ? `(${s.brightness})` : ''}`),
+      minorStars: p.minorStars.map((s) => s.name + (s.mutagen || '')),
+      adjectiveStars: (p.adjectiveStars || []).slice(0, 6),
+    })),
+  }, `命主${z.soul} · ${z.fiveElementsClass}`);
   const info = `
     <div class="palace" style="grid-column:2/4;grid-row:2/4;display:flex;flex-direction:column;justify-content:center;text-align:center;">
       <div style="font-size:26px;color:var(--accent);letter-spacing:4px;">星卜 · 紫微命盘</div>

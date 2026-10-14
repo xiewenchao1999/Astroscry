@@ -5,6 +5,7 @@ import { castNatal, SIGNS, computeSky } from '../core/astro.mjs';
 import { interAspects, strengthsAndChallenges } from '../core/astro-synastry.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
 import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -33,6 +34,7 @@ function transitsCard(n) {
 }
 
 function render(n) {
+  setAISource('natal', n);
   const planetRows = Object.values(n.planets).map((p) => `
     <tr><td>${p.cn}${p.retrograde ? '<span class="pill retro" style="margin-left:4px">℞逆行</span>' : ''}</td>
     <td>${p.signCn} ${Math.floor(p.degInSign)}°${String(Math.floor((p.degInSign % 1) * 60)).padStart(2, '0')}′</td>

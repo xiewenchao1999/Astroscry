@@ -3,6 +3,7 @@ import { renderLayout, loadData, showError, esc, SITE_ROOT } from '../ui/layout.
 import { cryptoRng, shuffle } from '../core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../core/tarot-reading.mjs';
 import { stagger, revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -143,6 +144,12 @@ function renderStructure() {
   const box = els.stage.querySelector('#structure');
   const analysis = analyzeReading(reading.cards);
   const syn = synthesizeReading(reading.cards, analysis, els.question.value.trim());
+  // AI 数据源：只传牌面结构（位置/牌名/正逆），规则层结论不传，牌义交由 AI 现场解读
+  setAISource('tarot', {
+    spread: reading.spreadCn,
+    question: els.question.value.trim(),
+    cards: reading.cards.map((c) => ({ pos: c.positionCn, duty: c.positionDuty, name: c.card.cn, reversed: c.reversed })),
+  }, reading.spreadCn);
   const rev = (c) => (c.reversed ? '（逆位）' : '');
   const exitKey = syn.exit.dominant ?? 'none';
 

@@ -3,6 +3,7 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { loadProfile } from '../ui/birth-profile.mjs';
 import { SIGNS, dailyFortune, computeSky, sunSignByDate } from '../core/astro.mjs';
 import { revealCards, animateMeters, stagger } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -34,6 +35,7 @@ function refresh() {
   const utc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 4, 0, 0));
   sky = computeSky(utc);
   fortune = dailyFortune(utc);
+  setAISource('horoscope', { sky, fortunes: fortune });
   renderSky();
   renderAll();
   renderDetail(els.sign.value);

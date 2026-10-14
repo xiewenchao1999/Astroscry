@@ -4,40 +4,57 @@
 
 import { loadAIConfig, aiEnabled } from './ai-settings.mjs';
 
-const SYSTEM_PROMPTS = {
-  qimen: [
-    '你是奇门遁甲解读助手。下方 JSON 是已排好的奇门盘结构化输出。',
-    '请基于给定数据回答用户问题，遵守：',
-    '1) 只解读盘面中实际出现的宫位、门、星、神、干；不得虚构未出现的信息；',
-    '2) 不得替用户做医疗、法律、投资等重大决策；',
-    '3) 用简体中文，条理清晰，通俗易懂；',
-    '4) 末尾附一句免责声明：「本解读仅供文化参考」。'
-  ].join('\n'),
-  // ponytail: 其他 domain（bazi/ziwei/astro/tarot）后续按需补；留空会在 buildMessages 抛错，避免误用
+const GENERIC_RULES = [
+  '请基于给定数据回答用户问题，遵守：',
+  '1) 只解读数据中实际出现的信息；不得虚构未出现的内容；',
+  '2) 不得替用户做医疗、法律、投资等重大决策；',
+  '3) 用简体中文，条理清晰，通俗易懂；',
+  '4) 末尾附一句免责声明：「本解读仅供文化参考」。'
+].join('\n');
+
+const DOMAINS = {
+  qimen: '奇门遁甲盘（九宫格：每宫含八神/九星/八门/天地盘干，值符值使为盘眼）',
+  bazi: '八字四柱盘（年月日时四柱、十神、五行强弱、格局）',
+  ziwei: '紫微斗数命盘（十二宫，含主星辅星与四化）',
+  natal: '西方占星本命盘（行星落座落宫、相位、上升点）',
+  horoscope: '西方占星每日行运（当日行星天象与十二星座运势评分）',
+  tarot: '塔罗牌阵（每张牌的位置职责、牌名与正逆位）',
+  synastry: '西方占星合盘（双方行星跨盘相位、契合度评分、宫位叠加）',
 };
 
+export function domainLabel(domain) { return DOMAINS[domain]; }
+
 export function buildMessages(domain, structured, question) {
-  const sys = SYSTEM_PROMPTS[domain];
-  if (!sys) throw new Error(`AI 解读暂未支持 ${domain} 领域`);
+  const desc = DOMAINS[domain];
+  if (!desc) throw new Error(`AI 解读暂未支持 ${domain} 领域`);
   return [
-    { role: 'system', content: sys },
-    { role: 'user', content: `排盘数据（JSON）：\n${JSON.stringify(structured)}\n\n用户问题：${question || '请综合解读这盘面'}` },
+    { role: 'system', content: `你是命理解读助手。用户排的是${desc}。\n${GENERIC_RULES}` },
+    { role: 'user', content: `盘面类型：${desc}\n排盘数据（JSON）：\n${JSON.stringify(structured)}\n\n用户问题：${question || '请综合解读这一盘面'}` },
   ];
 }
 
 /**
- * 流式 AI 解读。调用方用 `for await (const chunk of streamReading(...))` 增量渲染。
- * 失败抛错；调用方负责降级到规则解读层（ADR-002 降级路径）。
- * @param {string} domain  术数领域 key（见 SYSTEM_PROMPTS）
- * @param {object} structured  排盘模块输出的结构化对象
- * @param {string} question  用户问题（可空）
- * @yields {string}  增量文本片段
+ * 跨页综合解读：sources = [{ domain, summary, structured, qa: [{ q, a }] }]
+ * qa 只带最近几条问答（a 截断），避免撑爆上下文。
  */
-export async function* streamReading(domain, structured, question) {
+export function buildCombinedMessages(sources, question) {
+  if (!sources?.length) throw new Error('暂无可综合的排盘数据');
+  const parts = sources.map((s, i) => {
+    const label = DOMAINS[s.domain] || s.domain;
+    const qa = (s.qa || []).map((x) => `\n此前提问：${x.q}${x.a ? `\n此前回答摘要：${x.a}` : ''}`).join('');
+    return `【盘 ${i + 1}】${label}${s.summary ? `\n排盘摘要：${s.summary}` : ''}${qa}\n排盘数据（JSON）：\n${JSON.stringify(s.structured)}`;
+  });
+  return [
+    { role: 'system', content: `你是命理解读助手。用户先后在多个体系排盘并提问，请综合所有盘面给出整体解读建议：指出相互印证或矛盾之处；各体系口径独立，不强行混算。\n${GENERIC_RULES}` },
+    { role: 'user', content: `${parts.join('\n\n———\n\n')}\n\n用户问题：${question || '请综合以上全部盘面给出整体解读建议'}` },
+  ];
+}
+
+/** 共用底层：fetch + SSE 增量解析；失败抛错，调用方负责降级（ADR-002） */
+async function* streamChat(messages) {
   const config = loadAIConfig();
   if (!aiEnabled(config)) throw new Error('AI 解读未开启或配置不完整');
 
-  const messages = buildMessages(domain, structured, question);
   const res = await fetch(config.baseURL, {
     method: 'POST',
     headers: {
@@ -74,4 +91,14 @@ export async function* streamReading(domain, structured, question) {
   } finally {
     reader.releaseLock();
   }
+}
+
+/** 单页流式解读：`for await (const chunk of streamReading(domain, structured, question))` */
+export async function* streamReading(domain, structured, question) {
+  yield* streamChat(buildMessages(domain, structured, question));
+}
+
+/** 跨页综合流式解读：`for await (const chunk of streamCombined(sources, question))` */
+export async function* streamCombined(sources, question) {
+  yield* streamChat(buildCombinedMessages(sources, question));
 }

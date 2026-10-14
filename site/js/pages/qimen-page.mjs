@@ -1,20 +1,13 @@
 // qimen-page.mjs — 奇门页胶水：起局时间 → core/qimen 排盘 → 九宫格渲染 + 点宫释义
 import { renderLayout, loadData, showError, esc } from '../ui/layout.mjs';
 import { castQimen } from '../core/qimen.mjs';
-import { stagger, revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
-import { mountAICard, aiEnabled } from '../ui/ai-settings.mjs';
-import { streamReading } from '../ui/ai-reading.mjs';
+import { stagger, revealCards, withBusy, announce } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
 const els = { time: document.getElementById('qtime'), cast: document.getElementById('cast'), stage: document.getElementById('stage') };
 let interp = null;
-
-// ADR-002：AI 设置卡（opt-in），持久挂在 #stage 下方，与每次排盘渲染解耦
-const aiCardEl = document.createElement('div');
-aiCardEl.id = 'ai-card';
-els.stage.parentNode.insertBefore(aiCardEl, els.stage.nextSibling);
-mountAICard(aiCardEl);
 
 // 默认起局时间 = 现在（datetime-local 需要本地时区格式）
 {
@@ -44,6 +37,7 @@ els.cast.addEventListener('click', () => {
 });
 
 function render(q) {
+  setAISource('qimen', q, q.juName);
   els.stage.innerHTML = `
     <div class="card" style="margin-bottom:14px;">
       <p style="text-align:center;"><b class="pill gold">${q.juName}</b>
@@ -62,15 +56,6 @@ function render(q) {
     <div class="card" style="margin-top:14px;"><h3>读盘要点</h3>
       ${interp.guide.map((g) => `<p>▸ ${g}</p>`).join('')}
       <p class="note">${interp.disclaimer}</p>
-    </div>
-    <div class="card" id="ai-section" style="margin-top:14px;">
-      <h3>AI 综合解读</h3>
-      <p class="hint">基于上方盘面数据，由你配置的端点给出综合解读；排盘由本地规则引擎完成，AI 只读盘面数据。</p>
-      <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px;">
-        <input type="text" id="ai-question" placeholder="可填具体问题，如「问事业」；留空则综合解读" style="flex:1;min-width:200px;">
-        <button class="btn" type="button" id="ai-run">AI 综合解读</button>
-      </div>
-      <div id="ai-output" class="result" aria-live="polite" style="white-space:pre-wrap;"></div>
     </div>`;
   stagger(els.stage.querySelector('.qimen-grid'), '.qimen-cell');
   announce(els.stage, `已排出${q.juName}，值符${q.zhiFuStar}，值使${q.zhiShiDoor}`);
@@ -83,47 +68,6 @@ function render(q) {
     });
   });
   detail(q, q.zhiFuPalace); // 默认展示值符宫
-  wireAI(q);
-}
-
-/**
- * AI 综合解读按钮：关闭态提示去下方设置卡开启；开启态流式渲染到 #ai-output。
- * 失败降级：显示失败原因 + 引导用户参考上方规则层「读盘要点」（始终可见）。
- */
-function wireAI(q) {
-  const btn = els.stage.querySelector('#ai-run');
-  const out = els.stage.querySelector('#ai-output');
-  const qInput = els.stage.querySelector('#ai-question');
-  if (!btn || !out || !qInput) return;
-  let streaming = false;
-  btn.addEventListener('click', async () => {
-    if (streaming) return;
-    if (!aiEnabled()) {
-      out.innerHTML = '<p class="hint">请先在页面底部「AI 解读」设置卡中填齐端点 / 模型 / 密钥并勾选开启。</p>';
-      aiCardEl.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth', block: 'start' });
-      return;
-    }
-    streaming = true;
-    const label = btn.textContent;
-    btn.disabled = true;
-    btn.textContent = '解读中…';
-    out.textContent = '';
-    let n = 0;
-    try {
-      announce(els.stage, 'AI 解读中');
-      for await (const chunk of streamReading('qimen', q, qInput.value.trim())) {
-        out.textContent += chunk;
-        n++;
-      }
-      if (n === 0) out.textContent = '（端点返回空响应，请检查模型 / 密钥 / 端点 URL）';
-    } catch (e) {
-      out.innerHTML = `<p class="hint">AI 解读失败：${esc(e.message)}。请参考上方「读盘要点」的规则解读。</p>`;
-    } finally {
-      btn.disabled = false;
-      btn.textContent = label;
-      streaming = false;
-    }
-  });
 }
 
 function cell(q, p) {

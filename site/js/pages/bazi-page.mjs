@@ -4,6 +4,7 @@ import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
 import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../core/bazi-analysis.mjs';
 import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
+import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
@@ -136,6 +137,7 @@ function caseLibraryCard() {
 }
 
 function render(b) {
+  setAISource('bazi', b, `日主${b.pillars.day?.[0] ?? ''}`);
   const fiveEntries = Object.entries(b.fiveElements);
   const strongest = fiveEntries.reduce((a, x) => (x[1] > a[1] ? x : a));
   const weakest = fiveEntries.reduce((a, x) => (x[1] < a[1] ? x : a));
