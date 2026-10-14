@@ -1,8 +1,8 @@
 // natal-reading.mjs — 西占本命盘解读引擎（规则层，无 AI）
 // 输入 castNatal 输出 + interpret-natal.json 语料；三巨头（日/月/升）逐星座释义由
 // interpret-horoscope.json 的 signs.trait 承担（页面已有），本模块只产出增量解读。
-// ponytail: 行星×星座逐条释义（120 条）未做，用「行星主题 × 宫位领域」规则拼装替代；
-//           升级路径 = 语料补逐座条目后在此引擎切换数据源。
+// ponytail: 日/月/水/金/火五大个人行星已有逐座释义（signsByPlanet）；
+//           木土天海冥为世代行星（一代人共享落座）不逐座，仍用「主题 × 宫位」拼装。
 
 import { SIGNS } from './astro.mjs';
 
@@ -19,18 +19,21 @@ const aspectNature = (angle) => (angle === 0 ? 'merge' : (angle === 120 || angle
  * }}
  */
 export function readNatal(n, interp) {
-  // 行星落宫主题句（交点无落宫信息时跳过）
+  // 行星落宫：个人行星用逐座释义 + 宫位括注；其余行星用「主题 × 宫位领域」拼装
   const inHouses = Object.values(n.planets)
     .filter((p) => p.house && interp.planetThemes[p.key])
-    .map((p) => ({
-      cn: p.cn,
-      signCn: p.signCn,
-      house: p.house,
-      line: interp.planetInHouseTpl
-        .replace('{theme}', interp.planetThemes[p.key])
-        .replace('{domain}', interp.houseDomains[String(p.house)] ?? '未知领域')
-        .replace('{houseCn}', p.house),
-    }));
+    .map((p) => {
+      const theme = interp.planetThemes[p.key];
+      const domain = interp.houseDomains[String(p.house)] ?? '未知领域';
+      const signEntry = interp.signsByPlanet?.[p.key]?.[p.signKey];
+      const line = signEntry
+        ? `${signEntry}（${theme}主题落于${domain}——第${p.house}宫）`
+        : interp.planetInHouseTpl
+          .replace('{theme}', theme)
+          .replace('{domain}', domain)
+          .replace('{houseCn}', p.house);
+      return { cn: p.cn, signCn: p.signCn, house: p.house, line };
+    });
 
   // 相位判词：按容许度升序，紧的先讲
   const aspectLines = n.aspects
