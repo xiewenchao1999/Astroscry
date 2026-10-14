@@ -142,7 +142,7 @@ export function analyzeRelations(bazi, weights) {
 export function castChenggu(bazi, weights, chengguData) {
   const { Solar } = globalThis;
   if (!Solar) throw new Error('vendor lunar.js not loaded');
-  const inp = bazi.input;
+  const inp = bazi.effective ?? bazi.input; // 真太阳时校正后的实际排盘时刻
   const notes = [];
   let { year, month, day, hour } = inp;
 
@@ -161,7 +161,7 @@ export function castChenggu(bazi, weights, chengguData) {
   let monthKey = Math.abs(lm);
   if (lm < 0 && ld >= 16) {
     monthKey = monthKey === 12 ? 1 : monthKey + 1;
-    notes.push(`闰${lm < 0 ? '' : ''}${monthKey === 1 ? '12' : monthKey - 1}月下半月，按次月（${monthKey} 月）计`);
+    notes.push(`闰${monthKey === 1 ? '12' : monthKey - 1}月下半月，按次月（${monthKey} 月）计`);
   } else if (lm < 0) {
     notes.push('闰月上半月，按本月计');
   }

@@ -3,7 +3,7 @@ import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
 import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../core/bazi-analysis.mjs';
-import { revealCards, withBusy, animateMeters, announce } from '../ui/motion.mjs';
+import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -195,7 +195,7 @@ function cast() {
       animateMeters(els.result);
       announce(els.result, `排盘完成：${b.solar.date} ${b.solar.time}，日主${b.dayGan}（${b.dayGanWuXing}）`);
       lastRendered = true;
-      els.result.scrollIntoView({ behavior: 'smooth' });
+      els.result.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
     } catch (e) {
       showError(els.result, `排盘出错：${e.message}`);
     }

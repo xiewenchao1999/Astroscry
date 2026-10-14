@@ -1,7 +1,7 @@
 // birth-profile.mjs — 出生信息：一次填写，全站共用（localStorage 本地保存，不离开浏览器）
 // 组件：摘要条（已保存时）+ 内联表单（公历/农历切换、全点选式年月日与时分、性别、城市）
 // 存储约定：profile.year/month/day 恒为公历；农历输入即时转换保存，同时保留 calendar/lunarText/ly/lm/ld 供表单回显
-import { loadData } from './layout.mjs';
+import { loadData, SITE_ROOT } from './layout.mjs';
 import { lunarMonthsOf, lunarDaysOf, lunarToSolar, solarToLunar, solarDaysOf, hourToShiChen, lunarDayName } from '../core/calendar.mjs';
 
 const KEY = 'astroscry.birth.v1';
@@ -46,7 +46,7 @@ export function mountBirthCard(container, opts = {}) {
   };
 
   async function render() {
-    if (!citiesCache) citiesCache = (await loadData('../data/cities.json')).cities;
+    if (!citiesCache) citiesCache = (await loadData(SITE_ROOT + 'data/cities.json')).cities;
 
     if (profile && !expanded) {
       const p = profile;

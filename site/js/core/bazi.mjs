@@ -54,7 +54,20 @@ function countFiveElements(pillars) {
 export function castBazi(input) {
   const { Lunar, Solar, LunarUtil } = globalThis;
   if (!Lunar || !Solar || !LunarUtil) throw new Error('vendor lunar.js not loaded');
-  const solar = Solar.fromYmdHms(input.year, input.month, input.day, input.hour || 0, input.minute || 0, 0);
+  const hhmm = `${String(input.hour || 0).padStart(2, '0')}:${String(input.minute || 0).padStart(2, '0')}`;
+  const solarCorrection = input.longitude != null ? solarTimeCorrection(hhmm, input.longitude) : null;
+  // 真太阳时校正参与排盘（含跨日进位）：命理意义上的出生时刻是校正后时刻
+  let cy = input.year, cm = input.month, cd = input.day, ch = input.hour || 0, cmin = input.minute || 0;
+  if (solarCorrection && solarCorrection.minutes) {
+    const dt = new Date(Date.UTC(input.year, input.month - 1, input.day, ch, cmin) + solarCorrection.minutes * 60000);
+    cy = dt.getUTCFullYear(); cm = dt.getUTCMonth() + 1; cd = dt.getUTCDate();
+    ch = dt.getUTCHours(); cmin = dt.getUTCMinutes();
+    const shift = (cy - input.year) || (cm - input.month) || (cd - input.day);
+    if (shift > 0) solarCorrection.corrected = `次日 ${solarCorrection.corrected}`;
+    else if (shift < 0) solarCorrection.corrected = `前一日 ${solarCorrection.corrected}`;
+  }
+  const effective = { year: cy, month: cm, day: cd, hour: ch, minute: cmin };
+  const solar = Solar.fromYmdHms(cy, cm, cd, ch, cmin, 0);
   const lunar = solar.getLunar();
   const ec = lunar.getEightChar();
   const dayGan = ec.getDay()[0];
@@ -75,11 +88,9 @@ export function castBazi(input) {
     daYun.push({ index: i, ganZhi: dy.getGanZhi(), label: '大运', startAge: dy.getStartAge(), startYear: dy.getStartYear() });
   }
 
-  const hhmm = `${String(input.hour || 0).padStart(2, '0')}:${String(input.minute || 0).padStart(2, '0')}`;
-  const solarCorrection = input.longitude != null ? solarTimeCorrection(hhmm, input.longitude) : null;
-
   return {
     input,
+    effective, // 实际用于排盘的时刻（无经度校正时与 input 相同；称骨等衍生分析应读此字段）
     solar: { date: `${input.year}-${String(input.month).padStart(2, '0')}-${String(input.day).padStart(2, '0')}`, time: hhmm },
     lunar: {
       text: `${lunar.getYearInChinese()}年${lunar.getMonthInChinese()}月${lunar.getDayInChinese()}`,

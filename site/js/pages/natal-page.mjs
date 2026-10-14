@@ -4,7 +4,7 @@ import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal, SIGNS, computeSky } from '../core/astro.mjs';
 import { interAspects, strengthsAndChallenges } from '../core/astro-synastry.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
-import { revealCards, withBusy, animateMeters, announce } from '../ui/motion.mjs';
+import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -88,7 +88,7 @@ function cast() {
       animateMeters(els.result);
       announce(els.result, `星盘完成：太阳${n.planets.sun.signCn}，月亮${n.planets.moon.signCn}，上升${n.ascSign}`);
       lastRendered = true;
-      els.result.scrollIntoView({ behavior: 'smooth' });
+      els.result.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
     } catch (e) {
       showError(els.result, `绘制出错：${e.message}`);
     }

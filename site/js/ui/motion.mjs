@@ -1,6 +1,9 @@
 // motion.mjs — 动效与交互反馈工具（不引入任何依赖）
 // 设计原则：动效只用于「状态可感知」（结果出现 / 操作已受理 / 焦点可见），不制造眩晕；
-// 全部动画在 CSS 的 prefers-reduced-motion 分支下自动关闭，此处无需分支判断。
+// CSS 动画/过渡在 prefers-reduced-motion 分支下自动关闭；JS 侧动效（如 smooth 滚动）CSS 管不到，需调 reducedMotion() 分支。
+
+/** JS 侧动效的 reduced-motion 判定（smooth 滚动等 CSS 覆盖不到的 API 用） */
+export const reducedMotion = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 /** 结果卡依次浮现：为 .card 设置 --i 序号并加 .reveal（延迟由 CSS calc 计算） */
 export function revealCards(root, selector = '.card') {

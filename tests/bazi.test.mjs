@@ -67,6 +67,20 @@ test('真太阳时经度校正', () => {
   assert.deepEqual(solarTimeCorrection('12:00', undefined), { corrected: '12:00', minutes: 0 });
 });
 
+test('真太阳时参与排盘（130°E 23:30 → 次日 00:10，日柱时柱随之改变）', () => {
+  const b = castBazi({ year: 2000, month: 1, day: 1, hour: 23, minute: 30, gender: 'male', longitude: 130 });
+  const ref = castBazi({ year: 2000, month: 1, day: 2, hour: 0, minute: 10, gender: 'male' }); // 校正后基准
+  assert.equal(b.solarCorrection.minutes, 40);
+  assert.ok(b.solarCorrection.corrected.startsWith('次日'));
+  assert.deepEqual(b.effective, { year: 2000, month: 1, day: 2, hour: 0, minute: 10 });
+  assert.equal(b.pillars.day.ganZhi, ref.pillars.day.ganZhi);
+  assert.equal(b.pillars.time.ganZhi, ref.pillars.time.ganZhi);
+  // 未传经度时行为不变（晚子时归本日）
+  const raw = castBazi({ year: 2000, month: 1, day: 1, hour: 23, minute: 30, gender: 'male' });
+  assert.equal(raw.pillars.day.ganZhi, '戊午'); // 2000-01-01 日柱
+  assert.notEqual(raw.pillars.day.ganZhi, b.pillars.day.ganZhi);
+});
+
 test('女性大运顺排（2000-01-01 12:00 女阴年顺排，首运丁丑）', () => {
   const b = castBazi({ year: 2000, month: 1, day: 1, hour: 12, minute: 0, gender: 'female' });
   assert.equal(b.daYun[1].ganZhi, '丁丑');

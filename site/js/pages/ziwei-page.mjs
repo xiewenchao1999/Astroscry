@@ -2,7 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castZiwei } from '../core/ziwei.mjs';
-import { revealCards, withBusy, announce } from '../ui/motion.mjs';
+import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 
 renderLayout();
 
@@ -80,7 +80,7 @@ function cast() {
       revealCards(els.result);
       announce(els.result, `起盘完成：命主${z.soul}，身主${z.body}，${z.fiveElementsClass}`);
       lastRendered = true;
-      els.result.scrollIntoView({ behavior: 'smooth' });
+      els.result.scrollIntoView({ behavior: reducedMotion() ? 'auto' : 'smooth' });
     } catch (e) {
       showError(els.result, `起盘出错：${e.message}`);
     }
