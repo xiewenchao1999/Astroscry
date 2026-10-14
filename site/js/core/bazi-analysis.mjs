@@ -13,6 +13,7 @@ const SUPPORT_GODS = new Set(['比肩', '劫财', '正印', '偏印']);
 export function analyzeStrength(bazi, weights) {
   const score = weights.shiShenStrengthScore;
   const mult = weights.monthMultiplier ?? 2;
+  const POS_CN = { year: '年', month: '月', day: '日', time: '时' }; // 柱位内部 key → 中文显示
   const contributions = [];
   let support = 0, drain = 0;
 
@@ -25,7 +26,7 @@ export function analyzeStrength(bazi, weights) {
       const s = score[pillar.ganShiShen] ?? 0;
       const v = s * factor;
       if (v > 0) support += v; else drain += -v;
-      contributions.push({ pos, source: `${pillar.gan}（${pos}干）`, shiShen: pillar.ganShiShen, value: v });
+      contributions.push({ pos, source: `${pillar.gan}（${POS_CN[pos]}干）`, shiShen: pillar.ganShiShen, value: v });
     }
     // 地支藏干（权重折算）
     for (const h of pillar.hideGans ?? []) {
