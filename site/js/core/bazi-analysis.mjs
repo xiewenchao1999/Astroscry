@@ -91,21 +91,26 @@ export function detectGeju(bazi, interp) {
  */
 export function analyzeRelations(bazi, weights) {
   const pos = { year: '年柱', month: '月柱', day: '日柱', time: '时柱' };
+  const GAN_ORDER = '甲乙丙丁戊己庚辛壬癸';
+  const ZHI_ORDER = '子丑寅卯辰巳午未申酉戌亥';
+  // pair 键必须按干支自然序归一：字符串码点排序与地支序不一致（戌 U+620C < 辰 U+8FB0），
+  // 曾导致辰戌冲等全部失配（relations 假阴性）。语料 pair 均为自然序。
+  const ganKey = (a, b) => (GAN_ORDER.indexOf(a) <= GAN_ORDER.indexOf(b) ? a + b : b + a);
+  const zhiKey = (a, b) => (ZHI_ORDER.indexOf(a) <= ZHI_ORDER.indexOf(b) ? a + b : b + a);
   const gans = Object.entries(bazi.pillars).map(([k, p]) => ({ pos: k, label: pos[k], gan: p.gan, zhi: p.zhi }));
   const items = [];
-  const pairKey = (a, b) => [a, b].sort().join('');
 
   // 天干五合
   for (let i = 0; i < gans.length; i++) {
     for (let j = i + 1; j < gans.length; j++) {
-      const hit = weights.ganHe.find((h) => h.pair === pairKey(gans[i].gan, gans[j].gan));
+      const hit = weights.ganHe.find((h) => h.pair === ganKey(gans[i].gan, gans[j].gan));
       if (hit) items.push({ type: 'he', typeCn: '天干合', pair: `${gans[i].gan}${gans[j].gan}`, element: hit.element, cn: hit.cn, positions: [gans[i].label, gans[j].label] });
     }
   }
   // 地支六合 / 半合 / 冲 / 害 / 相刑
   for (let i = 0; i < gans.length; i++) {
     for (let j = i + 1; j < gans.length; j++) {
-      const a = gans[i].zhi, b = gans[j].zhi, key = pairKey(a, b);
+      const a = gans[i].zhi, b = gans[j].zhi, key = zhiKey(a, b);
       const liuhe = weights.zhiLiuHe.find((h) => h.pair === key);
       if (liuhe) items.push({ type: 'he', typeCn: '地支六合', pair: `${a}${b}`, element: liuhe.element, positions: [gans[i].label, gans[j].label] });
       const banhe = weights.banHe.find((h) => h.pair === key);
@@ -199,4 +204,46 @@ export function buildCaseLibrary(cases, castFn) {
     } catch { /* 单个案例失败不影响其余 */ }
   }
   return out;
+}
+
+/**
+ * 姻缘视角（规则层）：配偶宫（日支）+ 配偶星（按性别）+ 日支参与的合冲刑害提示。
+ * @param {object} bazi castBazi 输出（含 input.gender）
+ * @param {object} interp interpret-bazi.json 语料（含 spouse 节）
+ * @param {object} relations analyzeRelations 输出 { items }
+ * @returns {{ palaceLine: string, starLine: string, tips: Array<{ typeCn: string, pair: string, tip: string }> }}
+ */
+export function readMarriage(bazi, interp, relations) {
+  const S = interp.spouse;
+  if (!S) throw new Error('语料缺少 spouse 节');
+  const dayZhi = bazi.pillars.day.zhi;
+  const palaceLine = S.spousePalace[dayZhi] ?? '日支罕见，参照同五行地支参看。';
+
+  const starShiShen = bazi.input.gender === 'female' ? '正官' : '正财';
+  const starLine = S.spouseStar[bazi.input.gender === 'female' ? 'female' : 'male'];
+  let whereKey = null, wherePos = '';
+  for (const [k, p] of Object.entries(bazi.pillars)) {
+    if (k !== 'day' && p.ganShiShen === starShiShen) { whereKey = k; break; }
+  }
+  if (!whereKey) {
+    for (const [k, p] of Object.entries(bazi.pillars)) {
+      if ((p.hideGans ?? []).some((h) => h.shiShen === starShiShen)) { whereKey = 'day'; break; }
+    }
+  }
+  const whereLine = whereKey
+    ? S.starWhere[whereKey]
+    : S.starWhere.none;
+  if (whereKey === 'day') wherePos = '（藏干坐配偶宫）';
+  const starFull = `${starLine}${whereLine}${wherePos}`;
+
+  const tipOf = S.marriageTips;
+  const tips = (relations?.items ?? [])
+    .filter((it) => it.positions?.includes('日柱'))
+    .map((it) => ({ typeCn: it.typeCn, pair: Array.isArray(it.pair) ? it.pair.join('') : it.pair, tip: tipOf[it.type] ?? '' }))
+    .filter((it) => it.tip);
+  // 去重：同一 type+pair 只留一条
+  const seen = new Set();
+  const uniqTips = tips.filter((t) => { const k = t.typeCn + t.pair; if (seen.has(k)) return false; seen.add(k); return true; });
+
+  return { palaceLine, starLine: starFull, tips: uniqTips };
 }

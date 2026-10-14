@@ -2,11 +2,12 @@
 // 基准：规则来源见 docs/research/专项调研-用户指定项目.md（《四柱编程》与 yuan 规则包 + 袁天罡称骨表）
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 const require = createRequire(import.meta.url);
 Object.assign(globalThis, require('../site/vendor/lunar.js'));
 
 import { castBazi } from '../site/js/core/bazi.mjs';
-import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../site/js/core/bazi-analysis.mjs';
+import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage } from '../site/js/core/bazi-analysis.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -138,3 +139,20 @@ test('名人案例库：25 条均可算出年/月/日三柱', () => {
   const kobe = lib.find((x) => x.id === 'kobe_bryant');
   assert.equal(kobe.pillars[0], '戊午');
 });
+
+test('姻缘视角：readMarriage 配偶宫/配偶星/日支关系提示', () => {
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-bazi.json'), 'utf8'));
+  const weights = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'wuxing-weights.json'), 'utf8'));
+  // 基准盘：1968-08-08 08:00（公历）→ 戊申庚申庚戌庚辰，男命；日支戌，辰戌冲
+  const b = castBazi({ year: 1968, month: 8, day: 8, hour: 8, minute: 0, gender: 'male' });
+  const rel = analyzeRelations(b, weights);
+  const m = readMarriage(b, interp, rel);
+  assert.ok(m.palaceLine.includes('戌') || m.palaceLine.length > 10, '配偶宫画像非空');
+  assert.ok(m.starLine.includes('正财'), '男命配偶星应为正财');
+  const f = { ...b, input: { ...b.input, gender: 'female' } };
+  const mf = readMarriage(f, interp, rel);
+  assert.ok(mf.starLine.includes('正官'), '女命配偶星应为正官');
+  assert.ok(m.tips.some((t) => t.typeCn.includes('冲')), '日支戌辰冲应产出提示');
+  assert.ok(m.tips.every((t) => t.tip.length > 5));
+});
+

@@ -2,7 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
-import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary } from '../core/bazi-analysis.mjs';
+import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage } from '../core/bazi-analysis.mjs';
 import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -69,6 +69,18 @@ function strengthCard(b) {
       <table class="plain" style="margin-top:10px;"><tr><th>分项</th><th>十神</th><th>分值</th></tr>${rows}</table>
       <p class="note">${interp.strengthAdvice.intro}</p>
       <p class="note">${interp.strengthAdvice.note} ${interp.geju.note}</p>
+    </div>`;
+}
+
+/** 姻缘视角卡：配偶宫（日支）+ 配偶星（按性别）+ 日支合冲刑害提示（readMarriage 规则引擎） */
+function marriageCard(b) {
+  const m = readMarriage(b, interp, analyzeRelations(b, weights));
+  return `
+    <div class="card"><h3>姻缘视角 <span class="src-tag">规则引擎</span></h3>
+      <p><b>配偶宫（日支${b.pillars.day.zhi}）：</b>${m.palaceLine}</p>
+      <p><b>配偶星：</b>${m.starLine}</p>
+      ${m.tips.length ? `<p><b>婚姻互动提示：</b></p>${m.tips.map((t) => `<p style="color:${t.typeCn.includes('合') ? 'var(--good)' : 'var(--bad)'}">▸ ${t.typeCn}（${t.pair}）：${t.tip}</p>`).join('')}` : '<p style="color:var(--muted)">配偶宫未逢合冲刑害，婚姻互动整体平顺。</p>'}
+      <p class="note">${interp.spouse.intro}</p>
     </div>`;
 }
 
@@ -168,6 +180,7 @@ function render(b) {
       </details></div>
     ${strengthCard(b)}
     ${relationCard(b)}
+    ${marriageCard(b)}
     <div class="grid grid-2">
       <div class="card"><h3>五行分布（含藏干）</h3>${wuxingBar(b.fiveElements)}</div>
       <div class="card"><h3>大运（每步十年）</h3>
