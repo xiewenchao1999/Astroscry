@@ -1,14 +1,23 @@
 // tarot.mjs — 塔罗核心（洗牌 / 抽牌阵，纯函数，无 DOM / 无网络）
-// 牌义数据：data/tarot.json（正逆位牌义中文化自 Waite《The Pictorial Key to the Tarot》1911 公版文本）
-// ponytail: 随机源用宿主 crypto 或 mulberry32 种子（可复现测试）；不引入外部随机库
+// 牌义数据：data/tarot.json；牌阵定义：data/tarot-spreads.json（数据驱动，core 不硬编码牌阵）
+// 牌义中文化改编自 Waite《The Pictorial Key to the Tarot》1911 公版文本
 
 export const SUITS = { wands: '权杖', cups: '圣杯', swords: '宝剑', pentacles: '星币' };
+export const SUIT_ELEMENTS = { wands: '火', cups: '水', swords: '风', pentacles: '土' };
 export const RANKS = { ace: '王牌', 2: '二', 3: '三', 4: '四', 5: '五', 6: '六', 7: '七', 8: '八', 9: '九', 10: '十', page: '侍从', knight: '骑士', queen: '王后', king: '国王' };
 
-export const SPREADS = {
-  single: { key: 'single', cn: '每日一牌', positions: [{ key: 'today', cn: '今日指引' }] },
-  three: { key: 'three', cn: '时间之流', positions: [{ key: 'past', cn: '过去' }, { key: 'present', cn: '现在' }, { key: 'future', cn: '未来' }] },
-};
+/** 校验牌阵定义（页面加载 tarot-spreads.json 后对所选牌阵调用） */
+export function validateSpread(spread) {
+  if (!spread || typeof spread !== 'object') throw new Error('牌阵定义缺失');
+  const { key, cn, positions } = spread;
+  if (!key || !cn || !Array.isArray(positions) || positions.length < 1 || positions.length > 10) {
+    throw new Error(`牌阵 ${key ?? '?'} 定义不合法`);
+  }
+  for (const p of positions) {
+    if (!p.key || !p.cn || !p.duty) throw new Error(`牌阵 ${key} 的位置缺 key/cn/duty`);
+  }
+  return true;
+}
 
 /** mulberry32 种子随机（确定性，用于测试与可复现抽牌） */
 export function mulberry32(seed) {
@@ -31,19 +40,20 @@ export function shuffle(deck, rng) {
 }
 
 /**
- * 抽牌阵。同 seed 同结果（确定性）；无 seed 用 crypto 随机。
- * @returns {{spread: string, seed: number, cards: Array<{card: object, position: string, positionCn: string, reversed: boolean}>}}
+ * 抽牌阵。spread 为数据驱动的牌阵对象（见 data/tarot-spreads.json）。
+ * 同 seed 同结果（确定性）；无 seed 用 crypto 随机。
  */
-export function drawSpread(deck, spreadKey, seed) {
-  const spread = SPREADS[spreadKey];
-  if (!spread) throw new Error(`未知牌阵 ${spreadKey}`);
+export function drawSpread(deck, spread, seed) {
+  validateSpread(spread);
   const s = seed ?? (globalThis.crypto ? [...globalThis.crypto.getRandomValues(new Uint32Array(1))][0] : Math.floor(Math.random() * 2 ** 31));
   const rng = mulberry32(s);
   const shuffled = shuffle(deck, rng);
+  if (shuffled.length < spread.positions.length) throw new Error('牌库不足');
   const cards = spread.positions.map((pos, i) => ({
     card: shuffled[i],
     position: pos.key,
     positionCn: pos.cn,
+    positionDuty: pos.duty,
     reversed: rng() < 0.5,
   }));
   return { spread: spread.key, spreadCn: spread.cn, seed: s, cards };

@@ -1,0 +1,80 @@
+{
+  "meta": {
+    "source": "牌阵定义整理自 daman-ovo-0404/tarot-skill 的 spreads 结构 + 传统牌阵通名；位置释义由本项目编写",
+    "note": "positions 数组顺序即抽牌顺序；duty 为该位置在解读中的职责"
+  },
+  "spreads": [
+    {
+      "key": "single",
+      "cn": "每日一牌",
+      "hint": "今日指引 / 简单问题",
+      "positions": [
+        { "key": "focus", "cn": "今日指引", "duty": "当下最需要看见的能量与提示" }
+      ]
+    },
+    {
+      "key": "three",
+      "cn": "时间之流",
+      "hint": "通用 / 关系 / 决策；也可改读 你·对方·关系",
+      "positions": [
+        { "key": "past", "cn": "过去", "duty": "问题的来处：已发生的成因与背景" },
+        { "key": "present", "cn": "现在", "duty": "当下的状态与核心张力" },
+        { "key": "future", "cn": "未来", "duty": "趋势走向与可能的结果" }
+      ]
+    },
+    {
+      "key": "diamond",
+      "cn": "决策之钻",
+      "hint": "卡住的决策",
+      "positions": [
+        { "key": "core", "cn": "核心", "duty": "问题的本质是什么" },
+        { "key": "root", "cn": "根源", "duty": "造成现状的深层原因" },
+        { "key": "block", "cn": "阻力", "duty": "阻碍前进的因素" },
+        { "key": "potential", "cn": "潜力", "duty": "尚未动用的资源与助力" },
+        { "key": "advice", "cn": "建议", "duty": "最合适的下一步方向" }
+      ]
+    },
+    {
+      "key": "moon",
+      "cn": "月相周期",
+      "hint": "一个月内的周期问题",
+      "positions": [
+        { "key": "newMoon", "cn": "新月 · 意图", "duty": "这个周期要种下的意图" },
+        { "key": "waxing", "cn": "上弦 · 行动", "duty": "推进意图该做的行动" },
+        { "key": "fullMoon", "cn": "满月 · 觉察", "duty": "周期中段会看清的真相" },
+        { "key": "waning", "cn": "下弦 · 释放", "duty": "需要放手的东西" }
+      ]
+    },
+    {
+      "key": "horseshoe",
+      "cn": "马蹄时间线",
+      "hint": "时间线 / 局势梳理",
+      "positions": [
+        { "key": "distantPast", "cn": "远期过去", "duty": "埋下伏笔的旧事" },
+        { "key": "recentPast", "cn": "近期过去", "duty": "刚刚过去的影响" },
+        { "key": "present", "cn": "当前", "duty": "此刻的处境" },
+        { "key": "nearFuture", "cn": "近期未来", "duty": "即将到来的一段" },
+        { "key": "external", "cn": "外部影响", "duty": "环境与他人带来的作用" },
+        { "key": "advice", "cn": "建议", "duty": "对策与姿态" },
+        { "key": "outcome", "cn": "结果", "duty": "按当前路径的走向" }
+      ]
+    },
+    {
+      "key": "celtic",
+      "cn": "凯尔特十字",
+      "hint": "复杂局面 / 深度占卜",
+      "positions": [
+        { "key": "heart", "cn": "核心", "duty": "问题的中心（1）" },
+        { "key": "cross", "cn": "交叉", "duty": "与核心相交的直接挑战（2）" },
+        { "key": "crown", "cn": "意识目标", "duty": "意识层面的目标与理想（3）" },
+        { "key": "foundation", "cn": "根基过去", "duty": "无意识的根基与远因（4）" },
+        { "key": "recentPast", "cn": "近期过去", "duty": "正在退场的影响（5）" },
+        { "key": "nearFuture", "cn": "近期未来", "duty": "正在进场的影响（6）" },
+        { "key": "self", "cn": "自我", "duty": "你自己的姿态与心态（7）" },
+        { "key": "environment", "cn": "环境", "duty": "周围人与环境的作用（8）" },
+        { "key": "hopes", "cn": "希望与恐惧", "duty": "内心的期待与不安（9）" },
+        { "key": "outcome", "cn": "结果", "duty": "全部能量的汇合走向（10）" }
+      ]
+    }
+  ]
+}
