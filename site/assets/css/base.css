@@ -288,6 +288,23 @@ table.plain th { color: var(--muted); font-weight: 500; }
 .tarot-card:focus-visible .inner { box-shadow: 0 0 0 2px var(--accent), 0 0 22px -6px rgba(240, 200, 109, 0.6); }
 .tarot-card:hover .inner { translate: 0 -6px; }
 
+/* 奇门遁甲：九宫格（洛书布局 4-9-2/3-5-7/8-1-6） */
+.qimen-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width: 640px; margin: 0 auto; }
+.qimen-cell {
+  position: relative; min-height: 132px; padding: 10px; border: 1px solid var(--card-border);
+  border-radius: var(--radius); background: var(--card); text-align: center; cursor: pointer;
+  transition: border-color 0.15s, transform 0.15s;
+}
+.qimen-cell:hover { border-color: var(--accent); transform: translateY(-2px); }
+.qimen-cell.center { cursor: default; background: rgba(255, 255, 255, 0.02); }
+.qimen-cell .q-gong { position: absolute; left: 10px; top: 8px; color: var(--muted); font-size: 11px; }
+.qimen-cell .q-god { color: var(--accent2); font-size: 13px; margin-top: 8px; }
+.qimen-cell .q-star { font-weight: 700; font-size: 16px; color: var(--text); margin: 4px 0; }
+.qimen-cell .q-tg { font-size: 19px; letter-spacing: 6px; color: var(--accent); font-weight: 700; }
+.qimen-cell .q-door { font-size: 14px; color: var(--text); margin: 4px 0; }
+.qimen-cell .q-dg { color: var(--muted); font-size: 12px; }
+.qimen-cell .q-note { color: var(--muted); font-size: 11px; margin-top: 6px; }
+
 /* 表格行悬停提示（不改变布局） */
 table.plain tbody tr:hover, table.plain tr:hover { background: rgba(255, 255, 255, 0.03); }
 table.plain tr { transition: background 0.15s; }
