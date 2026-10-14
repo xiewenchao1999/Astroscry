@@ -16,6 +16,7 @@
 Astroscry/
 ├── CLAUDE.md              # 本规范；改实践前先改这里
 ├── package.json           # 仅 npm scripts（test / serve），无依赖、无 type:module（勿加，会破坏 vendor UMD 的 Node 加载）
+├── .github/workflows/     # deploy.yml：push main 自动部署 site/ 到 GitHub Pages（无构建，仅打包上传）
 ├── docs/
 │   ├── research/          # 开源调研、资料清单（只增不改历史结论）
 │   └── design/            # 产品设计、ADR
