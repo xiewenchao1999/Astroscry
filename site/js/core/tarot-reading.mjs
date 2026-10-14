@@ -4,7 +4,7 @@
 
 /**
  * 分析一次抽牌的结构特征。
- * @param {Array<{card:object, positionCn:string, positionDuty:string, reversed:boolean}>} cards drawSpread().cards
+ * @param {Array<{card:object, positionCn:string, positionDuty:string, reversed:boolean}>} cards reading.cards（页面自抽后组装）
  * @returns {object} 结构化事实（无文案），文案由页面按语料键渲染
  */
 export function analyzeReading(cards) {

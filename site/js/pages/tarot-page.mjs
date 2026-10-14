@@ -1,6 +1,6 @@
 // tarot-page.mjs — 塔罗页胶水：洗牌动画 + 用户自抽牌 + 翻牌 + 结构化解读
 import { renderLayout, loadData, showError, esc, SITE_ROOT } from '../ui/layout.mjs';
-import { prepareSpread } from '../core/tarot.mjs';
+import { cryptoRng, shuffle } from '../core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../core/tarot-reading.mjs';
 import { stagger, revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 
@@ -8,8 +8,8 @@ renderLayout();
 
 const els = { spread: document.getElementById('spread'), question: document.getElementById('question'), draw: document.getElementById('draw'), stage: document.getElementById('stage') };
 let deck, spreads, interp, reading = null;
-let pending = null; // prepareSpread 结果：确定性牌序 + 逆位标记，等待用户自抽
-let picks = [];     // 用户抽中的牌在 pending.deck 中的下标（按落位顺序）
+let pending = null; // { spread, deck }：crypto 真随机洗出的牌序，等待用户自抽
+let picks = [];     // 用户抽中的牌：{ deckIdx, reversed }——正逆在抽取落位那一刻掷币确定
 
 try {
   [deck, spreads, interp] = await Promise.all([
@@ -27,7 +27,7 @@ els.draw.addEventListener('click', () => {
   withBusy(els.draw, '洗牌中…', () => {
     try {
       const spread = spreadByKey.get(els.spread.value);
-      pending = prepareSpread(deck, spread); // 牌序与正逆由 seed 确定性给出；抽哪几张由用户决定
+      pending = { spread, deck: shuffle(deck, cryptoRng) }; // 真随机洗牌：每次独立取熵，不可复现
       picks = [];
       renderShuffle();
     } catch (e) { showError(els.stage, `抽牌出错：${e.message}`); }
@@ -45,8 +45,8 @@ function renderShuffle() {
 
 /** 阶段二：牌位待抽 + 扇形牌堆，用户自抽 N 张 */
 function renderFan() {
-  const total = pending.spread ? spreadByKey.get(pending.spread).positions.length : 0;
-  const spread = spreadByKey.get(pending.spread);
+  const spread = pending.spread;
+  const total = spread.positions.length;
   els.stage.innerHTML = `
     <p class="hint" style="text-align:center;">${interp.fanHint.replace('{total}', total)}</p>
     <div class="tarot-slots">${spread.positions.map((p) => `
@@ -66,7 +66,7 @@ function renderFan() {
     el.remove(); // 从牌堆移除（同时防重复抽取），留下自然缺口
     const slot = els.stage.querySelector('.tarot-slot .box:not(.filled)');
     if (slot) { slot.classList.add('filled'); slot.innerHTML = '<span>✦</span>'; }
-    picks.push(i);
+    picks.push({ deckIdx: i, reversed: cryptoRng() < 0.5 }); // 落位瞬间定正逆
     els.stage.querySelector('[data-pick-count]').textContent = interp.picked.replace('{picked}', picks.length).replace('{total}', total);
     if (picks.length === total) setTimeout(finishPick, 350); // 稍作停顿让最后一张落位可见
   };
@@ -80,17 +80,16 @@ function renderFan() {
 
 /** 阶段三：全部抽齐 → 组装 reading，进入翻牌流程 */
 function finishPick() {
-  const spread = spreadByKey.get(pending.spread);
+  const spread = pending.spread;
   reading = {
-    spread: pending.spread,
-    spreadCn: pending.spreadCn,
-    seed: pending.seed,
-    cards: picks.map((deckIdx, i) => ({
-      card: pending.deck[deckIdx],
+    spread: spread.key,
+    spreadCn: spread.cn,
+    cards: picks.map((p, i) => ({
+      card: pending.deck[p.deckIdx],
       position: spread.positions[i].key,
       positionCn: spread.positions[i].cn,
       positionDuty: spread.positions[i].duty,
-      reversed: pending.reversals[deckIdx], // 正逆由洗牌序确定性给出，翻牌时揭晓
+      reversed: p.reversed,
     })),
   };
   render();
@@ -100,7 +99,7 @@ function render() {
   const q = els.question.value.trim();
   els.stage.innerHTML = `
     ${q ? `<p style="text-align:center;color:var(--muted)">你的问题：${esc(q)}</p>` : ''}
-    <p class="hint" style="text-align:center;">${interp.seedNote.replace('{seed}', reading.seed)} · 牌阵：${reading.spreadCn}</p>
+    <p class="hint" style="text-align:center;">${interp.seedNote} · 牌阵：${reading.spreadCn}</p>
     <div class="tarot-stage">${reading.cards.map((c, i) => `
       <div>
         <div class="tarot-pos" title="${c.positionDuty}">${c.positionCn}</div>
@@ -168,7 +167,7 @@ function renderStructure() {
       <p><b>${interp.synthesis.exitTitle}</b></p>
       <p>▸ ${interp.synthesis.exit[exitKey]}</p>
       <p>${interp.synthesis.echo}</p>
-      <p class="note">${interp.seedNote.replace('{seed}', reading.seed)}</p>
+      <p class="note">${interp.seedNote}</p>
       <p class="note">${interp.disclaimer}</p>
     </div>`;
   revealCards(box);

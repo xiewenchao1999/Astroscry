@@ -1,9 +1,20 @@
-// 塔罗核心回归测试 — 牌组完整性（78 张）+ 洗牌确定性 + 牌阵结构（数据驱动，六牌阵）+ 自抽牌准备
+// 塔罗核心回归测试 — 牌组完整性（78 张）+ 洗牌确定性 + 牌阵结构（数据驱动，六牌阵）+ 真随机源
 import { readFileSync } from 'fs';
-import { drawSpread, mulberry32, prepareSpread, shuffle, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
+import { cryptoRng, shuffle, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../site/js/core/tarot-reading.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
+
+// 测试夹具：确定性伪随机（mulberry32 副本）。core 已改 crypto 真随机，种子机制仅存在于测试夹具
+const mulberry32 = (seed) => {
+  let a = seed >>> 0;
+  return () => {
+    a |= 0; a = (a + 0x6D2B79F5) | 0;
+    let t = Math.imul(a ^ (a >>> 15), 1 | a);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+};
 
 const deck = JSON.parse(readFileSync(new URL('../site/data/tarot.json', import.meta.url), 'utf8')).cards;
 const spreads = JSON.parse(readFileSync(new URL('../site/data/tarot-spreads.json', import.meta.url), 'utf8')).spreads;
@@ -19,72 +30,35 @@ test('牌组完整性：78 张、22 大阿卡纳、4 花色各 14 张、字段�
   }
 });
 
-test('牌阵定义：六牌阵齐备且全部通过校验', () => {
+test('牌阵定义：六牌阵齐备、全部通过校验、位置语义齐备', () => {
   assert.deepEqual(spreads.map((s) => s.key), ['single', 'three', 'diamond', 'moon', 'horseshoe', 'celtic']);
-  for (const s of spreads) assert.equal(validateSpread(s), true);
+  for (const s of spreads) {
+    assert.equal(validateSpread(s), true);
+    assert.ok(s.positions.every((p) => p.duty), `${s.key} 有位置缺 duty`);
+  }
   assert.equal(spreadByKey.get('celtic').positions.length, 10);
   assert.equal(spreadByKey.get('horseshoe').positions.length, 7);
+  assert.deepEqual(spreadByKey.get('three').positions.map((p) => p.cn), ['过去', '现在', '未来']);
+  assert.equal(spreadByKey.get('celtic').positions[0].cn, '核心');
   assert.throws(() => validateSpread({ key: 'x', cn: 'x', positions: [] }));
   assert.throws(() => validateSpread({ key: 'x', cn: 'x', positions: [{ key: 'a', cn: 'a' }] })); // 缺 duty
 });
 
-test('洗牌确定性：同种子同结果、异种子异结果', () => {
+test('洗牌确定性：同 rng 序列同结果、异序列异结果、不丢牌', () => {
   const a1 = shuffle(deck, mulberry32(42));
   const a2 = shuffle(deck, mulberry32(42));
   const b = shuffle(deck, mulberry32(43));
   assert.deepEqual(a1.map((c) => c.id), a2.map((c) => c.id));
   assert.notDeepEqual(a1.map((c) => c.id), b.map((c) => c.id));
-  assert.deepEqual(a1.map((c) => c.id).sort(), deck.map((c) => c.id).sort());
+  assert.deepEqual(a1.map((c) => c.id).sort(), deck.map((c) => c.id).sort(), '洗牌不得丢牌');
 });
 
-test('牌阵抽牌：三张/凯尔特十字，位置语义与职责齐备', () => {
-  const one = drawSpread(deck, spreadByKey.get('single'), 7);
-  assert.equal(one.cards.length, 1);
-  assert.ok(one.cards[0].positionDuty);
-  const three = drawSpread(deck, spreadByKey.get('three'), 7);
-  assert.deepEqual(three.cards.map((c) => c.positionCn), ['过去', '现在', '未来']);
-  const celtic = drawSpread(deck, spreadByKey.get('celtic'), 7);
-  assert.equal(celtic.cards.length, 10);
-  assert.equal(celtic.cards[0].positionCn, '核心');
-  assert.ok(celtic.cards.every((c) => typeof c.reversed === 'boolean' && c.positionDuty));
-  // 未知牌阵对象应被拒绝
-  assert.throws(() => drawSpread(deck, { key: 'bad', cn: '坏', positions: [] }));
-});
-
-test('抽牌无重复、逆位概率合理（多种子统计）', () => {
-  let revCount = 0, trials = 0;
-  const seen = new Set();
-  for (let s = 1; s <= 50; s++) {
-    const r = drawSpread(deck, spreadByKey.get('three'), s * 1000);
-    for (const c of r.cards) {
-      assert.ok(!seen.has(c.card.id + ':' + s), '同一次抽牌出现重复牌');
-      seen.add(c.card.id + ':' + s);
-      trials++;
-      if (c.reversed) revCount++;
-    }
-  }
-  const ratio = revCount / trials;
-  assert.ok(ratio > 0.35 && ratio < 0.65, `逆位率 ${ratio.toFixed(2)} 应≈0.5`);
-});
-
-test('自抽牌准备：确定性牌序 + 逆位标记与 drawSpread 同源', () => {
-  // 同 seed 同结果，异 seed 异结果
-  const p1 = prepareSpread(deck, spreadByKey.get('three'), 42);
-  const p2 = prepareSpread(deck, spreadByKey.get('three'), 42);
-  const p3 = prepareSpread(deck, spreadByKey.get('three'), 43);
-  assert.deepEqual(p1.deck.map((c) => c.id), p2.deck.map((c) => c.id));
-  assert.deepEqual(p1.reversals, p2.reversals);
-  assert.notDeepEqual(p1.deck.map((c) => c.id), p3.deck.map((c) => c.id));
-  // 结构：整副 78 张、逆位标记一一对应且为布尔
-  assert.equal(p1.deck.length, 78);
-  assert.equal(p1.reversals.length, 78);
-  assert.ok(p1.reversals.every((r) => typeof r === 'boolean'));
-  assert.deepEqual(p1.deck.map((c) => c.id).sort(), deck.map((c) => c.id).sort(), '洗牌不得丢牌');
-  // 同源约定：drawSpread 同 seed 结果 = prepareSpread 牌序前 N 张 + 对应逆位
-  const d = drawSpread(deck, spreadByKey.get('three'), 42);
-  assert.deepEqual(d.cards.map((c) => c.card.id), p1.deck.slice(0, 3).map((c) => c.id));
-  assert.deepEqual(d.cards.map((c) => c.reversed), p1.reversals.slice(0, 3));
-  assert.equal(d.seed, p1.seed);
+test('cryptoRng：取值范围、分布合理、连续取值不重复', () => {
+  const vals = Array.from({ length: 2000 }, cryptoRng);
+  assert.ok(vals.every((v) => v >= 0 && v < 1), '取值须落在 [0,1)');
+  const mean = vals.reduce((s, v) => s + v, 0) / vals.length;
+  assert.ok(mean > 0.45 && mean < 0.55, `均值 ${mean.toFixed(3)} 应≈0.5`);
+  assert.ok(new Set(vals).size > 1900, '连续取值不应大量重复（真随机熵源）');
 });
 
 test('解读分析：结构特征与分档正确', () => {
