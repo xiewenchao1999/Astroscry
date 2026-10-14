@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>关于 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>关于星卜</h1>
+  <p class="page-sub">Astroscry · 一站式传统术数网页应用</p>
+
+  <div class="card"><h3>它是什么</h3>
+    <p>星卜将四类传统术数（西方占星、塔罗、八字四柱、紫微斗数）整合为一个纯静态网页应用：<b>所有排盘与解读均由确定性算法在浏览器本地完成，不使用 AI 大模型，不联网上传任何数据</b>。</p>
+    <p class="hint">生日信息只进入本地计算引擎，页面没有后端、没有账号、没有统计脚本。</p>
+  </div>
+
+  <div class="card"><h3>引擎与数据来源</h3>
+    <table class="plain">
+      <tr><th>模块</th><th>来源</th><th>许可</th></tr>
+      <tr><td>八字 / 农历 / 干支</td><td><a href="https://github.com/6tail/lunar-javascript" target="_blank" rel="noopener">lunar-javascript</a> v1.7.7</td><td>MIT</td></tr>
+      <tr><td>紫微斗数排盘</td><td><a href="https://github.com/SylarLong/iztro" target="_blank" rel="noopener">iztro</a> v2.6.2</td><td>MIT</td></tr>
+      <tr><td>天文历表（行星黄经/月相）</td><td><a href="https://github.com/cosinekitty/astronomy" target="_blank" rel="noopener">Astronomy Engine</a> v2.1.19</td><td>MIT</td></tr>
+      <tr><td>塔罗牌义（中文化）</td><td>改编自 A. E. Waite《The Pictorial Key to the Tarot》(1911)</td><td>公有领域</td></tr>
+      <tr><td>紫微古籍语料参考</td><td>《紫微斗数全书》（明·罗洪先编，公版），结构参考 <a href="https://github.com/Renhuai123/ziwei-doushu" target="_blank" rel="noopener">ziwei-doushu</a></td><td>公有领域 / MIT</td></tr>
+      <tr><td>占星/命理释义文案</td><td>本项目编写</td><td>—</td></tr>
+    </table>
+  </div>
+
+  <div class="card"><h3>算法说明</h3>
+    <ul style="line-height:2;">
+      <li>八字：节气定月柱，晚子时日柱归本日；大运按男阳女阴顺逆；真太阳时仅做经度校正（忽略均时差）。</li>
+      <li>紫微：iztro 引擎安星与四化，十二宫整盘展示。</li>
+      <li>西占：回归黄道（分点今日），整宫制，相位容许度合8/冲8/刑6/拱6/六合4（发光体+2°）。</li>
+      <li>每日运势：守护星当日行运相位 + 月亮元素相合 + 逆行状态的确定性加权评分，因子全部列出。</li>
+      <li>塔罗：洗牌使用浏览器加密随机源，逆位概率 50%。</li>
+    </ul>
+  </div>
+
+  <div class="card"><h3>免责声明</h3>
+    <p>本站是传统术数文化的算法化呈现，所有输出仅供文化了解与娱乐参考，不构成医疗、法律、财务、婚恋等任何现实决策依据。请理性看待。</p>
+  </div>
+</div>
+<script type="module">
+  // 仅注入页脚导航（about 页无需计算引擎）
+  import { renderLayout } from '../js/ui/layout.mjs';
+  renderLayout();
+</script>
+</body>
+</html>

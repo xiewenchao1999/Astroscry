@@ -1,0 +1,273 @@
+// astro.mjs — 西方占星核心计算（纯函数，无 DOM / 无网络）
+// 依赖：vendor/astronomy.min.js 暴露的 globalThis.Astronomy（Astronomy Engine, MIT）
+// 黄经一律为「回归黄道·分点今日」(true ecliptic of date)，即占星标准坐标系
+// ponytail: 北交点用平交点解析式（非真交点，误差 ≤1.5°）；凯龙无解析式不入 v1；宫位制 v1 用整宫制（Placidus 升级路径：实现逐宫经度截断）
+
+const D2R = Math.PI / 180;
+const R2D = 180 / Math.PI;
+
+export const SIGNS = [
+  { key: 'aries', cn: '白羊', en: 'Aries', element: '火', modality: '本位', ruler: '火星', dateRange: '3.21-4.19' },
+  { key: 'taurus', cn: '金牛', en: 'Taurus', element: '土', modality: '固定', ruler: '金星', dateRange: '4.20-5.20' },
+  { key: 'gemini', cn: '双子', en: 'Gemini', element: '风', modality: '变动', ruler: '水星', dateRange: '5.21-6.21' },
+  { key: 'cancer', cn: '巨蟹', en: 'Cancer', element: '水', modality: '本位', ruler: '月亮', dateRange: '6.22-7.22' },
+  { key: 'leo', cn: '狮子', en: 'Leo', element: '火', modality: '固定', ruler: '太阳', dateRange: '7.23-8.22' },
+  { key: 'virgo', cn: '处女', en: 'Virgo', element: '土', modality: '变动', ruler: '水星', dateRange: '8.23-9.22' },
+  { key: 'libra', cn: '天秤', en: 'Libra', element: '风', modality: '本位', ruler: '金星', dateRange: '9.23-10.23' },
+  { key: 'scorpio', cn: '天蝎', en: 'Scorpio', element: '水', modality: '固定', ruler: '冥王星', dateRange: '10.24-11.22' },
+  { key: 'sagittarius', cn: '射手', en: 'Sagittarius', element: '火', modality: '变动', ruler: '木星', dateRange: '11.23-12.21' },
+  { key: 'capricorn', cn: '摩羯', en: 'Capricorn', element: '土', modality: '本位', ruler: '土星', dateRange: '12.22-1.19' },
+  { key: 'aquarius', cn: '水瓶', en: 'Aquarius', element: '风', modality: '固定', ruler: '土星', dateRange: '1.20-2.18' },
+  { key: 'pisces', cn: '双鱼', en: 'Pisces', element: '水', modality: '变动', ruler: '木星', dateRange: '2.19-3.20' },
+];
+
+export const PLANETS = [
+  { key: 'sun', cn: '太阳', body: 'Sun' },
+  { key: 'moon', cn: '月亮', body: 'Moon' },
+  { key: 'mercury', cn: '水星', body: 'Mercury' },
+  { key: 'venus', cn: '金星', body: 'Venus' },
+  { key: 'mars', cn: '火星', body: 'Mars' },
+  { key: 'jupiter', cn: '木星', body: 'Jupiter' },
+  { key: 'saturn', cn: '土星', body: 'Saturn' },
+  { key: 'uranus', cn: '天王星', body: 'Uranus' },
+  { key: 'neptune', cn: '海王星', body: 'Neptune' },
+  { key: 'pluto', cn: '冥王星', body: 'Pluto' },
+  { key: 'northnode', cn: '北交点', body: null },
+];
+
+// 相位定义：角度 → [中文名, 容许度]；发光体（日月）额外放宽 2°
+export const ASPECTS = [
+  { angle: 0, cn: '合相', key: 'conj', orb: 8, color: '#7dd3fc' },
+  { angle: 60, cn: '六合', key: 'sextile', orb: 4, color: '#86efac' },
+  { angle: 90, cn: '刑相', key: 'square', orb: 6, color: '#fca5a5' },
+  { angle: 120, cn: '拱相', key: 'trine', orb: 6, color: '#86efac' },
+  { angle: 180, cn: '冲相', key: 'opp', orb: 8, color: '#fca5a5' },
+];
+
+export function signOf(lon) {
+  const i = Math.floor(((lon % 360) + 360) % 360 / 30) % 12;
+  const s = SIGNS[i];
+  return { signIndex: i, signKey: s.key, signCn: s.cn, signElement: s.element, degInSign: ((lon % 30) + 30) % 30 };
+}
+
+// 平黄赤交角（Meeus 22.2 简化式，arcsec 级精度足够占星）
+export function meanObliquity(dateUTC) {
+  const T = (dateUTC.getTime() - Date.UTC(2000, 0, 1, 12)) / 86400000 / 36525;
+  const s = 23.439291111 - 0.0130041667 * T - 1.6389e-7 * T * T;
+  return s; // degrees
+}
+
+/** 平北交点黄经（解析式）。ponytail: 平交点非真交点，误差 ≤1.5°；升级路径：数值法求黄白交点 */
+export function meanNodeLon(dateUTC) {
+  const d = (dateUTC.getTime() - Date.UTC(2000, 0, 1, 12)) / 86400000; // days since J2000
+  return ((125.04452 - 0.05295376 * d) % 360 + 360) % 360;
+}
+
+function eclipticLonOfBody(Astronomy, body, dateUTC) {
+  const time = Astronomy.MakeTime(dateUTC);
+  const vec = Astronomy.GeoVector(Astronomy.Body[body], time, true); // J2000 赤道坐标（含光行差）
+  const rot = Astronomy.Rotation_EQJ_ECT(time); // → 分点今日黄道
+  const ecl = Astronomy.RotateVector(rot, vec);
+  const sph = Astronomy.SphereFromVector(ecl);
+  return ((sph.lon % 360) + 360) % 360;
+}
+
+/**
+ * 某时刻全部天体黄经 + 逆行 + 月相。
+ */
+export function computeSky(dateUTC) {
+  const A = globalThis.Astronomy;
+  if (!A) throw new Error('vendor astronomy.min.js not loaded');
+  const planets = {};
+  for (const p of PLANETS) {
+    const lon = p.body ? eclipticLonOfBody(A, p.body, dateUTC) : meanNodeLon(dateUTC);
+    // 逆行判定：24 小时后黄经变小（北交点永不逆行，月/日亦不可能出现）
+    let retrograde = false;
+    if (p.body && p.body !== 'Sun' && p.body !== 'Moon') {
+      const lonNext = eclipticLonOfBody(A, p.body, new Date(dateUTC.getTime() + 86400000));
+      retrograde = ((lonNext - lon + 540) % 360 - 180) < 0;
+    }
+    planets[p.key] = { key: p.key, cn: p.cn, lon, retrograde, ...signOf(lon) };
+  }
+  const phaseAngle = A.MoonPhase(A.MakeTime(dateUTC));
+  const phaseNames = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
+  const phaseIdx = Math.floor((phaseAngle + 22.5) / 45) % 8;
+  const illumination = A.Illumination(A.Body.Moon, A.MakeTime(dateUTC)).phase_fraction;
+  return {
+    dateUTC: dateUTC.toISOString(),
+    planets,
+    moonPhase: { angle: phaseAngle, name: phaseNames[phaseIdx], illumination },
+  };
+}
+
+/**
+ * 上升点 / 中天（回归黄道）。
+ * @param {number} lstDeg 当地恒星时（度）
+ * @param {number} lat 地理纬度（北正）
+ * @param {number} epsDeg 黄赤交角
+ */
+export function ascendantMc(lstDeg, lat, epsDeg) {
+  const ramc = lstDeg * D2R;
+  const eps = epsDeg * D2R;
+  const phi = lat * D2R;
+  const mc = Math.atan2(Math.sin(ramc), Math.cos(ramc) * Math.cos(eps)) * R2D;
+  // 上升点：atan2(cos RAMC, -(sin RAMC·cosε + tanφ·sinε))——几何推导验证：ε→0,φ→0,RAMC=0 时上升=90°（0°巨蟹）
+  const asc = Math.atan2(Math.cos(ramc), -(Math.sin(ramc) * Math.cos(eps) + Math.tan(phi) * Math.sin(eps))) * R2D;
+  const norm = (x) => ((x % 360) + 360) % 360;
+  return { asc: norm(asc), mc: norm(mc) };
+}
+
+function greenwichSiderealTimeDeg(A, dateUTC) {
+  const gast = A.SiderealTime(A.MakeTime(dateUTC)); // hours
+  return ((gast * 15) % 360 + 360) % 360;
+}
+
+/**
+ * 本命盘：整宫制。
+ * @param {object} input {year,month,day,hour,minute, lat, lon(东正), tzOffsetHours(含小数, 标准时)}
+ */
+export function castNatal(input) {
+  const A = globalThis.Astronomy;
+  if (!A) throw new Error('vendor astronomy.min.js not loaded');
+  const utc = new Date(Date.UTC(input.year, input.month - 1, input.day, input.hour || 0, input.minute || 0) - (input.tzOffsetHours || 0) * 3600000);
+  const sky = computeSky(utc);
+  // ponytail: 恒星时未做 Ehrenfeucht/极移微修正； astro 精度需求内足够
+  const lst = (greenwichSiderealTimeDeg(A, utc) + input.lon + 360) % 360;
+  const eps = meanObliquity(utc);
+  const { asc, mc } = ascendantMc(lst, input.lat, eps);
+  const ascInfo = signOf(asc);
+  // 整宫制：第 k 宫 = 上升星座起第 k 个星座
+  const houses = [];
+  for (let k = 0; k < 12; k++) {
+    const signIdx = (ascInfo.signIndex + k) % 12;
+    houses.push({ house: k + 1, sign: SIGNS[signIdx].cn, signKey: SIGNS[signIdx].key, lon: signIdx * 30 });
+  }
+  // 行星落宫：按行星星座位于哪个整宫
+  const planets = {};
+  for (const [key, pl] of Object.entries(sky.planets)) {
+    const houseIdx = ((pl.signIndex - ascInfo.signIndex) % 12 + 12) % 12;
+    planets[key] = { ...pl, house: houseIdx + 1 };
+  }
+  return {
+    input,
+    utc: utc.toISOString(),
+    lst,
+    planets,
+    asc, mc,
+    ascSign: ascInfo.signCn, mcSign: signOf(mc).signCn,
+    ascSignKey: ascInfo.signKey,
+    houses,
+    aspects: calcAspects(planets),
+    elements: countElements(planets),
+  };
+}
+
+export function countElements(planets) {
+  const count = { 火: 0, 土: 0, 风: 0, 水: 0 };
+  const W = { sun: 3, moon: 3, mercury: 2, venus: 2, mars: 2, jupiter: 1, saturn: 1, uranus: 0.5, neptune: 0.5, pluto: 0.5, northnode: 0 };
+  for (const [k, pl] of Object.entries(planets)) {
+    const s = SIGNS[pl.signIndex];
+    if (count[s.element] != null) count[s.element] += W[k] ?? 1;
+  }
+  return count;
+}
+
+function angDiff(a, b) {
+  const d = Math.abs(a - b) % 360;
+  return d > 180 ? 360 - d : d;
+}
+
+/** 相位计算：输入含 lon 的行星对象表 */
+export function calcAspects(planets) {
+  const keys = Object.keys(planets);
+  const out = [];
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = i + 1; j < keys.length; j++) {
+      const a = planets[keys[i]], b = planets[keys[j]];
+      if (a.key === 'northnode' || b.key === 'northnode') continue; // 交点不参与相位（传统处理之一）ponytail: 后续可加交点相位开关
+      const diff = angDiff(a.lon, b.lon);
+      for (const asp of ASPECTS) {
+        const orbMax = asp.orb + ((a.key === 'sun' || a.key === 'moon' || b.key === 'sun' || b.key === 'moon') ? 2 : 0);
+        const orb = Math.abs(diff - asp.angle);
+        if (orb <= orbMax) {
+          out.push({ a: a.key, aCn: a.cn, b: b.key, bCn: b.cn, aspect: asp.key, aspectCn: asp.cn, angle: asp.angle, orb: +orb.toFixed(2), color: asp.color });
+          break; // 每对行星只取最接近的一种相位
+        }
+      }
+    }
+  }
+  return out;
+}
+
+/** 星座日期粗推（用于仅知道生日时反查太阳星座） */
+export function sunSignByDate(month, day) {
+  // 边界取 c 期通表：每月 21 日前后切换，摩羯跨年
+  const bounds = [20, 19, 21, 20, 21, 21, 23, 23, 23, 23, 22, 22]; // 每月切换日（进入下一个星座的日界）
+  const order = ['capricorn', 'aquarius', 'pisces', 'aries', 'taurus', 'gemini', 'cancer', 'leo', 'virgo', 'libra', 'scorpio', 'sagittarius', 'capricorn'];
+  // month m: 1..12。日界前为 order[m-1]，之后为 order[m]
+  return day < bounds[month - 1] ? order[month - 1] : order[month];
+}
+
+// ---------- 每日星象运势（确定性评分，因子全部透明列出） ----------
+
+const RULER_KEY = { 火星: 'mars', 金星: 'venus', 水星: 'mercury', 月亮: 'moon', 太阳: 'sun', 冥王星: 'pluto', 木星: 'jupiter', 土星: 'saturn' };
+// 行星性质：吉 / 煞 / 中性
+const NATURE = { venus: '吉', jupiter: '吉', sun: '光', moon: '光', mercury: '中', uranus: '中', neptune: '中', mars: '煞', saturn: '煞', pluto: '煞' };
+const ASPECT_WEIGHT = { trine: 1.0, sextile: 0.7, conj: 0.5, opp: -0.8, square: -1.0 };
+
+function transitScore(aspectKey, planetKey) {
+  const nature = NATURE[planetKey] || '中';
+  const w = ASPECT_WEIGHT[aspectKey] ?? 0;
+  if (w === 0) return 0;
+  let m = 1;
+  if (nature === '吉') m = 1.2;
+  else if (nature === '光') m = 1.0;
+  else if (nature === '煞') m = w > 0 ? 0.8 : 1.3;
+  return +(w * m * 10).toFixed(1);
+}
+
+/**
+ * 12 星座每日运势：以各星座守护星当日所受行运相位 + 月亮元素相合 + 水星逆行为因子。
+ * @returns {Array<{signKey, score, level, factors: string[]}>}
+ */
+export function dailyFortune(dateUTC) {
+  const sky = computeSky(dateUTC);
+  const planets = sky.planets;
+  const aspectPairs = calcAspects(planets); // 同盘内行星相位 → 即当日行运彼此相位
+  const moonElement = planets.moon.signElement;
+
+  return SIGNS.map((s) => {
+    let score = 60;
+    const factors = [];
+    const rulerKey = RULER_KEY[s.ruler];
+    // 1) 守护星当日所受相位
+    for (const asp of aspectPairs) {
+      const other = asp.a === rulerKey ? asp.bCn : asp.b === rulerKey ? asp.aCn : null;
+      if (!other || asp.a === asp.b) continue;
+      const delta = transitScore(asp.aspect, asp.a === rulerKey ? asp.b : asp.a);
+      score += delta;
+      factors.push(`${other}${asp.aspectCn}守护星${s.ruler}（${delta > 0 ? '+' : ''}${delta}）`);
+    }
+    // 2) 月亮元素与星座元素相合
+    if (moonElement === s.element) {
+      score += 5;
+      factors.push(`月亮入${moonElement}象，与${s.cn}同象（+5）`);
+    } else if ((moonElement === '火' && s.element === '水') || (moonElement === '水' && s.element === '火') || (moonElement === '风' && s.element === '土') || (moonElement === '土' && s.element === '风')) {
+      score -= 4;
+      factors.push(`月亮入${moonElement}象，与${s.cn}相冲（-4）`);
+    }
+    // 3) 水星逆行（沟通/出行减分）
+    if (planets.mercury.retrograde) {
+      score -= 3;
+      factors.push('水星逆行，沟通出行易有反复（-3）');
+    }
+    // 4) 守护星自身逆行
+    if (planets[rulerKey] && planets[rulerKey].retrograde) {
+      score -= 4;
+      factors.push(`守护星${s.ruler}逆行（-4）`);
+    }
+    score = Math.max(20, Math.min(95, Math.round(score)));
+    const level = score >= 75 ? '旺' : score >= 60 ? '顺' : score >= 45 ? '平' : '滞';
+    return { signKey: s.key, signCn: s.cn, score, level, factors };
+  });
+}

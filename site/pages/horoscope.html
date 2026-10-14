@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>每日星象 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>每日星象运势</h1>
+  <p class="page-sub">基于实时天文计算的透明规则评分 —— 无 AI、无玄学黑箱，每个因子都列给你看</p>
+  <div class="card">
+    <form class="panel">
+      <div><label>你的太阳星座（可从生日推断）</label><select id="sign"></select></div>
+      <div><label>或按生日推断</label><input type="date" id="birth" onchange="window.__infer()"></div>
+      <div style="align-self:end;"><button class="btn ghost" type="button" id="refresh">刷新今日天象</button></div>
+    </form>
+  </div>
+  <div id="sky" class="card"></div>
+  <div id="detail" class="card"></div>
+  <div id="all" class="grid grid-4"></div>
+</div>
+<script src="../vendor/astronomy.min.js"></script>
+<script type="module" src="../js/pages/horoscope-page.mjs"></script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>塔罗占卜 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>塔罗占卜</h1>
+  <p class="page-sub">Rider-Waite 牌义（改编自 Waite 1911 公版文本）· 真随机洗牌 · 本地完成</p>
+  <div class="card">
+    <form class="panel">
+      <div><label>牌阵</label><select id="spread"><option value="single">每日一牌 · 今日指引</option><option value="three">时间之流 · 过去/现在/未来</option></select></div>
+      <div><label>想问什么（可选，只用于聚焦）</label><input type="text" id="question" placeholder="例如：最近的工作状态" maxlength="40"></div>
+      <div style="align-self:end;"><button class="btn" type="button" id="draw">洗牌抽牌</button></div>
+    </form>
+    <p class="hint">抽牌前在心里默念问题 · 点击卡牌翻开 · 牌义中文化改编自公有领域文本</p>
+  </div>
+  <div id="stage"></div>
+</div>
+<script type="module" src="../js/pages/tarot-page.mjs"></script>
+</body>
+</html>

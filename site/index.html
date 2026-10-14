@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>星卜 Astroscry · 一站式占卜</title>
+<link rel="stylesheet" href="assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>星卜 <span style="color:var(--accent2)">Astroscry</span></h1>
+    <p>西方星座 · 塔罗 · 八字四柱 · 紫微斗数 —— 一站式传统术数体验</p>
+    <p class="hint" style="margin-top:8px;">纯本地计算，无需注册，生日数据不出浏览器</p>
+  </div>
+  <div id="today" class="card"></div>
+  <div class="grid grid-4">
+    <a class="entry" href="pages/horoscope.html"><div class="e-ico">🌙</div><div class="e-t">每日星象</div><div class="e-d">基于实时天文计算的 12 星座运势，评分因子全透明</div></a>
+    <a class="entry" href="pages/natal.html"><div class="e-ico">🪐</div><div class="e-t">西方星盘</div><div class="e-d">本命盘：行星落座落宫、相位、上升中天</div></a>
+    <a class="entry" href="pages/tarot.html"><div class="e-ico">🔮</div><div class="e-t">塔罗占卜</div><div class="e-d">每日一牌 / 时间之流，Rider-Waite 正逆位牌义</div></a>
+    <a class="entry" href="pages/bazi.html"><div class="e-ico">🏮</div><div class="e-t">八字排盘</div><div class="e-d">四柱十神、五行旺衰、大运流年</div></a>
+  </div>
+  <div class="grid grid-4" style="margin-top:14px;">
+    <a class="entry" href="pages/ziwei.html"><div class="e-ico">✨</div><div class="e-t">紫微斗数</div><div class="e-d">十二宫命盘、主星四化、大限</div></a>
+    <a class="entry" href="pages/about.html"><div class="e-ico">📖</div><div class="e-t">关于与数据来源</div><div class="e-d">开源引擎、公版语料与许可声明</div></a>
+  </div>
+</div>
+<script src="vendor/lunar.js"></script>
+<script src="vendor/astronomy.min.js"></script>
+<script type="module" src="js/pages/home-page.mjs"></script>
+</body>
+</html>

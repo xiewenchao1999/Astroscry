@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>八字排盘 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>八字排盘</h1>
+  <p class="page-sub">四柱干支 · 十神 · 五行 · 大运 —— 历法计算引擎 lunar-javascript（MIT），全部在本地浏览器完成</p>
+  <div class="card">
+    <div id="form"></div>
+    <label class="hint" style="display:flex;gap:6px;align-items:center;margin-top:10px;">
+      <input type="checkbox" id="solarTime" style="width:auto"> 按出生地经度做真太阳时校正（忽略均时差，时辰临界者参考）
+    </label>
+    <div style="margin-top:14px;"><button class="btn" id="cast">开始排盘</button></div>
+  </div>
+  <div id="result" class="result"></div>
+</div>
+<script src="../vendor/lunar.js"></script>
+<script type="module" src="../js/pages/bazi-page.mjs"></script>
+</body>
+</html>
