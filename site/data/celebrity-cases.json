@@ -1,0 +1,459 @@
+{
+  "meta": {
+    "source": "案例素材整理自 miounet11/life-kline（自用）",
+    "count": 25,
+    "note": "仅作出生信息与复盘描述，不参与任何评分"
+  },
+  "cases": [
+    {
+      "id": "kobe_bryant",
+      "name": "科比·布莱恩特",
+      "nameEn": "Kobe Bryant",
+      "category": "巨星陨落与意外",
+      "birth": "1978-08-23T10:00:00",
+      "location": {
+        "city": "Philadelphia, PA, USA",
+        "lat": 39.9526,
+        "lng": -75.1652
+      },
+      "note": "2020年（庚子年）流年与年柱子午相冲，天克地冲。K线精准捕捉到生命能量的瞬间归零。",
+      "tags": [
+        "Sports",
+        "Legend",
+        "Accident"
+      ]
+    },
+    {
+      "id": "leslie_cheung",
+      "name": "张国荣",
+      "nameEn": "Leslie Cheung",
+      "category": "巨星陨落与意外",
+      "birth": "1956-09-12T05:00:00",
+      "location": {
+        "city": "Kowloon, Hong Kong",
+        "lat": 22.3193,
+        "lng": 114.1694
+      },
+      "note": "2003年（癸未年），在名声大噪的表象下，心流K线（情绪指标）早已跌破安全线，预示了内心的崩塌。",
+      "tags": [
+        "Artist",
+        "Music",
+        "Depression"
+      ]
+    },
+    {
+      "id": "bruce_lee",
+      "name": "李小龙",
+      "nameEn": "Bruce Lee",
+      "category": "巨星陨落与意外",
+      "birth": "1940-11-27T07:12:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "1973年（癸丑年），身体健康K线在极盛时期的突然断裂，一代宗师星宿陨落，展示了“七杀攻身”的凶险。",
+      "tags": [
+        "Martial Arts",
+        "Legend",
+        "Health"
+      ]
+    },
+    {
+      "id": "steve_jobs",
+      "name": "史蒂夫·乔布斯",
+      "nameEn": "Steve Jobs",
+      "category": "逆袭与实力爆发",
+      "birth": "1955-02-24T19:15:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "1985年被开除（丑未相冲）跌入谷底，1997年回归苹果开启V型反转。验证了“库”被冲开后的巨大能量。",
+      "tags": [
+        "Tech",
+        "Innovation",
+        "Business"
+      ]
+    },
+    {
+      "id": "elon_musk",
+      "name": "埃隆·马斯克",
+      "nameEn": "Elon Musk",
+      "category": "逆袭与实力爆发",
+      "birth": "1971-06-28T06:30:00",
+      "location": {
+        "city": "Pretoria, South Africa",
+        "lat": -25.7479,
+        "lng": 28.2293
+      },
+      "note": "2008年濒临破产压力线触顶，随后十年走入“食神制杀”大运，事业K线呈指数级拉升。",
+      "tags": [
+        "Tech",
+        "Space",
+        "Business"
+      ]
+    },
+    {
+      "id": "jk_rowling",
+      "name": "J.K.罗琳",
+      "nameEn": "J.K. Rowling",
+      "category": "逆袭与实力爆发",
+      "birth": "1965-07-31T14:00:00",
+      "location": {
+        "city": "Yate, UK",
+        "lat": 51.539,
+        "lng": -2.416
+      },
+      "note": "从单亲妈妈的困顿（低位横盘），到《哈利波特》出版后的“文昌运”爆发，财富K线垂直拉升。",
+      "tags": [
+        "Literature",
+        "Creativity",
+        "Wealth"
+      ]
+    },
+    {
+      "id": "microsoft",
+      "name": "微软",
+      "nameEn": "Microsoft",
+      "category": "商业帝国运势",
+      "birth": "1975-04-04T09:00:00",
+      "location": {
+        "city": "Albuquerque, NM, USA",
+        "lat": 35.0844,
+        "lng": -106.6504
+      },
+      "note": "科技界“常青树”。2014年纳德拉上任（换运）后，云业务带来第二增长曲线，K线突破前期高点。",
+      "tags": [
+        "Tech",
+        "Corporate",
+        "Software"
+      ]
+    },
+    {
+      "id": "tencent",
+      "name": "腾讯",
+      "nameEn": "Tencent",
+      "category": "商业帝国运势",
+      "birth": "1998-11-11T09:00:00",
+      "location": {
+        "city": "Shenzhen, China",
+        "lat": 22.5431,
+        "lng": 114.0579
+      },
+      "note": "2021-2022年遭遇监管寒冬时的K线回撤与盘整，符合“官杀克身”的流年特征。",
+      "tags": [
+        "Tech",
+        "Social",
+        "Gaming"
+      ]
+    },
+    {
+      "id": "alibaba",
+      "name": "阿里巴巴",
+      "nameEn": "Alibaba",
+      "category": "商业帝国运势",
+      "birth": "1999-04-04T09:00:00",
+      "location": {
+        "city": "Hangzhou, China",
+        "lat": 30.2741,
+        "lng": 120.1551
+      },
+      "note": "验证其电商帝国的崛起，以及近几年在关键流年节点的运势波动，展示企业生命周期中的“调整期”。",
+      "tags": [
+        "E-commerce",
+        "Tech",
+        "Business"
+      ]
+    },
+    {
+      "id": "softbank",
+      "name": "软银",
+      "nameEn": "SoftBank",
+      "category": "商业帝国运势",
+      "birth": "1981-09-03T09:00:00",
+      "location": {
+        "city": "Tokyo, Japan",
+        "lat": 35.6762,
+        "lng": 139.6503
+      },
+      "note": "极度激进的投资风格导致K线呈现“大开大合”。验证其在WeWork投资失败（破财）与阿里投资成功之间的振幅。",
+      "tags": [
+        "Investment",
+        "Finance",
+        "Risk"
+      ]
+    },
+    {
+      "id": "chatgpt",
+      "name": "ChatGPT",
+      "nameEn": "ChatGPT",
+      "category": "AI纪元与科技新贵",
+      "birth": "2022-11-30T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "诞生于水木清华之时，K线起步即巅峰，开启了人类AI时代的“离火运”大门。",
+      "tags": [
+        "AI",
+        "Innovation",
+        "Tech"
+      ]
+    },
+    {
+      "id": "sora",
+      "name": "Sora",
+      "nameEn": "Sora",
+      "category": "AI纪元与科技新贵",
+      "birth": "2024-02-15T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "甲辰龙年新春发布，K线显示出极强的“视觉/火”属性爆发，验证其对视觉领域的冲击力。",
+      "tags": [
+        "AI",
+        "Video",
+        "Future"
+      ]
+    },
+    {
+      "id": "gemini",
+      "name": "Gemini",
+      "nameEn": "Gemini",
+      "category": "AI纪元与科技新贵",
+      "birth": "2023-12-06T10:00:00",
+      "location": {
+        "city": "Mountain View, CA, USA",
+        "lat": 37.3861,
+        "lng": -122.0839
+      },
+      "note": "作为挑战者诞生，验证其在激烈的“比肩劫财”竞争格局中，如何通过技术迭代修复K线走势。",
+      "tags": [
+        "AI",
+        "Google",
+        "Tech"
+      ]
+    },
+    {
+      "id": "grok",
+      "name": "Grok",
+      "nameEn": "Grok",
+      "category": "AI纪元与科技新贵",
+      "birth": "2023-11-04T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "继承了马斯克的“叛逆”基因，K线走势波动较大，显示出不同于传统AI的“伤官”特性（主创新与反骨）。",
+      "tags": [
+        "AI",
+        "xAI",
+        "Elon Musk"
+      ]
+    },
+    {
+      "id": "x_com",
+      "name": "X.com",
+      "nameEn": "X.com",
+      "category": "AI纪元与科技新贵",
+      "birth": "2023-07-23T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "验证从Twitter到X的“改名换运”。K线在改名初期经历剧烈震荡，随后在混乱中寻找新的平衡点。",
+      "tags": [
+        "Social Media",
+        "Rebranding",
+        "Tech"
+      ]
+    },
+    {
+      "id": "bitcoin",
+      "name": "比特币",
+      "nameEn": "Bitcoin",
+      "category": "虚拟资产与宏观",
+      "birth": "2009-01-03T18:15:05",
+      "location": {
+        "city": "Internet (UTC)",
+        "lat": 0,
+        "lng": 0
+      },
+      "note": "验证2017/2021牛市与2022熊市的周期，数字黄金的王者K线。",
+      "tags": [
+        "Crypto",
+        "Blockchain",
+        "Finance"
+      ]
+    },
+    {
+      "id": "ethereum",
+      "name": "以太坊",
+      "nameEn": "Ethereum",
+      "category": "虚拟资产与宏观",
+      "birth": "2015-07-30T15:00:00",
+      "location": {
+        "city": "Internet (UTC)",
+        "lat": 0,
+        "lng": 0
+      },
+      "note": "智能合约之王的稳健上升通道，DeFi Summer的爆发点。",
+      "tags": [
+        "Crypto",
+        "Smart Contract",
+        "Tech"
+      ]
+    },
+    {
+      "id": "usdt",
+      "name": "泰达币",
+      "nameEn": "USDT",
+      "category": "虚拟资产与宏观",
+      "birth": "2014-10-06T10:00:00",
+      "location": {
+        "city": "Hong Kong",
+        "lat": 22.3193,
+        "lng": 114.1694
+      },
+      "note": "作为币圈“美元”，验证其在多次监管风暴（官杀攻身）中依然屹立不倒的“身强”格。",
+      "tags": [
+        "Crypto",
+        "Stablecoin",
+        "Finance"
+      ]
+    },
+    {
+      "id": "bnb",
+      "name": "币安币",
+      "nameEn": "BNB",
+      "category": "虚拟资产与宏观",
+      "birth": "2017-07-14T10:00:00",
+      "location": {
+        "city": "Shanghai, China",
+        "lat": 31.2304,
+        "lng": 121.4737
+      },
+      "note": "交易所龙头的帝旺运势，穿越牛熊的强劲表现。",
+      "tags": [
+        "Crypto",
+        "Exchange",
+        "Platform"
+      ]
+    },
+    {
+      "id": "xrp",
+      "name": "瑞波币",
+      "nameEn": "XRP",
+      "category": "虚拟资产与宏观",
+      "birth": "2012-06-02T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "验证其长期受SEC诉讼（官符）压制下的K线盘整，以及胜诉利好带来的瞬间释放。",
+      "tags": [
+        "Crypto",
+        "Payment",
+        "Finance"
+      ]
+    },
+    {
+      "id": "solana",
+      "name": "索拉纳",
+      "nameEn": "Solana",
+      "category": "虚拟资产与宏观",
+      "birth": "2020-03-16T10:00:00",
+      "location": {
+        "city": "San Francisco, CA, USA",
+        "lat": 37.7749,
+        "lng": -122.4194
+      },
+      "note": "验证其在FTX崩盘时的被“牵连”暴跌，以及2023年浴火重生的“涅槃”走势。",
+      "tags": [
+        "Crypto",
+        "Blockchain",
+        "Performance"
+      ]
+    },
+    {
+      "id": "dogecoin",
+      "name": "狗狗币",
+      "nameEn": "Dogecoin",
+      "category": "虚拟资产与宏观",
+      "birth": "2013-12-06T10:00:00",
+      "location": {
+        "city": "Portland, OR, USA",
+        "lat": 45.5152,
+        "lng": -122.6784
+      },
+      "note": "验证其作为Meme鼻祖的“偏财”属性，极易受情绪影响的剧烈波动。",
+      "tags": [
+        "Crypto",
+        "Meme",
+        "Culture"
+      ]
+    },
+    {
+      "id": "ftx",
+      "name": "FTX",
+      "nameEn": "FTX",
+      "category": "虚拟资产与宏观",
+      "birth": "2019-05-08T10:00:00",
+      "location": {
+        "city": "Hong Kong",
+        "lat": 22.3193,
+        "lng": 114.1694
+      },
+      "note": "反面教材。验证其八字中隐含的“劫财”风险，在流年冲击下瞬间归零的金融惨案。",
+      "tags": [
+        "Crypto",
+        "Exchange",
+        "Collapse"
+      ]
+    },
+    {
+      "id": "japan_bubble",
+      "name": "日本泡沫经济",
+      "nameEn": "Japan Bubble",
+      "category": "虚拟资产与宏观",
+      "birth": "1947-05-03T10:00:00",
+      "location": {
+        "city": "Tokyo, Japan",
+        "lat": 35.6762,
+        "lng": 139.6503
+      },
+      "note": "验证经济泡沫破裂的“M头”大顶，国运流年的重大转折。",
+      "tags": [
+        "History",
+        "Economy",
+        "Bubble"
+      ]
+    },
+    {
+      "id": "lehman_brothers",
+      "name": "雷曼兄弟",
+      "nameEn": "Lehman Brothers",
+      "category": "虚拟资产与宏观",
+      "birth": "1850-01-01T10:00:00",
+      "location": {
+        "city": "Montgomery, AL, USA",
+        "lat": 32.3792,
+        "lng": -86.3077
+      },
+      "note": "验证百年基业在太岁冲击下的归零，传统金融的“死门”。",
+      "tags": [
+        "Finance",
+        "History",
+        "Crisis"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1047 @@
+{
+  "meta": {
+    "source": "袁天罡称骨歌（民俗公版歌诀）· 查表与结构化档位整理自 LZRight123/yuan (standard-51qian 版本)",
+    "range": "21-71 钱（二两一钱 ~ 七两一钱），不支持外推/插值",
+    "rules": {
+      "nightZiShi": "23:00~23:59 视为次日",
+      "leapMonth": "闰月 1~15 按本月、16~30 按下月",
+      "yearKey": "年权重按六十甲子干支查表，不用公历年号"
+    }
+  },
+  "weights": {
+    "year_weight_qian_by_ganzhi": {
+      "甲子": 12,
+      "丙子": 16,
+      "戊子": 15,
+      "庚子": 7,
+      "壬子": 5,
+      "乙丑": 9,
+      "丁丑": 8,
+      "己丑": 7,
+      "辛丑": 7,
+      "癸丑": 7,
+      "丙寅": 6,
+      "戊寅": 8,
+      "庚寅": 9,
+      "壬寅": 9,
+      "甲寅": 12,
+      "丁卯": 7,
+      "己卯": 19,
+      "辛卯": 12,
+      "癸卯": 12,
+      "乙卯": 8,
+      "戊辰": 12,
+      "庚辰": 12,
+      "壬辰": 10,
+      "甲辰": 8,
+      "丙辰": 8,
+      "己巳": 5,
+      "辛巳": 6,
+      "癸巳": 7,
+      "乙巳": 7,
+      "丁巳": 6,
+      "庚午": 9,
+      "壬午": 8,
+      "甲午": 15,
+      "丙午": 13,
+      "戊午": 19,
+      "辛未": 8,
+      "癸未": 7,
+      "乙未": 6,
+      "丁未": 5,
+      "己未": 6,
+      "壬申": 7,
+      "甲申": 5,
+      "丙申": 5,
+      "戊申": 14,
+      "庚申": 8,
+      "癸酉": 8,
+      "乙酉": 15,
+      "丁酉": 14,
+      "己酉": 5,
+      "辛酉": 16,
+      "甲戌": 15,
+      "丙戌": 6,
+      "戊戌": 14,
+      "庚戌": 9,
+      "壬戌": 10,
+      "乙亥": 9,
+      "丁亥": 16,
+      "己亥": 9,
+      "辛亥": 17,
+      "癸亥": 6
+    },
+    "month_weight_qian": {
+      "1": 6,
+      "2": 7,
+      "3": 18,
+      "4": 9,
+      "5": 5,
+      "6": 16,
+      "7": 9,
+      "8": 15,
+      "9": 18,
+      "10": 8,
+      "11": 9,
+      "12": 5
+    },
+    "day_weight_qian": {
+      "1": 5,
+      "2": 10,
+      "3": 8,
+      "4": 15,
+      "5": 16,
+      "6": 15,
+      "7": 8,
+      "8": 16,
+      "9": 8,
+      "10": 16,
+      "11": 9,
+      "12": 17,
+      "13": 8,
+      "14": 17,
+      "15": 10,
+      "16": 8,
+      "17": 9,
+      "18": 18,
+      "19": 5,
+      "20": 15,
+      "21": 10,
+      "22": 9,
+      "23": 8,
+      "24": 9,
+      "25": 15,
+      "26": 18,
+      "27": 7,
+      "28": 8,
+      "29": 16,
+      "30": 6
+    },
+    "hour_weight_qian": {
+      "子": 16,
+      "丑": 6,
+      "寅": 7,
+      "卯": 10,
+      "辰": 9,
+      "巳": 16,
+      "午": 10,
+      "未": 8,
+      "申": 8,
+      "酉": 9,
+      "戌": 6,
+      "亥": 6
+    }
+  },
+  "tiers": [
+    {
+      "qian": 21,
+      "liang": 2.1,
+      "label": "二两一钱",
+      "grade": "低",
+      "verse": "短命非业谓大空，平生灾难事重重。凶祸频临陷逆境，终世困苦事不成。",
+      "tags": [],
+      "career": "偏弱",
+      "wealth": "偏弱",
+      "marriage": "中性",
+      "scores": {
+        "career": -2,
+        "wealth": -2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 22,
+      "liang": 2.2,
+      "label": "二两二钱",
+      "grade": "低",
+      "verse": "身寒骨冷苦伶仃，此命推来行乞人。劳劳碌碌无度日，终年打拱过平生。",
+      "tags": [
+        "early_hardship"
+      ],
+      "career": "略弱",
+      "wealth": "偏弱",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": -3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 23,
+      "liang": 2.3,
+      "label": "二两三钱",
+      "grade": "低",
+      "verse": "此命推来骨格轻，求谋作事事难成。妻儿兄弟应难许，别处他乡作散人。",
+      "tags": [
+        "mobility"
+      ],
+      "career": "略弱",
+      "wealth": "中性",
+      "marriage": "略弱",
+      "scores": {
+        "career": -1,
+        "wealth": 0,
+        "marriage": -1
+      }
+    },
+    {
+      "qian": 24,
+      "liang": 2.4,
+      "label": "二两四钱",
+      "grade": "低",
+      "verse": "此命推来福禄无，门庭困苦总难荣。六亲骨肉皆无靠，流浪他乡作老翁。",
+      "tags": [
+        "mobility",
+        "family_support_weak"
+      ],
+      "career": "中性",
+      "wealth": "偏弱",
+      "marriage": "偏弱",
+      "scores": {
+        "career": 0,
+        "wealth": -2,
+        "marriage": -2
+      }
+    },
+    {
+      "qian": 25,
+      "liang": 2.5,
+      "label": "二两五钱",
+      "grade": "低",
+      "verse": "此命推来祖业微，门庭营度似稀奇。六亲骨肉如冰炭，一世勤劳自把持。",
+      "tags": [
+        "family_support_weak"
+      ],
+      "career": "中性",
+      "wealth": "偏弱",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": -2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 26,
+      "liang": 2.6,
+      "label": "二两六钱",
+      "grade": "低",
+      "verse": "平生衣禄苦中求，独自营谋事不休。离祖出门宜早计，晚来衣禄自无休。",
+      "tags": [
+        "early_hardship",
+        "midlate_better",
+        "mobility",
+        "self_made"
+      ],
+      "career": "略弱",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 27,
+      "liang": 2.7,
+      "label": "二两七钱",
+      "grade": "低",
+      "verse": "一生作事少商量，难靠祖宗作主张。独马单枪空做去，早年晚岁总无长。",
+      "tags": [
+        "early_hardship",
+        "self_made"
+      ],
+      "career": "中性",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 28,
+      "liang": 2.8,
+      "label": "二两八钱",
+      "grade": "低",
+      "verse": "一生行事似飘蓬，祖宗产业在梦中。若不过房改名姓，也当移徒二三通。",
+      "tags": [
+        "mobility"
+      ],
+      "career": "中性",
+      "wealth": "偏弱",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": -2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 29,
+      "liang": 2.9,
+      "label": "二两九钱",
+      "grade": "低",
+      "verse": "初年运限未曾亨，纵有功名在后成。须过四旬才可立，移居改姓始为良。",
+      "tags": [
+        "early_hardship",
+        "midlate_better",
+        "mobility"
+      ],
+      "career": "偏佳",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 30,
+      "liang": 3,
+      "label": "三两",
+      "grade": "低",
+      "verse": "劳劳碌碌苦中求，东奔西走何日休。若使终身勤与俭，老来稍可免忧愁。",
+      "tags": [
+        "early_hardship",
+        "midlate_better"
+      ],
+      "career": "偏弱",
+      "wealth": "略弱",
+      "marriage": "中性",
+      "scores": {
+        "career": -2,
+        "wealth": -1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 31,
+      "liang": 3.1,
+      "label": "三两一钱",
+      "grade": "低",
+      "verse": "忙忙碌碌苦中求，何日云开见日头。难得祖基家可立，中年衣食渐无忧。",
+      "tags": [
+        "early_hardship",
+        "midlate_better",
+        "family_support_weak"
+      ],
+      "career": "略弱",
+      "wealth": "略弱",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": -1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 32,
+      "liang": 3.2,
+      "label": "三两二钱",
+      "grade": "低",
+      "verse": "初年运蹇事难谋，渐有财源如水流。到得中年衣食旺，那时名利一齐收。",
+      "tags": [
+        "early_hardship",
+        "midlate_better"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 33,
+      "liang": 3.3,
+      "label": "三两三钱",
+      "grade": "低",
+      "verse": "早年做事事难成，百年勤劳枉费心。半世自如流水去，后来运到始得金。",
+      "tags": [
+        "early_hardship",
+        "midlate_better"
+      ],
+      "career": "略弱",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 34,
+      "liang": 3.4,
+      "label": "三两四钱",
+      "grade": "低",
+      "verse": "此命福气果如何，僧道门中衣禄多。离祖出家方为妙，朝晚拜佛念弥陀。",
+      "tags": [
+        "mobility",
+        "religious_path"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 35,
+      "liang": 3.5,
+      "label": "三两五钱",
+      "grade": "低",
+      "verse": "生平福量不周全，祖业根基觉少传。营事生涯宜守旧，时来衣食胜从前。",
+      "tags": [
+        "family_support_weak"
+      ],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 36,
+      "liang": 3.6,
+      "label": "三两六钱",
+      "grade": "低",
+      "verse": "不须劳碌过平生，独自成家福不轻。早有福星常照命，任君行去百般成。",
+      "tags": [
+        "self_made"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 37,
+      "liang": 3.7,
+      "label": "三两七钱",
+      "grade": "低",
+      "verse": "此命般般事不成，弟兄少力自孤行。虽然祖业须微有，来得明时去不明。",
+      "tags": [
+        "family_support_weak"
+      ],
+      "career": "偏弱",
+      "wealth": "中性",
+      "marriage": "偏弱",
+      "scores": {
+        "career": -3,
+        "wealth": 0,
+        "marriage": -2
+      }
+    },
+    {
+      "qian": 38,
+      "liang": 3.8,
+      "label": "三两八钱",
+      "grade": "中",
+      "verse": "一身骨肉最清高，早入黉门姓氏标。待到年将三十六，蓝衫脱去换红袍。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "偏佳",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 39,
+      "liang": 3.9,
+      "label": "三两九钱",
+      "grade": "中",
+      "verse": "此命终身运不通，劳劳作事尽皆空。苦心竭力成家计，到得那时在梦中。",
+      "tags": [
+        "early_hardship"
+      ],
+      "career": "略弱",
+      "wealth": "偏弱",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": -2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 40,
+      "liang": 4,
+      "label": "四两",
+      "grade": "中",
+      "verse": "平生衣禄是绵长，件件心中自主张。前面风霜多受过，后来必定享安康。",
+      "tags": [
+        "early_hardship",
+        "midlate_better",
+        "self_made"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 41,
+      "liang": 4.1,
+      "label": "四两一钱",
+      "grade": "中",
+      "verse": "此命推来自不同，为人能干异凡庸。中年还有逍遥福，不比前时运未通。",
+      "tags": [
+        "midlate_better"
+      ],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 42,
+      "liang": 4.2,
+      "label": "四两二钱",
+      "grade": "中",
+      "verse": "得宽怀处且宽怀，何用双眉皱不开。若使中年命运济，那时名利一起来。",
+      "tags": [
+        "midlate_better"
+      ],
+      "career": "偏佳",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 43,
+      "liang": 4.3,
+      "label": "四两三钱",
+      "grade": "中",
+      "verse": "为人心性最聪明，作事轩昂近贵人。衣禄一生天注定，不须劳碌是丰亨。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 44,
+      "liang": 4.4,
+      "label": "四两四钱",
+      "grade": "中",
+      "verse": "万事由天莫苦求，须知福禄赖人修。当年财帛难如意，晚景欣然便不忧。",
+      "tags": [
+        "midlate_better"
+      ],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 45,
+      "liang": 4.5,
+      "label": "四两五钱",
+      "grade": "中",
+      "verse": "名利推求竟若何，前番辛苦后奔波。命中难养男和女，骨肉扶持也不多。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "略弱",
+      "marriage": "略弱",
+      "scores": {
+        "career": 0,
+        "wealth": -1,
+        "marriage": -1
+      }
+    },
+    {
+      "qian": 46,
+      "liang": 4.6,
+      "label": "四两六钱",
+      "grade": "中",
+      "verse": "东西南北尽皆通，出姓移居更觉隆。衣禄无穷无数定，中年晚景一般同。",
+      "tags": [
+        "midlate_better",
+        "mobility"
+      ],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 47,
+      "liang": 4.7,
+      "label": "四两七钱",
+      "grade": "中",
+      "verse": "此命推求旺末年，妻荣子贵自怡然。平生原有滔滔福，可卜财源若水泉。",
+      "tags": [
+        "midlate_better"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "很强",
+      "scores": {
+        "career": 0,
+        "wealth": 4,
+        "marriage": 3
+      }
+    },
+    {
+      "qian": 48,
+      "liang": 4.8,
+      "label": "四两八钱",
+      "grade": "中",
+      "verse": "初年运道未曾亨，若是蹉跎再不兴。兄弟六亲皆无靠，一身事业晚年成。",
+      "tags": [
+        "early_hardship",
+        "family_support_weak"
+      ],
+      "career": "略弱",
+      "wealth": "略弱",
+      "marriage": "略弱",
+      "scores": {
+        "career": -1,
+        "wealth": -1,
+        "marriage": -1
+      }
+    },
+    {
+      "qian": 49,
+      "liang": 4.9,
+      "label": "四两九钱",
+      "grade": "中",
+      "verse": "此命推来福不轻，自成自立显门庭。从来富贵人钦敬，使婢差奴过一生。",
+      "tags": [
+        "self_made"
+      ],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 50,
+      "liang": 5,
+      "label": "五两",
+      "grade": "中",
+      "verse": "为利为名终日劳，中年福禄也多遭。老来自有财星照，不比前番目下高。",
+      "tags": [
+        "midlate_better"
+      ],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 51,
+      "liang": 5.1,
+      "label": "五两一钱",
+      "grade": "中",
+      "verse": "一世荣华事事通，不须劳碌自亨通。兄弟叔侄皆如意，家业成时福禄宏。",
+      "tags": [],
+      "career": "略弱",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": -1,
+        "wealth": 4,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 52,
+      "liang": 5.2,
+      "label": "五两二钱",
+      "grade": "中",
+      "verse": "一世亨通事事能，不须劳苦自然宁。宗族有光欣喜甚，家产丰盈自称心。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 53,
+      "liang": 5.3,
+      "label": "五两三钱",
+      "grade": "中",
+      "verse": "此格推来福泽宏，兴家立业在其中。一生衣食安排定，却是人间一福翁。",
+      "tags": [],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 54,
+      "liang": 5.4,
+      "label": "五两四钱",
+      "grade": "中",
+      "verse": "此命推来厚且清，诗书满腹看功成。丰衣足食自然稳，正是人间有福人。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 55,
+      "liang": 5.5,
+      "label": "五两五钱",
+      "grade": "高",
+      "verse": "策马扬鞭争名利，少年作事费筹论。一朝福禄源源至，富贵荣华显六亲。",
+      "tags": [
+        "midlate_better",
+        "family_support_weak"
+      ],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 5,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 56,
+      "liang": 5.6,
+      "label": "五两六钱",
+      "grade": "高",
+      "verse": "此格推来礼义通，一身福禄用无穷。甜酸苦辣皆尝过，滚滚财源盈而丰。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 2,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 57,
+      "liang": 5.7,
+      "label": "五两七钱",
+      "grade": "高",
+      "verse": "福禄丰盈万事全，一身荣耀乐天年。名扬威震人争羡，此世逍遥宛似仙。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 58,
+      "liang": 5.8,
+      "label": "五两八钱",
+      "grade": "高",
+      "verse": "平生衣食自然来，名利双全富贵偕。金榜题名登甲第，紫袍玉带走金阶。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "很强",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 4,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 59,
+      "liang": 5.9,
+      "label": "五两九钱",
+      "grade": "高",
+      "verse": "细推此格秀而清，必定才高学业成。甲第之中应有分，扬鞭走马显威荣。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "偏佳",
+      "wealth": "中性",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 0,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 60,
+      "liang": 6,
+      "label": "六两",
+      "grade": "高",
+      "verse": "一朝金榜快题名，显祖荣宗大器成。衣禄定然无欠缺，田园财帛更丰盈。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "很强",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 2,
+        "wealth": 5,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 61,
+      "liang": 6.1,
+      "label": "六两一钱",
+      "grade": "高",
+      "verse": "不作朝中金榜客，定为世上大财翁。聪明天付经书熟，名显高科自是荣。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "很强",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 2,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 62,
+      "liang": 6.2,
+      "label": "六两二钱",
+      "grade": "高",
+      "verse": "此命生来福不穷，读书必定显亲宗。紫衣玉带为卿相，富贵荣华孰与同。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 63,
+      "liang": 6.3,
+      "label": "六两三钱",
+      "grade": "高",
+      "verse": "命主为官福禄长，得来富贵实非常。名题雁塔传金榜，大显门庭天下扬。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "很强",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 3,
+        "wealth": 4,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 64,
+      "liang": 6.4,
+      "label": "六两四钱",
+      "grade": "高",
+      "verse": "此格威权不可当，紫袍金带坐高堂。荣华富贵谁能及，万古留名姓氏扬。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 65,
+      "liang": 6.5,
+      "label": "六两五钱",
+      "grade": "高",
+      "verse": "细推此命福非轻，富贵荣华孰与争。定国安邦人极品，威声显赫震寰瀛。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 4,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 66,
+      "liang": 6.6,
+      "label": "六两六钱",
+      "grade": "高",
+      "verse": "此格人间一福人，堆金积玉满堂春。从来富贵有天定，金榜题名更显亲。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "偏佳",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 1,
+        "wealth": 4,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 67,
+      "liang": 6.7,
+      "label": "六两七钱",
+      "grade": "高",
+      "verse": "此命生来福自宏，田园家业最高隆。平生衣禄盈丰足，一路荣华万事通。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 6,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 68,
+      "liang": 6.8,
+      "label": "六两八钱",
+      "grade": "高",
+      "verse": "富贵由天莫苦求，万事家计不须谋。十年不比前番事，祖业根基千古留。",
+      "tags": [
+        "family_support_weak"
+      ],
+      "career": "中性",
+      "wealth": "偏佳",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 1,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 69,
+      "liang": 6.9,
+      "label": "六两九钱",
+      "grade": "高",
+      "verse": "君是人间福禄星，一生富贵众人钦。总然衣禄由天定，安享荣华过一生。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 7,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 70,
+      "liang": 7,
+      "label": "七两",
+      "grade": "高",
+      "verse": "此命推来福不轻，何须愁虑苦劳心。荣华富贵已天定，正笏垂绅拜紫宸。",
+      "tags": [],
+      "career": "中性",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 0,
+        "wealth": 3,
+        "marriage": 0
+      }
+    },
+    {
+      "qian": 71,
+      "liang": 7.1,
+      "label": "七两一钱",
+      "grade": "高",
+      "verse": "此命生成大不同，公侯卿相在其中。一生自有逍遥福，富贵荣华极品隆。",
+      "tags": [
+        "scholar_official"
+      ],
+      "career": "很强",
+      "wealth": "很强",
+      "marriage": "中性",
+      "scores": {
+        "career": 2,
+        "wealth": 4,
+        "marriage": 0
+      }
+    }
+  ]
+}
