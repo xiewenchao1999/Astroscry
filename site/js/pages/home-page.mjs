@@ -7,7 +7,7 @@ import { castQimen } from '../core/qimen.mjs';
 import { readQimen } from '../core/qimen-reading.mjs';
 import { dailyDraw } from '../core/tarot.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
-import { stagger, revealCards } from '../ui/motion.mjs';
+import { revealCards } from '../ui/motion.mjs';
 
 renderLayout();
 mountBirthCard(document.getElementById('birth-card'));
@@ -138,6 +138,4 @@ window.addEventListener('astroscry:profile-saved', renderDaily);
 window.addEventListener('astroscry:profile-cleared', renderDaily);
 
 // 内容就绪后再入场（先渲染后动画，避免动效作用在空盒子上）
-document.querySelectorAll('.grid').forEach((g) => stagger(g, '.entry'));
 revealCards(document.querySelector('.wrap'), '.card');
-stagger(document.querySelector('.wrap'), '.entry');
