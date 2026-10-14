@@ -1,17 +1,36 @@
 // natal-page.mjs — 西方本命盘页胶水：出生信息卡（共享）→ castNatal → 渲染
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
-import { castNatal, SIGNS } from '../core/astro.mjs';
+import { castNatal, SIGNS, computeSky } from '../core/astro.mjs';
+import { interAspects, strengthsAndChallenges } from '../core/astro-synastry.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
 import { revealCards, withBusy, animateMeters, announce } from '../ui/motion.mjs';
 
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
-const interp = await loadData('../data/interpret-horoscope.json');
+const [interp, synInterp] = await Promise.all([
+  loadData('../data/interpret-horoscope.json'),
+  loadData('../data/interpret-synastry.json'),
+]);
 let lastRendered = false;
 
 const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+
+/** 当前行运：今日天象 × 本命行星的跨盘相位 */
+function transitsCard(n) {
+  const sky = computeSky(new Date());
+  const { items } = interAspects(sky.planets, n.planets);
+  if (!items.length) return '';
+  const top = items.slice(0, 8);
+  return `
+    <div class="card"><h3>${synInterp.transitsTitle}</h3>
+      <table class="plain"><tr><th>行运</th><th>相位</th><th>本命</th><th>强度</th></tr>
+      ${top.map((x) => `<tr><td>${x.aCn}${sky.planets[x.a].retrograde ? '℞' : ''}</td><td>${x.aspectCn}</td><td>${x.bCn}</td><td>${x.strength}</td></tr>`).join('')}
+      </table>
+      <p class="note">${synInterp.transitsNote}</p>
+    </div>`;
+}
 
 function render(n) {
   const planetRows = Object.values(n.planets).map((p) => `
@@ -42,6 +61,7 @@ function render(n) {
     </div>
     <div class="card"><h3>星盘轮（整宫制）</h3><div class="chart-box">${renderWheel(n)}</div>
       <div class="note">金色实线为上升点 ASC，虚线为中天 MC；行星标 ℞ 为逆行。宫位制采用整宫制。</div></div>
+    ${transitsCard(n)}
     <div class="grid grid-2">
       <div class="card"><h3>行星落座落宫</h3><table class="plain"><tr><th>星体</th><th>星座</th><th>宫位</th></tr>${planetRows}</table></div>
       <div class="card"><h3>主要相位</h3><table class="plain"><tr><th>相位</th><th>容许度</th></tr>${aspectRows || '<tr><td colspan="2" style="color:var(--muted)">无主要相位</td></tr>'}</table>

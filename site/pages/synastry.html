@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>合盘 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+</head>
+<body>
+<div class="wrap">
+  <h1>合盘（双人本命盘互动）</h1>
+  <p class="page-sub">两张本命盘的跨盘相位 · 兼容度评分 —— 计算全部在本地浏览器完成</p>
+  <div class="card"><h3>你的出生信息</h3><div id="form-me"></div></div>
+  <div class="card"><h3>对方的出生信息</h3><div id="form-other"></div>
+    <p class="hint">对方信息单独保存在你的浏览器（astroscry.partner），同样不出设备。</p></div>
+  <div style="margin:14px 0;"><button class="btn" id="cast">合盘</button></div>
+  <div id="result" class="result"></div>
+</div>
+<script src="../vendor/lunar.js"></script>
+<script src="../vendor/astronomy.min.js"></script>
+<script type="module" src="../js/pages/synastry-page.mjs"></script>
+</body>
+</html>

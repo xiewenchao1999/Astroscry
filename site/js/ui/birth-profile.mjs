@@ -7,14 +7,18 @@ import { lunarMonthsOf, lunarDaysOf, lunarToSolar, solarToLunar, solarDaysOf, ho
 const KEY = 'astroscry.birth.v1';
 let citiesCache = null;
 
-export function loadProfile() {
-  try { return JSON.parse(localStorage.getItem(KEY)); } catch { return null; }
+function keyOf(opts) {
+  return opts?.storageKey || KEY; // 合盘的「对方」用独立 storageKey 隔离
 }
-export function saveProfile(p) {
-  localStorage.setItem(KEY, JSON.stringify(p));
+
+export function loadProfile(opts) {
+  try { return JSON.parse(localStorage.getItem(keyOf(opts))); } catch { return null; }
 }
-export function clearProfile() {
-  localStorage.removeItem(KEY);
+export function saveProfile(p, opts) {
+  localStorage.setItem(keyOf(opts), JSON.stringify(p));
+}
+export function clearProfile(opts) {
+  localStorage.removeItem(keyOf(opts));
 }
 
 const pad = (n) => String(n).padStart(2, '0');
@@ -27,7 +31,7 @@ const yearRange = () => { const a = []; for (let y = 1900; y <= 2100; y++) a.pus
  * @returns {{ get: () => object|null }}
  */
 export function mountBirthCard(container, opts = {}) {
-  let profile = loadProfile();
+  let profile = loadProfile(opts);
   let expanded = opts.defaultExpanded !== false && !profile;
 
   const state = {
@@ -153,7 +157,7 @@ export function mountBirthCard(container, opts = {}) {
         }
         p.hour = state.hour; p.minute = state.minute; p.gender = state.gender;
         p.cityName = city.name; p.lat = city.lat; p.lon = city.lon; p.tz = city.tz;
-        saveProfile(p);
+        saveProfile(p, opts);
         profile = p; expanded = false;
         render();
         opts.onChange?.(profile);
@@ -165,7 +169,7 @@ export function mountBirthCard(container, opts = {}) {
 
   render();
   return {
-    get: () => loadProfile(),
+    get: () => loadProfile(opts),
   };
 }
 

@@ -9,6 +9,7 @@ const NAV = [
   { href: R + 'index.html', text: '首页' },
   { href: P + 'horoscope.html', text: '每日星象' },
   { href: P + 'natal.html', text: '西方星盘' },
+  { href: P + 'synastry.html', text: '合盘' },
   { href: P + 'tarot.html', text: '塔罗占卜' },
   { href: P + 'bazi.html', text: '八字排盘' },
   { href: P + 'ziwei.html', text: '紫微斗数' },
