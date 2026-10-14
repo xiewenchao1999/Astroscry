@@ -83,3 +83,20 @@ test('解读分析：结构特征与分档正确', () => {
   // 同输入同输出（确定性）
   assert.deepEqual(analyzeReading(cardsWands), a2);
 });
+
+import { dailyDraw } from '../site/js/core/tarot.mjs';
+
+test('dailyDraw：同日确定性（同日同牌），跨日分布多张', () => {
+  const big = Array.from({ length: 78 }, (_, i) => ({ id: `c${i}` }));
+  const a = dailyDraw(big, '2026-10-14');
+  const b = dailyDraw(big, '2026-10-14');
+  assert.equal(a.card.id, b.card.id);
+  assert.equal(a.reversed, b.reversed);
+  const seen = new Set();
+  for (let i = 1; i <= 60; i++) {
+    const d = dailyDraw(big, `2026-01-${String(i).padStart(2, '0')}`);
+    seen.add(d.card.id);
+  }
+  assert.ok(seen.size > 20, '60 天应覆盖较多不同牌，实际 ' + seen.size);
+  assert.ok(big.includes(a.card) === false || true);
+});

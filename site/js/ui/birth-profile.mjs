@@ -16,9 +16,11 @@ export function loadProfile(opts) {
 }
 export function saveProfile(p, opts) {
   localStorage.setItem(keyOf(opts), JSON.stringify(p));
+  window.dispatchEvent(new CustomEvent('astroscry:profile-saved')); // 首页等监听方刷新派生视图
 }
 export function clearProfile(opts) {
   localStorage.removeItem(keyOf(opts));
+  window.dispatchEvent(new CustomEvent('astroscry:profile-cleared'));
 }
 
 const pad = (n) => String(n).padStart(2, '0');

@@ -37,6 +37,16 @@ export function shuffle(deck, rng) {
   return arr;
 }
 
+/**
+ * 今日一牌（日签）：日期字符串 FNV-1a hash 确定性选牌与正逆。
+ * 与占卜抽牌的 crypto 真随机不同——日签语义是「同一天同一张」，属日期映射而非随机。
+ */
+export function dailyDraw(deck, dateISO) {
+  let h = 2166136261;
+  for (const c of String(dateISO)) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); }
+  return { card: deck[Math.abs(h) % deck.length], reversed: (h >>> 31) === 1 };
+}
+
 /** 数据完整性校验（加载 tarot.json 后调用） */
 export function validateDeck(deck) {
   const ids = new Set(deck.map((c) => c.id));

@@ -20,6 +20,7 @@ const DOMAINS = {
   horoscope: '西方占星每日行运（当日行星天象与十二星座运势评分）',
   tarot: '塔罗牌阵（每张牌的位置职责、牌名与正逆位）',
   synastry: '西方占星合盘（双方行星跨盘相位、契合度评分、宫位叠加）',
+  daily: '今日综合盘（星座运势、今日八字宜忌、紫微运限、奇门时局、塔罗日签的当日汇总）',
 };
 
 export function domainLabel(domain) { return DOMAINS[domain]; }
