@@ -16,6 +16,9 @@ function walk(dir, out = []) {
 }
 
 const SOURCE_FILES = walk(SITE).filter((f) => /\.(mjs|html|css|json)$/.test(f) && !f.includes('vendor'));
+// ADR-002：ui/ai-*.mjs 是 opt-in AI 模块，允许 AI 相关字面量（fetch 变量、Bearer 等）；
+// 但 fetch 仍受「隐私不变量」约束（fetch 参数不得硬编码外部 URL）
+const NON_AI_FILES = SOURCE_FILES.filter((f) => !/ui[\\/]ai-/.test(f));
 
 test('隐私不变量：无外部主机资源引用（vendor 脚本与数据全部本地）', () => {
   for (const f of SOURCE_FILES) {
@@ -42,12 +45,26 @@ test('隐私不变量：无外部主机资源引用（vendor 脚本与数据全�
 
 test('非 AI 不变量：无任何大模型 API 痕迹', () => {
   const patterns = [/openai/i, /anthropic/i, /claude/i, /gpt-?\d/i, /deepseek/i, /qianwen|qwen/i, /api[_-]?key/i, /sk-[a-zA-Z0-9]{10,}/, /chat\.?completions/i];
-  for (const f of SOURCE_FILES) {
+  for (const f of NON_AI_FILES) {
     const src = readFileSync(f, 'utf8');
     for (const p of patterns) {
       assert.ok(!p.test(src), `${f} 疑似包含大模型 API 痕迹：${p}`);
     }
   }
+});
+
+test('ADR-002 边界：core 不得 import ai-reading/ai-settings（依赖方向单向）', () => {
+  const CORE = join(SITE, 'js', 'core');
+  for (const f of walk(CORE).filter((f) => f.endsWith('.mjs'))) {
+    const src = readFileSync(f, 'utf8');
+    assert.ok(!/ai-reading|ai-settings/.test(src), `${f} 违反 ADR-002：core 不得依赖 ai-* 模块`);
+  }
+});
+
+test('ADR-002 默认关闭态：ai-settings.mjs 字面量 enabled:false 存在', () => {
+  const f = join(SITE, 'js', 'ui', 'ai-settings.mjs');
+  const src = readFileSync(f, 'utf8');
+  assert.ok(/enabled:\s*false/.test(src), 'ai-settings.mjs 必须保留默认关闭字面量 enabled:false');
 });
 
 test('测试本身不得因 vendor 目录被误判', () => {
