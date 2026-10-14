@@ -156,6 +156,7 @@ export function castNatal(input) {
     asc, mc,
     ascSign: ascInfo.signCn, mcSign: signOf(mc).signCn,
     ascSignKey: ascInfo.signKey,
+    ascSignIndex: ascInfo.signIndex,
     houses,
     aspects: calcAspects(planets),
     elements: countElements(planets),

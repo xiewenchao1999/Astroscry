@@ -96,3 +96,48 @@ export function strengthsAndChallenges(items, n = 3) {
 export function pairKey(aKey, bKey) {
   return [aKey, bKey].sort().join('-');
 }
+
+/** 整宫制：黄经 → 相对上升星座的第几宫（1-12）。signIndex 缺省时由黄经推导（兼容 computeSky 输出） */
+function wholeSignHouse(lon, ascSignIndex) {
+  const signIndex = Math.floor((((lon % 360) + 360) % 360) / 30);
+  return (((signIndex - ascSignIndex) % 12) + 12) % 12 + 1;
+}
+
+/**
+ * 宫位叠加：A 的行星落入 B 的哪些宫（aInB），B 的行星落入 A 的哪些宫（bInA）。
+ * @param {object} natalA/natalB {planets, ascSignIndex}（castNatal() 输出）
+ * @returns {{aInB:Array, bInA:Array}} 各按宫位升序、同宫按行星权重降序
+ */
+export function houseOverlay(natalA, natalB) {
+  const map = (planets, ascIdx) => Object.values(planets).map((p) => ({
+    planet: p.key, planetCn: p.cn, signCn: p.signCn,
+    house: wholeSignHouse(p.lon, ascIdx),
+  })).sort((x, y) => x.house - y.house || (PLANET_WEIGHT[y.planet] ?? 1) - (PLANET_WEIGHT[x.planet] ?? 1));
+  return { aInB: map(natalA.planets, natalB.ascSignIndex), bInA: map(natalB.planets, natalA.ascSignIndex) };
+}
+
+// 关系维度：按行星类别划分，顺序即优先级（每条相位只计入第一个命中的维度，保证互斥）
+// ponytail: 划分为传统占星经验的粗分类（金火=吸引、水=沟通、日月=情感、木土=承诺），外行星（天/海/冥）不单独设维度
+const DIMENSION_DEFS = [
+  { key: 'romance', cn: '恋爱吸引', match: (a, b) => ['venus', 'mars'].includes(a) || ['venus', 'mars'].includes(b) },
+  { key: 'mental', cn: '智识沟通', match: (a, b) => a === 'mercury' || b === 'mercury' },
+  { key: 'emotional', cn: '情感共鸣', match: (a, b) => ['sun', 'moon'].includes(a) || ['sun', 'moon'].includes(b) },
+  { key: 'stability', cn: '长期承诺', match: (a, b) => ['jupiter', 'saturn'].includes(a) || ['jupiter', 'saturn'].includes(b) },
+];
+
+/**
+ * 兼容度分类维度：把跨盘相位按维度互斥分组，各维度独立评分（与总分同模型）。
+ * @returns {object} {romance:{cn,count,score,top}, ...} 无相位的维度 score=null
+ */
+export function compatibilityDimensions(items) {
+  const out = {};
+  for (const def of DIMENSION_DEFS) {
+    const subset = items.filter((it) => def.match(it.a, it.b));
+    out[def.key] = {
+      cn: def.cn, count: subset.length,
+      score: subset.length ? compatibilityScore(subset) : null,
+      top: subset[0] ?? null,
+    };
+  }
+  return out;
+}

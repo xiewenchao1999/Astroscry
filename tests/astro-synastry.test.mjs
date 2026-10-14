@@ -7,7 +7,7 @@ globalThis.self = globalThis;
 globalThis.Astronomy = require('../site/vendor/astronomy.min.js');
 
 import { castNatal, computeSky } from '../site/js/core/astro.mjs';
-import { interAspects, compatibilityScore, strengthsAndChallenges, pairKey } from '../site/js/core/astro-synastry.mjs';
+import { interAspects, compatibilityScore, strengthsAndChallenges, pairKey, houseOverlay, compatibilityDimensions } from '../site/js/core/astro-synastry.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -95,4 +95,52 @@ test('行运：今日天象 × 本命（computeSky × castNatal 同引擎）', (
   const { items } = interAspects(sky.planets, natal.planets);
   assert.ok(items.length > 0, '行运应至少有一条相位');
   assert.ok(items[0].strength >= items.at(-1).strength, '应按强度降序');
+});
+
+test('宫位叠加：几何构造（整宫制换盘落宫）', () => {
+  // A 上升在白羊（index 0）：sun@0° 落自己第 1 宫，moon@200°（天秤）落第 7 宫
+  const A = { ascSignIndex: 0, planets: { sun: mk('sun', '太阳', 0), moon: mk('moon', '月亮', 200) } };
+  // B 上升也在白羊，其 sun@90°（巨蟹）应落入 A 的第 4 宫
+  const B = { ascSignIndex: 0, planets: { sun: mk('sun', '太阳', 90) } };
+  const { bInA, aInB } = houseOverlay(A, B);
+  assert.equal(bInA.length, 1);
+  assert.equal(bInA[0].house, 4, 'B 太阳（巨蟹）应落入 A 的第 4 宫');
+  assert.deepEqual(aInB.map((x) => x.house), [1, 7], 'A 的日/月相对 B 上升落第 1/7 宫');
+  // 跨黄道零点回绕：A 上升双鱼（index 11），B sun@0°（白羊）应落 A 的第 2 宫
+  const wrapA = { ascSignIndex: 11, planets: {} };
+  const wrap = houseOverlay(wrapA, { ascSignIndex: 0, planets: { sun: mk('sun', '太阳', 0) } });
+  assert.equal(wrap.bInA[0].house, 2, '黄经回绕后应为第 2 宫而非负数');
+});
+
+test('宫位叠加：真实双盘（条数守恒、宫位范围 1-12）', () => {
+  const nA = castNatal({ year: 2000, month: 1, day: 1, hour: 12, minute: 0, lat: 39.9042, lon: 116.4074, tzOffsetHours: 8 });
+  const nB = castNatal({ year: 1992, month: 8, day: 14, hour: 14, minute: 30, lat: 51.5074, lon: -0.1278, tzOffsetHours: 1 });
+  const { aInB, bInA } = houseOverlay(nA, nB);
+  assert.equal(aInB.length, Object.keys(nA.planets).length);
+  assert.equal(bInA.length, Object.keys(nB.planets).length);
+  assert.ok([...aInB, ...bInA].every((x) => x.house >= 1 && x.house <= 12));
+  // 同宫内按行星权重降序
+  const firstPair = aInB.filter((x) => x.house === aInB[0].house);
+  assert.ok(firstPair.length === 1 || (firstPair[0].planet === 'sun' || firstPair[0].planet === 'moon'), '同宫应高权重行星在前');
+});
+
+test('维度评分：互斥划分、空维度为 null、与总分同模型', () => {
+  // sun-sun 拱 → 情感；venus-venus 拱 → 恋爱；mercury-pluto 合 → 沟通；无木土 → 承诺为 null
+  const A = { sun: mk('sun', '太阳', 0), venus: mk('venus', '金星', 100), mercury: mk('mercury', '水星', 200) };
+  const B = { sun: mk('sun', '太阳', 120), venus: mk('venus', '金星', 220), pluto: mk('pluto', '冥王星', 200) };
+  const { items } = interAspects(A, B);
+  assert.equal(items.length, 3, `应恰好 3 条相位，实际 ${JSON.stringify(items)}`);
+  const dims = compatibilityDimensions(items);
+  assert.equal(dims.emotional.count, 1);
+  assert.equal(dims.romance.count, 1);
+  assert.equal(dims.mental.count, 1);
+  assert.equal(dims.stability.score, null, '无木土相位 → 承诺维度为 null');
+  assert.equal(dims.stability.count, 0);
+  const scores = [dims.romance, dims.mental, dims.emotional].map((d) => d.score);
+  assert.ok(scores.every((s) => s >= 0 && s <= 100));
+  assert.equal(dims.romance.count + dims.mental.count + dims.emotional.count + dims.stability.count, items.length, '互斥划分应覆盖全部相位');
+  assert.ok(dims.romance.top.aCn, 'top 应携带最强相位供页面引用');
+  // 空输入
+  const empty = compatibilityDimensions([]);
+  assert.ok(Object.values(empty).every((d) => d.score === null && d.count === 0));
 });

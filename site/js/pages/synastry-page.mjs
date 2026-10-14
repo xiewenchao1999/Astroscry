@@ -2,7 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal } from '../core/astro.mjs';
-import { interAspects, compatibilityScore, strengthsAndChallenges, pairKey } from '../core/astro-synastry.mjs';
+import { interAspects, compatibilityScore, compatibilityDimensions, strengthsAndChallenges, pairKey, houseOverlay } from '../core/astro-synastry.mjs';
 import { revealCards, withBusy, announce } from '../ui/motion.mjs';
 
 renderLayout();
@@ -20,14 +20,20 @@ function castOne(card, label) {
   return castNatal({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, lat: p.lat, lon: p.lon, tzOffsetHours: p.tz, cityName: p.cityName });
 }
 
+const bandOf = (score) => interp.scoreBands.find((b) => score >= b.min);
+
 function render(nA, nB, pA, pB) {
   const { items, summary } = interAspects(nA.planets, nB.planets);
   const score = compatibilityScore(items);
+  const dims = compatibilityDimensions(items);
+  const overlay = houseOverlay(nA, nB);
   const { harmonious, challenging, neutral } = strengthsAndChallenges(items, 4);
-  const band = interp.scoreBands.find((b) => score >= b.min);
+  const band = bandOf(score);
 
   const row = (x) => `<tr><td>${x.aCn} ${x.aspectCn} ${x.bCn}</td><td style="color:var(--muted)">容许度 ${x.orb}°</td><td>${x.strength}</td></tr>`;
   const pairText = (x) => interp.pairs[pairKey(x.a, x.b)] ?? interp.pairFallback.replace('{aCn}', x.aCn).replace('{bCn}', x.bCn).replace('{aspectCn}', x.aspectCn).replace('{natureText}', interp.natureTexts[x.nature]);
+  const overlayTable = (list) => `<table class="plain"><tr><th>行星</th><th>落宫</th><th>领域</th></tr>
+    ${list.map((x) => `<tr><td>${x.planetCn}<span style="color:var(--muted);font-size:12px;">（${x.signCn}）</span></td><td><b>第 ${x.house} 宫</b></td><td style="color:var(--muted);font-size:13px;">${interp.houses[String(x.house)]}</td></tr>`).join('')}</table>`;
 
   els.result.innerHTML = `
     <div class="card"><h3>总览</h3>
@@ -45,12 +51,30 @@ function render(nA, nB, pA, pB) {
       <p style="margin-top:10px;">${band.text}</p>
       <div style="margin-top:8px;">${Object.entries(summary.byType).map(([k, v]) => `<span class="pill">${k} × ${v}</span>`).join('')}</div>
     </div>
+    <div class="card"><h3>${interp.dimensionsTitle}</h3>
+      <table class="plain"><tr><th>维度</th><th>评分</th><th>档位</th><th>最强互动</th></tr>
+      ${Object.values(dims).map((d) => `<tr>
+        <td>${d.cn}</td>
+        <td>${d.score ?? '—'}</td>
+        <td>${d.score != null ? bandOf(d.score).cn : '—'}</td>
+        <td style="color:var(--muted)">${d.top ? `${d.top.aCn} ${d.top.aspectCn} ${d.top.bCn}` : interp.dimensionEmpty}</td>
+      </tr>`).join('')}
+      </table>
+      <p class="note">${interp.dimensionNote}</p>
+    </div>
     <div class="grid grid-2">
       <div class="card"><h3>关系优势（最强和谐相位）</h3>
         ${harmonious.length ? `<table class="plain">${harmonious.map((x) => row(x)).join('')}</table>${harmonious.map((x) => `<p style="font-size:13px;color:var(--muted)">▸ ${pairText(x)}</p>`).join('')}` : '<p class="hint">无显著和谐相位</p>'}
       </div>
       <div class="card"><h3>关系课题（最强挑战相位）</h3>
         ${challenging.length ? `<table class="plain">${challenging.map((x) => row(x)).join('')}</table>${challenging.map((x) => `<p style="font-size:13px;color:var(--muted)">▸ ${pairText(x)}</p>`).join('')}` : '<p class="hint">无显著挑战相位</p>'}
+      </div>
+    </div>
+    <div class="card"><h3>${interp.overlayTitle}</h3>
+      <p class="hint">${interp.overlayNote}</p>
+      <div class="grid grid-2" style="margin-top:10px;">
+        <div><h4 style="margin:0 0 8px;">${interp.overlayATitle}</h4>${overlayTable(overlay.aInB)}</div>
+        <div><h4 style="margin:0 0 8px;">${interp.overlayBTitle}</h4>${overlayTable(overlay.bInA)}</div>
       </div>
     </div>
     <div class="card"><h3>全部跨盘相位（按强度降序）</h3>
