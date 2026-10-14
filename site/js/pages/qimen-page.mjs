@@ -1,6 +1,7 @@
 // qimen-page.mjs — 奇门页胶水：起局时间 → core/qimen 排盘 → 九宫格渲染 + 点宫释义
 import { renderLayout, loadData, showError, esc } from '../ui/layout.mjs';
 import { castQimen } from '../core/qimen.mjs';
+import { readQimen } from '../core/qimen-reading.mjs';
 import { stagger, revealCards, withBusy, announce } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -53,8 +54,17 @@ function render(q) {
       ${LUO.map((p) => cell(q, p)).join('')}
     </div>
     <div id="detail" class="result" style="margin-top:14px;"></div>
-    <div class="card" style="margin-top:14px;"><h3>读盘要点</h3>
-      ${interp.guide.map((g) => `<p>▸ ${g}</p>`).join('')}
+    <div class="card" style="margin-top:14px;"><h3>流程读盘</h3>
+      ${(() => { const rd = readQimen(q, interp); return `
+      <p style="text-align:center;color:var(--accent);font-weight:700;">${rd.summary}</p>
+      ${rd.steps.map((s, i) => `
+        <details style="margin-top:8px;" ${i === 0 ? 'open' : ''}>
+          <summary style="cursor:pointer;color:var(--accent2);font-weight:600;">${interp.reading.titles[s.key]}</summary>
+          ${s.items.map((it) => `<p${it.tone ? ` style="color:var(--${it.tone})"` : ''}><b>${it.label}：</b>${it.value}</p>`).join('')}
+        </details>`).join('')}`; })()}
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--muted);">读盘总则</summary>
+        ${interp.guide.map((g) => `<p class="note">▸ ${g}</p>`).join('')}
+      </details>
       <p class="note">${interp.disclaimer}</p>
     </div>`;
   stagger(els.stage.querySelector('.qimen-grid'), '.qimen-cell');
@@ -74,18 +84,18 @@ function cell(q, p) {
   const c = q.palaces[p];
   const head = `<div class="q-gong">${'一二三四五六七八九'[p - 1]}宫</div>`;
   if (p === 5) {
-    return `<div class="qimen-cell center" aria-label="中宫，地盘${c.dg}">
-      ${head}<div class="q-dg">地盘 ${c.dg}</div><div class="q-note">${c.note}</div></div>`;
+    return `<div class="qimen-cell center" aria-label="中宫，地盘${q.earth[p]}">
+      ${head}<div class="q-dg">地盘 ${q.earth[p]}</div><div class="q-note">${c.note}</div></div>`;
   }
   const stars = c.stars.join(' ');
   return `<div class="qimen-cell" data-p="${p}" role="button" tabindex="0"
-      aria-label="${'一二三四五六七八九'[p - 1]}宫：${c.god}，${stars}，天盘干${c.tg}，${c.door}，地盘干${c.dg}，点击查看释义">
+      aria-label="${'一二三四五六七八九'[p - 1]}宫：${c.god}，${stars}，天盘干${c.tg}，${c.door}，地盘干${q.earth[p]}，点击查看释义">
     ${head}
     <div class="q-god">${c.god}</div>
     <div class="q-star">${stars}</div>
     <div class="q-tg">${c.tg}</div>
     <div class="q-door">${c.door}</div>
-    <div class="q-dg">地盘 ${c.dg}</div>
+    <div class="q-dg">地盘 ${q.earth[p]}</div>
   </div>`;
 }
 
@@ -107,7 +117,7 @@ function detail(q, p) {
       ${starRows}
       <p><b>${c.door}</b> <span class="pill ${door.jx.includes('凶') ? 'bad' : 'gold'}">${door.jx}</span> ${door.desc}</p>
       <p><b>天盘干：</b>${tgRows}</p>
-      <p class="hint">天盘干为现状，地盘干（${c.dg}）为其根基；同宫星门神组合即此方吉凶大势。</p>
+      <p class="hint">天盘干为现状，地盘干（${q.earth[p]}）为其根基；同宫星门神组合即此方吉凶大势。</p>
     </div>`;
   revealCards(box);
   box.querySelectorAll('.pill[title]').forEach((el) => { el.style.cursor = 'help'; });

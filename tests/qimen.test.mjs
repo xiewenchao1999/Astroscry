@@ -5,8 +5,13 @@ Object.assign(globalThis, require('../site/vendor/lunar.js'));
 globalThis.Astronomy = require('../site/vendor/astronomy.min.js');
 
 import { castQimen, JU_TABLE, TERMS } from '../site/js/core/qimen.mjs';
+import { readQimen } from '../site/js/core/qimen-reading.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
+import { readFileSync } from 'fs';
+import { join } from 'path';
+
+const QMEN_INTERP = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-qimen.json'), 'utf8'));
 
 const WHEEL = [1, 8, 3, 4, 9, 2, 7, 6];
 
@@ -93,4 +98,20 @@ test('结构不变量：星门神齐备无重复、天盘干守恒、甲不上�
     assert.ok(q.palaces.every || true);
     assert.ok(q.palaces[5].dg, '中宫有地盘干');
   }
+});
+
+test('流程读盘：基准盘 2000-01-01 12:00 五步结构与盘眼结论', () => {
+  const q = castQimen({ year: 2000, month: 1, day: 1, hour: 12, minute: 0 });
+  const rd = readQimen(q, QMEN_INTERP);
+  assert.ok(rd.summary.includes('天冲') && rd.summary.includes('伤门'), 'summary 含盘眼星门');
+  assert.equal(rd.steps[0].key, 'ju');
+  const keys = rd.steps.map((s) => s.key);
+  for (const k of ['ju', 'eyes', 'yongshen', 'overview']) assert.ok(keys.includes(k), `缺少步骤 ${k}`);
+  const eyes = rd.steps.find((s) => s.key === 'eyes');
+  assert.ok(eyes.items.some((it) => it.value.includes('天冲') && it.value.includes('宫')));
+  assert.ok(eyes.items.some((it) => it.value.includes('伤门') && it.value.includes('宫')));
+  const ys = rd.steps.find((s) => s.key === 'yongshen');
+  assert.ok(ys.items.length >= 3, '用神步骤至少覆盖 3 个领域');
+  const ov = rd.steps.find((s) => s.key === 'overview');
+  assert.ok(ov.items.every((it) => typeof it.value === 'string' && it.value.length > 0));
 });

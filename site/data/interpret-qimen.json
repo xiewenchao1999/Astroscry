@@ -51,5 +51,33 @@
     "同宫组合：门为事情的门路吉凶，星为其状态强弱，神为其背后力量，天盘干为现状、地盘干为其根基。",
     "本盘暂不提示击刑、入墓、门迫等深层格局（升级路径见 core/qimen.mjs ponytail 注）。"
   ],
+  "reading": {
+    "titles": {
+      "ju": "第一步 · 识局定盘",
+      "eyes": "第二步 · 盘眼（值符值使）",
+      "yongshen": "第三步 · 按问取用神",
+      "overview": "第四步 · 全盘吉凶举要",
+      "jingeng": "第五步 · 阻隔与提醒"
+    },
+    "summaryTpl": "盘眼{zfx}·{zsm}——{panYan}",
+    "panYanGood": "星吉门吉，盘眼相得，大局可为，宜乘势而进。",
+    "panYanBad": "星凶门凶，盘眼受制，宜守宜缓，勿强求冒进。",
+    "panYanMix": "吉凶互见，成败系于择时与方位，谨慎行事可趋吉避凶。",
+    "lJu": "定局",
+    "lFutou": "符头旬首",
+    "lPillars": "问事四柱",
+    "lZhiFu": "值符（事之主脑）",
+    "lZhiShi": "值使（事之执行）",
+    "lPanYan": "总判",
+    "yCareer": "问事业",
+    "yWealth": "问财运",
+    "yMarriage": "问婚姻",
+    "yHealth": "问疾病",
+    "lGoodDoors": "吉门落宫",
+    "lBadDoors": "凶门落宫",
+    "lMidDoors": "平门落宫",
+    "lGeng": "阻隔之干",
+    "lGengNote": "庚义"
+  },
   "disclaimer": "奇门遁甲是传统决策模型：结果仅供自我观察与推演参考，不构成医疗、法律、投资或重大决策依据。"
 }
