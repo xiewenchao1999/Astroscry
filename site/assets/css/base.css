@@ -139,8 +139,8 @@ table.plain th { color: var(--muted); font-weight: 500; }
 /* 塔罗 */
 .tarot-stage { display: flex; gap: 18px; flex-wrap: wrap; justify-content: center; padding: 10px 0; }
 .tarot-card { width: 158px; cursor: pointer; perspective: 900px; }
-.tarot-card .inner { position: relative; width: 100%; aspect-ratio: 5/8.6; transform-style: preserve-3d; transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1); }
-.tarot-card.open .inner { transform: rotateY(180deg); }
+.tarot-card .inner { position: relative; width: 100%; aspect-ratio: 5/8.6; transform-style: preserve-3d; transform: rotateY(var(--flip, 0deg)); transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1), translate 0.15s ease-out; }
+.tarot-card.open .inner { --flip: 180deg; }
 .tarot-card .face {
   position: absolute; inset: 0; backface-visibility: hidden;
   border-radius: 12px; display: flex; flex-direction: column;
@@ -286,8 +286,7 @@ table.plain th { color: var(--muted); font-weight: 500; }
 /* 塔罗：发牌落位 + 翻牌保持 */
 .tarot-card { animation: pop-in 0.45s cubic-bezier(0.22, 1, 0.36, 1) both; animation-delay: calc(var(--i, 0) * 110ms); }
 .tarot-card:focus-visible .inner { box-shadow: 0 0 0 2px var(--accent), 0 0 22px -6px rgba(240, 200, 109, 0.6); }
-.tarot-card:hover .inner { transform: translateY(-6px) rotateY(var(--flip, 0deg)); }
-.tarot-card.open:hover .inner { --flip: 180deg; }
+.tarot-card:hover .inner { translate: 0 -6px; }
 
 /* 表格行悬停提示（不改变布局） */
 table.plain tbody tr:hover, table.plain tr:hover { background: rgba(255, 255, 255, 0.03); }
@@ -313,5 +312,7 @@ input:focus-visible, select:focus-visible { outline-offset: 1px; }
     transition-duration: 0.001ms !important;
     scroll-behavior: auto !important;
   }
-  .entry:hover .e-ico, .tarot-card:hover .inner, .btn:active { transform: none !important; }
+  .entry:hover .e-ico, .btn:active { transform: none !important; }
+  /* 仅取消悬浮抬升：翻牌 rotateY 是状态不是动效，必须保留（否则悬停会翻回背面） */
+  .tarot-card:hover .inner { translate: none !important; }
 }
