@@ -1,13 +1,16 @@
-// natal-page.mjs — 西方本命盘页胶水
+// natal-page.mjs — 西方本命盘页胶水：出生信息卡（共享）→ castNatal → 渲染
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
-import { renderBirthForm } from '../ui/birth-form.mjs';
+import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal, SIGNS } from '../core/astro.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
 
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
-const [getValues, interp] = await Promise.all([renderBirthForm(els.form, { withGender: false, cityOptional: true }), loadData('../data/interpret-horoscope.json')]);
+const interp = await loadData('../data/interpret-horoscope.json');
+let lastRendered = false;
+
+const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
 
 function render(n) {
   const planetRows = Object.values(n.planets).map((p) => `
@@ -52,14 +55,18 @@ function render(n) {
     </div>`;
 }
 
-els.btn.addEventListener('click', () => {
+function cast() {
   try {
-    const v = getValues();
-    if (v.lat == null) throw new Error('请先选择出生城市（需要经纬度计算上升点）');
-    const n = castNatal({ year: v.year, month: v.month, day: v.day, hour: v.hour, minute: v.minute, lat: v.lat, lon: v.lon, tzOffsetHours: v.tz, cityName: v.cityName });
+    const p = card.get();
+    if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
+    if (p.lat == null) { showError(els.result, '出生信息缺少城市：请点击「修改」补充出生城市（计算上升点需要经纬度）'); return; }
+    const n = castNatal({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, lat: p.lat, lon: p.lon, tzOffsetHours: p.tz, cityName: p.cityName });
     render(n);
+    lastRendered = true;
     els.result.scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
     showError(els.result, `绘制出错：${e.message}`);
   }
-});
+}
+
+els.btn.addEventListener('click', cast);

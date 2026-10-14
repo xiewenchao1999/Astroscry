@@ -1,12 +1,15 @@
-// bazi-page.mjs — 八字页胶水：表单 → castBazi → 渲染
+// bazi-page.mjs — 八字页胶水：出生信息卡（共享）→ castBazi → 渲染
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
-import { renderBirthForm } from '../ui/birth-form.mjs';
+import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
 
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast'), solar: document.getElementById('solarTime') };
-const [getValues, interp] = await Promise.all([renderBirthForm(els.form), loadData('../data/interpret-bazi.json')]);
+const interp = await loadData('../data/interpret-bazi.json');
+let lastRendered = false;
+
+const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
 
 function wuxingBar(five) {
   const total = Object.values(five).reduce((a, b) => a + b, 0) || 1;
@@ -73,13 +76,17 @@ function render(b) {
     </div>`;
 }
 
-els.btn.addEventListener('click', () => {
+function cast() {
   try {
-    const v = getValues();
-    const b = castBazi({ ...v, longitude: els.solar.checked ? v.lon : undefined });
+    const p = card.get();
+    if (!p) { showError(els.result, '请先在上方填写并保存出生信息（或到首页填写，全站通用）'); return; }
+    const b = castBazi({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender, longitude: els.solar.checked ? p.lon : undefined });
     render(b);
+    lastRendered = true;
     els.result.scrollIntoView({ behavior: 'smooth' });
   } catch (e) {
     showError(els.result, `排盘出错：${e.message}`);
   }
-});
+}
+
+els.btn.addEventListener('click', cast);

@@ -1,7 +1,10 @@
-// home-page.mjs — 首页：今日干支 + 月相摘要
+// home-page.mjs — 首页：出生信息卡片（一次填写全站通用）+ 今日干支/月相摘要
 import { renderLayout } from '../ui/layout.mjs';
+import { mountBirthCard } from '../ui/birth-profile.mjs';
 
 renderLayout();
+
+mountBirthCard(document.getElementById('birth-card'));
 
 const { Lunar, Solar } = globalThis;
 const A = globalThis.Astronomy;

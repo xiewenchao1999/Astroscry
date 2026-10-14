@@ -1,5 +1,6 @@
 // horoscope-page.mjs — 每日星象页胶水
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
+import { loadProfile } from '../ui/birth-profile.mjs';
 import { SIGNS, dailyFortune, computeSky, sunSignByDate } from '../core/astro.mjs';
 
 renderLayout();
@@ -9,6 +10,9 @@ let interp, fortune, sky;
 
 els.sign.innerHTML = SIGNS.map((s) => `<option value="${s.key}">${s.cn}座</option>`).join('');
 els.sign.value = 'leo';
+// 已保存出生信息时自动选中太阳星座
+const savedProfile = loadProfile();
+if (savedProfile) els.sign.value = sunSignByDate(savedProfile.month, savedProfile.day);
 window.__infer = () => {
   const d = els.birth.value;
   if (!d) return;
