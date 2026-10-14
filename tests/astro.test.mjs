@@ -127,3 +127,17 @@ test('本命盘解读：readNatal 结构与内容（基准盘 2000-08-16 北京�
   assert.ok(['本位', '固定', '变动'].includes(rd.modality.dominant));
   assert.ok(rd.summary.includes('太阳在') && rd.summary.includes('上升'), 'summary 含三巨头');
 });
+
+test('本命盘解读：姻缘视角块（月亮需求/金星爱语/第 7 宫伴侣画像）', () => {
+  const n = castNatal({ year: 2000, month: 8, day: 16, hour: 12, minute: 0, lat: 39.9042, lon: 116.4074, tzOffsetHours: 8 });
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const rd = readNatal(n, interp);
+  assert.ok(rd.love, 'love 块应存在');
+  assert.ok(rd.love.moonLine && rd.love.moonLine.length > 8);
+  assert.ok(rd.love.venusLine && rd.love.venusLine.length > 8);
+  assert.ok(rd.love.dscSign && rd.love.dscLine.includes('吸引'), '伴侣画像句式完整');
+  // 整宫制下第 7 宫 = 上升对宫
+  const ascIdx = n.ascSignIndex;
+  const dscIdx = n.houses.findIndex((h) => h.house === 7);
+  assert.notEqual(dscIdx, -1);
+});

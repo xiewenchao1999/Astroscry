@@ -78,6 +78,15 @@ export function readNatal(n, interp) {
   const modEntries = Object.entries(modCount).sort((a, b) => b[1] - a[1]);
   const modality = { dominant: modEntries[0][0], line: interp.modalityDominant[modEntries[0][0]] };
 
+  // 姻缘视角：月亮（亲密需求）+ 金星（爱的表达）+ 第 7 宫宫头（伴侣画像）
+  const house7 = n.houses?.find((h) => h.house === 7);
+  const love = house7 && interp.love ? {
+    moonLine: interp.love.moonNeeds[n.planets.moon.signKey],
+    venusLine: interp.love.venusStyle[n.planets.venus.signKey],
+    dscSign: house7.sign,
+    dscLine: interp.love.dscPartner[house7.signKey],
+  } : null;
+
   const summary = interp.summaryTpl
     .replace('{el}', elDominant)
     .replace('{mod}', modality.dominant)
@@ -85,5 +94,5 @@ export function readNatal(n, interp) {
     .replace('{moon}', n.planets.moon.signCn)
     .replace('{asc}', n.ascSign);
 
-  return { summary, inHouses, aspectLines, elements, modality };
+  return { summary, inHouses, aspectLines, elements, modality, love };
 }

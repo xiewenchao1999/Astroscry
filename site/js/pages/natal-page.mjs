@@ -98,6 +98,13 @@ function readingCard(n) {
       <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">关键相位判词（最紧 ${Math.min(6, rd.aspectLines.length)} 条）</summary>
         ${aspectItems || '<p class="hint">本盘无主要相位。</p>'}
       </details>
+      ${rd.love ? `
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">姻缘视角（单盘）</summary>
+        <p><b>亲密需求：</b>${rd.love.moonLine}</p>
+        <p><b>爱的表达：</b>${rd.love.venusLine}</p>
+        <p><b>伴侣画像：</b>第 7 宫（伴侣宫）宫头在${rd.love.dscSign}——${rd.love.dscLine}</p>
+        <p class="hint">想看双人匹配度？进「合盘」页输入双方出生信息，可计算契合度总分与四维度评分。</p>
+      </details>` : ''}
       <p class="note">${natalInterp.disclaimer}</p>
     </div>`;
 }
