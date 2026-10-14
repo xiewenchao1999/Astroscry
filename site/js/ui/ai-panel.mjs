@@ -91,7 +91,7 @@ function togglePanel(open) {
   els.panel.hidden = !open;
   els.fab.style.display = open ? 'none' : '';
   els.fab.setAttribute('aria-expanded', String(open));
-  if (open) els.q.focus();
+  if (open) els.q.focus(); else els.fab.focus(); // 焦点跟随 UI：收起后回到悬浮钮
 }
 
 function renderSrc() {
