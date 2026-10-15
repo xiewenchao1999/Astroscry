@@ -62,6 +62,27 @@ function renderAll() {
   window.__pick = (key) => { els.sign.value = key; renderDetail(key); };
 }
 
+/** 星座档案：关键词 + 六域评语 + 相性（语料来自 interpret-horoscope.json 的 signs[x]） */
+function signProfile(s) {
+  if (!s?.domains || !interp.domainsLabels) return '';
+  const lbl = interp.domainsLabels;
+  const nameOf = (k) => SIGNS.find((x) => x.key === k)?.cn ?? k;
+  const m = s.match;
+  return `
+    ${s.keywords ? `<p>${s.keywords.map((k) => `<span class="pill gold">${k}</span>`).join('')}</p>` : ''}
+    <details style="margin-top:10px;" open>
+      <summary style="cursor:pointer;color:var(--accent2);font-weight:600;">${interp.domainsTitle}</summary>
+      <p class="hint">${interp.domainsNote}</p>
+      ${Object.entries(lbl).map(([k, v]) => `<p><b>${v}：</b>${s.domains[k] ?? ''}</p>`).join('')}
+    </details>
+    ${m ? `<details style="margin-top:8px;">
+      <summary style="cursor:pointer;color:var(--accent2);font-weight:600;">${interp.matchTitle}</summary>
+      <p class="hint">${interp.matchNote}</p>
+      <p><b>${interp.matchBestLabel}：</b>${m.best.signs.map((k) => `<span class="pill good">${nameOf(k)}座</span>`).join('')} ${m.best.text}</p>
+      <p><b>${interp.matchHardLabel}：</b>${m.hard.signs.map((k) => `<span class="pill bad">${nameOf(k)}座</span>`).join('')} ${m.hard.text}</p>
+    </details>` : ''}`;
+}
+
 function renderDetail(signKey) {
   const f = fortune.find((x) => x.signKey === signKey);
   const s = interp.signs[signKey];
@@ -69,6 +90,7 @@ function renderDetail(signKey) {
   els.detail.innerHTML = `<h3>${s.cn} · 今日 ${f.level}（${f.score}/95）</h3>
     <p>${interp.levels[f.level]}。${s.advice[f.level]}</p>
     <p style="color:var(--muted);font-size:13.5px;">${s.cn}特质：${s.trait}</p>
+    ${signProfile(s)}
     <h3 style="margin-top:14px">评分因子（透明可查）</h3>
     ${f.factors.length ? f.factors.map((x) => `<span class="pill">${x}</span>`).join('') : '<span class="pill">今日无显著行运相位作用于守护星</span>'}
     <p class="note">${interp.disclaimer}</p>`;

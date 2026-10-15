@@ -121,3 +121,41 @@ test('塔罗问事主题：六主题齐备、字段闭合、general 排首位', 
   // 健康主题必须自带现实就医提示（高风险话题不可只留在总免责里）
   assert.ok(t.topicLens.health.focus.includes('就医'), '健康主题的聚焦句必须提示现实就医');
 });
+
+test('十二星座六域评语：每座 keywords + 六域 + 相性齐备（覆盖率 100%）', () => {
+  const h = D('interpret-horoscope.json');
+  const domains = Object.keys(h.domainsLabels);
+  assert.deepEqual(domains, ['love', 'career', 'money', 'social', 'health', 'growth'], '六域键与顺序应稳定');
+  for (const d of domains) assert.ok(h.domainsLabels[d].length >= 2, `域标签 ${d} 缺失`);
+
+  const signKeys = Object.keys(h.signs);
+  assert.equal(signKeys.length, 12, '十二星座齐备');
+  for (const k of signKeys) {
+    const s = h.signs[k];
+    assert.ok(s.cn && s.trait, `${k} 缺基础字段`);
+    assert.ok(Array.isArray(s.keywords) && s.keywords.length >= 3, `${k} 缺关键词`);
+    // 覆盖率：六个域一个都不能少，且不能是空串
+    assert.deepEqual(Object.keys(s.domains), domains, `${k} 的六域键不齐或顺序不符`);
+    for (const d of domains) {
+      assert.ok(typeof s.domains[d] === 'string' && s.domains[d].length >= 20, `${k}.${d} 评语缺失或过短`);
+    }
+    for (const which of ['best', 'hard']) {
+      const m = s.match?.[which];
+      assert.ok(m && Array.isArray(m.signs) && m.signs.length >= 2, `${k} 缺 ${which} 相性`);
+      for (const sk of m.signs) assert.ok(h.signs[sk], `${k}.${which} 引用了不存在的星座 ${sk}`);
+      assert.ok(m.text.length >= 15, `${k}.${which} 相性说明过短`);
+    }
+  }
+  // 档位文案深化：不再是「今天星象对你格外友好」这种一句话
+  for (const lv of ['旺', '顺', '平', '滞']) assert.ok(h.levels[lv].length >= 25, `档位 ${lv} 文案过薄`);
+});
+
+test('十二星座六域评语：同域文本不得跨星座重复（防模板化灌水）', () => {
+  const h = D('interpret-horoscope.json');
+  for (const d of Object.keys(h.domainsLabels)) {
+    const texts = Object.values(h.signs).map((s) => s.domains[d]);
+    assert.equal(new Set(texts).size, texts.length, `域 ${d} 出现重复文本`);
+  }
+  const kws = Object.values(h.signs).map((s) => s.keywords.join('/'));
+  assert.equal(new Set(kws).size, kws.length, '星座关键词出现重复');
+});

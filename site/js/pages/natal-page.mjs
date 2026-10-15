@@ -77,9 +77,22 @@ function render(n) {
       <p><b>太阳 · ${sun.cn}</b>：${sun.trait}</p>
       <p><b>月亮 · ${moon.cn}</b>：${moon.trait}</p>
       <p><b>上升 · ${asc.cn}</b>：${asc.trait}（上升是你呈现给世界的第一层气质。）</p>
+      ${sunDomainsBlock(n.planets.sun.signKey)}
       <p class="note">${interp.disclaimer}</p>
     </div>
     ${readingCard(rd)}`;
+}
+
+/** 太阳星座的六域评语（语料同每日星象页的 interpret-horoscope.json signs[x].domains） */
+function sunDomainsBlock(signKey) {
+  const s = interp.signs?.[signKey];
+  if (!s?.domains || !interp.domainsLabels) return '';
+  return `
+      <details style="margin-top:10px;"><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">太阳星座 · ${interp.domainsTitle}（${s.cn}）</summary>
+        <p class="hint">${interp.domainsNote}</p>
+        ${Object.entries(interp.domainsLabels).map(([k, v]) => `<p><b>${v}：</b>${s.domains[k] ?? ''}</p>`).join('')}
+        <p class="hint">想看当天运势与相性速览，请到「每日星象」页。</p>
+      </details>`;
 }
 
 /** 深入解读卡：综合判词 + 相位图形 + 元素/模式 + 行星落宫主题 + 关键相位判词（readNatal 规则引擎） */
