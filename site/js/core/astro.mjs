@@ -35,14 +35,27 @@ export const PLANETS = [
   { key: 'northnode', cn: '北交点', body: null },
 ];
 
-// 相位定义：角度 → [中文名, 容许度]；发光体（日月）额外放宽 2°
+// 相位定义（单一事实来源，O06）：本命 calcAspects 与跨盘 interAspects（astro-synastry.mjs）共用此表。
+// inNatal:false 的相位（150°/30°）只用于合盘与行运卡；本命页/星盘轮按 inNatal 过滤，仍只画前 5 种。
+// luminaryBonus：任一端为发光体（日/月）时的容许度加成（O06 归一：natal 与 synastry 统一 2°，原 synastry 为 1.5°）。
+// nature：吉凶性质（合盘汇总用）；conj 特殊处理为 neutral（见 astro-synastry.interAspects）。
 export const ASPECTS = [
-  { angle: 0, cn: '合相', key: 'conj', orb: 8, color: '#7dd3fc' },
-  { angle: 60, cn: '六合', key: 'sextile', orb: 4, color: '#86efac' },
-  { angle: 90, cn: '刑相', key: 'square', orb: 6, color: '#fca5a5' },
-  { angle: 120, cn: '拱相', key: 'trine', orb: 6, color: '#86efac' },
-  { angle: 180, cn: '冲相', key: 'opp', orb: 8, color: '#fca5a5' },
+  { angle: 0, cn: '合相', key: 'conj', orb: 8, color: '#7dd3fc', luminaryBonus: 2, inNatal: true, nature: 'neutral' },
+  { angle: 60, cn: '六合', key: 'sextile', orb: 4, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
+  { angle: 90, cn: '刑相', key: 'square', orb: 6, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
+  { angle: 120, cn: '拱相', key: 'trine', orb: 6, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
+  { angle: 180, cn: '冲相', key: 'opp', orb: 8, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
+  { angle: 150, cn: '补十二分相', key: 'quincunx', orb: 3, color: '#c4b5fd', luminaryBonus: 2, inNatal: false, nature: 'challenging' },
+  { angle: 30, cn: '十二分相', key: 'semisextile', orb: 2, color: '#94a3b8', luminaryBonus: 2, inNatal: false, nature: 'neutral' },
 ];
+
+// 跨盘相位强度评分的行星权重（合盘 synastry 与行运 transits 共用，astro-synastry.mjs 引用）。
+// 注意与 countElements 的 ELEMENT_WEIGHTS 语义不同：此处衡量相位交互强度，彼处衡量元素占比。
+export const PLANET_WEIGHT = {
+  sun: 3, moon: 3, venus: 2.5, mars: 2.5,
+  jupiter: 1.5, saturn: 1.5, mercury: 1.2,
+  uranus: 0.8, neptune: 0.8, pluto: 0.8, northnode: 0.5,
+};
 
 export function signOf(lon) {
   const i = Math.floor(((lon % 360) + 360) % 360 / 30) % 12;
@@ -72,6 +85,12 @@ function eclipticLonOfBody(Astronomy, body, dateUTC) {
   return ((sph.lon % 360) + 360) % 360;
 }
 
+/** 月相名（P17 单一事实来源：home-page 复用，勿再各持一份 8 元数组） */
+export function moonPhaseName(angle) {
+  const names = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
+  return names[Math.floor((angle + 22.5) / 45) % 8];
+}
+
 /**
  * 某时刻全部天体黄经 + 逆行 + 月相。
  */
@@ -90,13 +109,11 @@ export function computeSky(dateUTC) {
     planets[p.key] = { key: p.key, cn: p.cn, lon, retrograde, ...signOf(lon) };
   }
   const phaseAngle = A.MoonPhase(A.MakeTime(dateUTC));
-  const phaseNames = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
-  const phaseIdx = Math.floor((phaseAngle + 22.5) / 45) % 8;
   const illumination = A.Illumination(A.Body.Moon, A.MakeTime(dateUTC)).phase_fraction;
   return {
     dateUTC: dateUTC.toISOString(),
     planets,
-    moonPhase: { angle: phaseAngle, name: phaseNames[phaseIdx], illumination },
+    moonPhase: { angle: phaseAngle, name: moonPhaseName(phaseAngle), illumination },
   };
 }
 
@@ -173,7 +190,8 @@ export function countElements(planets) {
   return count;
 }
 
-function angDiff(a, b) {
+/** 角差（0-180）：相位判定的基础几何量（astro-synastry.mjs 同源引用，O06 收敛单份） */
+export function angDiff(a, b) {
   const d = Math.abs(a - b) % 360;
   return d > 180 ? 360 - d : d;
 }
@@ -188,7 +206,7 @@ export function calcAspects(planets) {
       if (a.key === 'northnode' || b.key === 'northnode') continue; // 交点不参与相位（传统处理之一）ponytail: 后续可加交点相位开关
       const diff = angDiff(a.lon, b.lon);
       for (const asp of ASPECTS) {
-        const orbMax = asp.orb + ((a.key === 'sun' || a.key === 'moon' || b.key === 'sun' || b.key === 'moon') ? 2 : 0);
+        const orbMax = asp.orb + ((a.key === 'sun' || a.key === 'moon' || b.key === 'sun' || b.key === 'moon') ? asp.luminaryBonus : 0);
         const orb = Math.abs(diff - asp.angle);
         if (orb <= orbMax) {
           out.push({ a: a.key, aCn: a.cn, b: b.key, bCn: b.cn, aspect: asp.key, aspectCn: asp.cn, angle: asp.angle, orb: +orb.toFixed(2), color: asp.color });
@@ -318,6 +336,7 @@ export function dailyFortune(dateUTC) {
       const other = asp.a === rulerKey ? asp.bCn : asp.b === rulerKey ? asp.aCn : null;
       if (!other || asp.a === asp.b) continue;
       const delta = transitScore(asp.aspect, asp.a === rulerKey ? asp.b : asp.a);
+      if (!delta) continue; // 收录但无权重因子的相位（如 150°/30°）不产出「+0」噪音因子
       score += delta;
       factors.push(`${other}${asp.aspectCn}守护星${s.ruler}（${delta > 0 ? '+' : ''}${delta}）`);
     }

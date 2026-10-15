@@ -1,9 +1,13 @@
 // wheel.mjs — 西方星盘 SVG 轮自绘（整宫制；无依赖、可在 Node 生成用于测试）
 // 输入 castNatal() 的输出；输出 SVG 字符串
 
+import { ASPECTS } from '../core/astro.mjs';
+
 const SIGN_GLYPHS = ['♈', '♉', '♊', '♋', '♌', '♍', '♎', '♏', '♐', '♑', '♒', '♓'];
 const PLANET_GLYPHS = { sun: '☉', moon: '☽', mercury: '☿', venus: '♀', mars: '♂', jupiter: '♃', saturn: '♄', uranus: '♅', neptune: '♆', pluto: '♇', northnode: '☊' };
-const ASPECT_COLORS = { conj: '#7dd3fc', sextile: '#86efac', trine: '#86efac', square: '#fca5a5', opp: '#fca5a5' };
+// O06：颜色随单一相位表派生；本命轮只画 inNatal:true 的相位（150°/30° 小相位仅合盘/行运使用）
+const ASPECT_COLORS = Object.fromEntries(ASPECTS.map((a) => [a.key, a.color]));
+const IN_NATAL = new Set(ASPECTS.filter((a) => a.inNatal).map((a) => a.key));
 
 const R_OUT = 210, R_SIGN = 178, R_DEG = 156, R_PLANET = 128, R_ASPECT = 96, CX = 220, CY = 220;
 
@@ -47,8 +51,9 @@ export function renderWheel(natal) {
   parts.push(`<line x1="${CX}" y1="${CY}" x2="${mcLine[0]}" y2="${mcLine[1]}" stroke="#f0c86d" stroke-width="1" stroke-dasharray="4 3" opacity="0.8"/>`);
   parts.push(`<text x="${mcLine[0]}" y="${mcLine[1] + 14}" text-anchor="middle" font-size="12" fill="#f0c86d" stroke="#0a0e23" stroke-width="3" paint-order="stroke">MC ${Math.round(natal.mc)}°</text>`);
 
-  // 相位线
+  // 相位线（本命口径：inNatal 过滤）
   for (const asp of natal.aspects) {
+    if (!IN_NATAL.has(asp.aspect)) continue;
     const a = natal.planets[asp.a], b = natal.planets[asp.b];
     if (!a || !b) continue;
     const [x0, y0] = pt(a.lon, R_ASPECT), [x1, y1] = pt(b.lon, R_ASPECT);

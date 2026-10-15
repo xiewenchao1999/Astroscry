@@ -1,7 +1,7 @@
 // natal-page.mjs — 西方本命盘页胶水：出生信息卡（共享）→ castNatal → 渲染
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
-import { castNatal, SIGNS, computeSky } from '../core/astro.mjs';
+import { castNatal, SIGNS, computeSky, ASPECTS } from '../core/astro.mjs';
 import { readNatal } from '../core/natal-reading.mjs';
 import { interAspects, strengthsAndChallenges } from '../core/astro-synastry.mjs';
 import { renderWheel } from '../ui/wheel.mjs';
@@ -11,6 +11,8 @@ import { setAISource } from '../ui/ai-panel.mjs';
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
+// O06：相位表为单一事实来源（全 7 种），本命页口径仍只取前 5 种（inNatal:true）；合盘/行运卡用全表
+const IN_NATAL = new Set(ASPECTS.filter((a) => a.inNatal).map((a) => a.key));
 const [interp, synInterp, natalInterp] = await Promise.all([
   loadData('../data/interpret-horoscope.json'),
   loadData('../data/interpret-synastry.json'),
@@ -138,6 +140,7 @@ function cast() {
   withBusy(els.btn, '绘制中…', () => {
     try {
       const n = castNatal({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, lat: p.lat, lon: p.lon, tzOffsetHours: p.tz, cityName: p.cityName });
+      n.aspects = n.aspects.filter((a) => IN_NATAL.has(a.aspect)); // 本命口径：按 inNatal 过滤（星盘轮/相位表/解读共用此 filtered 集）
       render(n);
       revealCards(els.result);
       animateMeters(els.result);

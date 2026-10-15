@@ -1,7 +1,7 @@
 // home-page.mjs — 首页：出生信息卡 + 今日干支/月相摘要 + 今日综合运势（星座/八字/紫微/奇门/塔罗 五域规则汇总）
 import { renderLayout, loadData } from '../ui/layout.mjs';
 import { mountBirthCard, loadProfile } from '../ui/birth-profile.mjs';
-import { dailyFortune, computeSky, sunSignByDate } from '../core/astro.mjs';
+import { dailyFortune, computeSky, sunSignByDate, moonPhaseName } from '../core/astro.mjs';
 import { castZiwei, ziweiHoroscope } from '../core/ziwei.mjs';
 import { castQimen } from '../core/qimen.mjs';
 import { readQimen } from '../core/qimen-reading.mjs';
@@ -30,8 +30,7 @@ try {
 } catch { /* 首页摘要失败不阻塞 */ }
 try {
   const angle = A.MoonPhase(A.MakeTime(now));
-  const names = ['新月', '娥眉月', '上弦月', '盈凸月', '满月', '亏凸月', '下弦月', '残月'];
-  moonText = `${names[Math.floor((angle + 22.5) / 45) % 8]}（月相角 ${angle.toFixed(0)}°）`;
+  moonText = `${moonPhaseName(angle)}（月相角 ${angle.toFixed(0)}°）`; // P17：月相名复用 core 单一事实来源
 } catch { /* 同上 */ }
 
 document.getElementById('today').innerHTML = `

@@ -70,3 +70,10 @@ test('ADR-002 默认关闭态：ai-settings.mjs 字面量 enabled:false 存在',
 test('测试本身不得因 vendor 目录被误判', () => {
   assert.ok(SOURCE_FILES.length > 10, '扫描文件数异常');
 });
+
+test('O06 单一事实来源：astro-synastry.mjs 不再自持相位定义表（ASPECT_DEFS 已删）', () => {
+  const src = readFileSync(join(SITE, 'js', 'core', 'astro-synastry.mjs'), 'utf8');
+  assert.ok(!src.includes('ASPECT_DEFS'), 'astro-synastry.mjs 不得再出现 ASPECT_DEFS（相位表统一在 astro.mjs 的 ASPECTS）');
+  assert.ok(!/\bangle:\s*\d/.test(src), 'astro-synastry.mjs 不得再自持角度字面量表');
+  assert.ok(/import\s*\{[^}]*ASPECTS[^}]*\}\s*from\s*'\.\/astro\.mjs'/.test(src), 'astro-synastry.mjs 应从 astro.mjs import ASPECTS');
+});

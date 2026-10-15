@@ -1,27 +1,8 @@
 // astro-synastry.mjs — 跨盘相位引擎（合盘 synastry 与行运 transits 共用，纯函数，无 DOM / 无网络）
 // 契约设计参考 RoxyAPI synastry-api 的响应结构（score/interAspects/summary/strengths/challenges），计算全部本地确定性实现
-// ponytail: 小相位仅收录 150°/30°（45°/135° 容许度极小且噪声大，暂缓）；评分权重为经验值，非统计模型
-
-const ASPECT_DEFS = [
-  { angle: 0, key: 'conj', cn: '合相', orb: 8, nature: 'neutral' },
-  { angle: 60, key: 'sextile', cn: '六合', orb: 4, nature: 'harmonious' },
-  { angle: 90, key: 'square', cn: '刑相', orb: 6, nature: 'challenging' },
-  { angle: 120, key: 'trine', cn: '拱相', orb: 6, nature: 'harmonious' },
-  { angle: 150, key: 'quincunx', cn: '补十二分相', orb: 3, nature: 'challenging' },
-  { angle: 30, key: 'semisextile', cn: '十二分相', orb: 2, nature: 'neutral' },
-  { angle: 180, key: 'opp', cn: '冲相', orb: 8, nature: 'challenging' },
-];
-
-const PLANET_WEIGHT = {
-  sun: 3, moon: 3, venus: 2.5, mars: 2.5,
-  jupiter: 1.5, saturn: 1.5, mercury: 1.2,
-  uranus: 0.8, neptune: 0.8, pluto: 0.8, northnode: 0.5,
-};
-
-function angDiff(a, b) {
-  const d = Math.abs(a - b) % 360;
-  return d > 180 ? 360 - d : d;
-}
+// 相位表/角差/行星权重统一 import 自 astro.mjs（O06 单一事实来源：ASPECTS 含 150°/30° 小相位，
+// 发光体加成 luminaryBonus 已与本命口径归一为 2°；ponytail: 45°/135° 容许度极小且噪声大，暂缓收录）
+import { ASPECTS, PLANET_WEIGHT, angDiff } from './astro.mjs';
 
 /**
  * 跨盘相位：A 盘行星 × B 盘行星。
@@ -35,9 +16,9 @@ export function interAspects(planetsA, planetsB) {
     for (const b of Object.values(planetsB)) {
       if (a.key === 'northnode' || b.key === 'northnode') continue;
       const diff = angDiff(a.lon, b.lon);
-      for (const def of ASPECT_DEFS) {
+      for (const def of ASPECTS) {
         const luminary = [a.key, b.key].some((k) => k === 'sun' || k === 'moon');
-        const orbMax = def.orb + (luminary ? 1.5 : 0);
+        const orbMax = def.orb + (luminary ? def.luminaryBonus : 0);
         const orb = Math.abs(diff - def.angle);
         if (orb > orbMax) continue;
         const w = (PLANET_WEIGHT[a.key] ?? 1) * (PLANET_WEIGHT[b.key] ?? 1);

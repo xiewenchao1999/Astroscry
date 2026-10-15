@@ -14,8 +14,9 @@ import test from 'node:test';
 const mk = (key, cn, lon) => ({ key, cn, lon });
 
 test('跨盘相位：精确几何构造（合/冲/拱/刑/六合/无）', () => {
-  // moon 放在 200°：与所有测试偏移（0/30/45/60/90/120/150/180）及发光体放宽后均构不成收录相位
-  const A = { sun: mk('sun', '太阳', 0), moon: mk('moon', '月亮', 200) };
+  // moon 放在 45°：对全部测试偏移（0/30/45/60/90/120/150/180）加上发光体加成后的各相位窗口均不入轨
+  // （O06 归一后发光体加成 2°，原 200° 夹具在 170° 差处恰好触到冲相窗口边界 10°，故挪位）
+  const A = { sun: mk('sun', '太阳', 0), moon: mk('moon', '月亮', 45) };
   const cases = [
     [0, 'conj'], [60, 'sextile'], [90, 'square'], [120, 'trine'], [150, 'quincunx'], [180, 'opp'], [30, 'semisextile'],
   ];
@@ -25,17 +26,17 @@ test('跨盘相位：精确几何构造（合/冲/拱/刑/六合/无）', () => 
     assert.equal(items.length, 1, `偏移 ${delta}° 应得 1 条相位，实际 ${JSON.stringify(items)}`);
     assert.equal(items[0].aspect, expect, `偏移 ${delta}° 应为 ${expect}，实际 ${items[0].aspect}`);
   }
-  // 无相位（45° 不在收录集合）
+  // 无相位（45° 不在收录集合；用仅含太阳的盘，避免与夹具 moon@45 构成合相）
   const B45 = { sun: mk('sun', '太阳', 45) };
-  assert.equal(interAspects(A, B45).items.length, 0, '45° 半刑不应收录（ponytail 范围外）');
+  assert.equal(interAspects({ sun: mk('sun', '太阳', 0) }, B45).items.length, 0, '45° 半刑不应收录（ponytail 范围外）');
 });
 
-test('跨盘相位：发光体容许度放宽（任一端为日月即 +1.5°）', () => {
+test('跨盘相位：发光体容许度放宽（任一端为日月即 +2°，O06 与本命口径归一）', () => {
   // 非发光体对：上限 8°，8.5° 不收录
   const A = { mars: mk('mars', '火星', 0) };
   assert.equal(interAspects(A, { pluto: mk('pluto', '冥王星', 8.5) }).items.length, 0);
   assert.equal(interAspects(A, { pluto: mk('pluto', '冥王星', 7.9) }).items.length, 1);
-  // 发光体对：上限 9.5°，9.4° 收录为合相
+  // 发光体对：上限 10°（原 1.5° 口径为 9.5°，行为变化点），9.4° 收录为合相
   const { items } = interAspects({ sun: mk('sun', '太阳', 0) }, { moon: mk('moon', '月亮', 9.4) });
   assert.equal(items.length, 1);
   assert.equal(items[0].aspect, 'conj');
