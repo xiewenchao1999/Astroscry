@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>周易占卦 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  /* 周易页局部样式：卦爻自下而上绘制 */
+  .yao-row { display: flex; align-items: center; gap: 10px; margin: 7px 0; }
+  .yao-bar { display: flex; gap: 10px; flex: 0 0 150px; height: 14px; }
+  .yao-bar i { background: var(--accent2, #8ea8ff); border-radius: 3px; flex: 1; }
+  .yao-row.yin .yao-bar { gap: 34px; }
+  .yao-pos { font-size: 13.5px; color: var(--muted); min-width: 44px; }
+  .yao-mark { font-size: 16px; font-weight: 700; color: var(--bad, #f87171); min-width: 20px; }
+  .yao-value { font-size: 12.5px; color: var(--muted); }
+  .method-desc { font-size: 13px; color: var(--muted); margin: 6px 0 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>周易占卦</h1>
+  <p class="page-sub">六十四卦 · 铜钱摇卦 / 梅花易数 / 三数法 · 朱熹《易学启蒙》变爻取辞 · 全部本地计算</p>
+
+  <div class="card">
+    <h3>起卦</h3>
+    <div class="seg-group" id="method" style="margin-bottom:10px;">
+      <button type="button" data-v="coin" class="active">铜钱摇卦</button>
+      <button type="button" data-v="plumTime">梅花开局</button>
+      <button type="button" data-v="plumThree">三数法</button>
+    </div>
+    <div id="method-desc" class="method-desc"></div>
+
+    <div id="panel-coin">
+      <form class="panel" style="margin-top:10px;">
+        <div style="grid-column:1/-1;"><label>所问何事（可选，仅用于你自己聚焦与 AI 提问）</label><input type="text" id="coin-question" placeholder="如：此事本月内可成否" autocomplete="off"></div>
+        <div style="align-self:end;"><button class="btn" type="button" id="coin-cast">静心摇卦</button></div>
+      </form>
+    </div>
+
+    <div id="panel-plumTime" hidden>
+      <form class="panel" style="margin-top:10px;">
+        <div style="grid-column:1/-1;"><label>起卦时刻（默认现在，梅花时间卦以农历年月日时计）</label><input type="datetime-local" id="plum-time"></div>
+        <div style="align-self:end;"><button class="btn" type="button" id="plum-cast">以此时起卦</button></div>
+      </form>
+    </div>
+
+    <div id="panel-plumThree" hidden>
+      <form class="panel" style="margin-top:10px;">
+        <div><label>上卦数</label><input type="number" id="n1" min="1" value="7"></div>
+        <div><label>下卦数</label><input type="number" id="n2" min="1" value="3"></div>
+        <div><label>动爻数</label><input type="number" id="n3" min="1" value="5"></div>
+        <div style="align-self:end;"><button class="btn" type="button" id="three-cast">以三数起卦</button></div>
+      </form>
+    </div>
+  </div>
+
+  <div id="stage"></div>
+</div>
+<script src="../vendor/lunar.js"></script>
+<script type="module" src="../js/pages/iching-page.mjs"></script>
+</body>
+</html>

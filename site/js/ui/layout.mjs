@@ -17,6 +17,8 @@ const NAV = [
   { href: P + 'bazi.html', text: '八字排盘' },
   { href: P + 'ziwei.html', text: '紫微斗数' },
   { href: P + 'qimen.html', text: '奇门遁甲' },
+  { href: P + 'iching.html', text: '周易占卦' },
+  { href: P + 'folk.html', text: '求签掷杯' },
   { href: P + 'about.html', text: '关于' },
 ];
 
