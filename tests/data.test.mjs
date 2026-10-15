@@ -278,3 +278,19 @@ test('塔罗牌间连线语料：经典组合键合法、全部模板占位符�
     assert.ok(t.synthesis[k].includes('{kw}'), `synthesis.${k} 缺 {kw}（关键词织入）`);
   }
 });
+
+// —— O03-S 进站闸门：开源白话语料的来源注记必须先行（provenance 即入站许可）——
+test('O03-S 进站闸门：iching/guanyin 语料 _meta.provenance 存在且含声明关键词', () => {
+  const check = (file, extra) => {
+    const meta = D(file)._meta;
+    const p = meta.provenance;
+    assert.ok(p, `${file} 缺 _meta.provenance（未注记来源不得进站）`);
+    assert.ok(p.repo && p.repo.length > 3, `${file} provenance 缺来源仓库`);
+    assert.equal(p.license, 'MIT', `${file} 许可应为 MIT`);
+    assert.ok(p.notice.includes('开源语料整理') && p.notice.includes('仅供文化研究'), `${file} 缺白话整理声明`);
+    assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(p.collected), `${file} provenance 缺采集日期`);
+    if (extra) extra(meta);
+  };
+  check('iching.json', (meta) => assert.ok(meta.source_url.includes('yijing-qimen'), 'iching source_url 应指向采集仓库'));
+  check('guanyin-signs.json', (meta) => assert.ok(meta.source_url.includes('guanyin'), 'guanyin source_url 应指向采集仓库'));
+});
