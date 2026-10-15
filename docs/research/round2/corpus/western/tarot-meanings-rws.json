@@ -1,0 +1,398 @@
+{
+  "_source": "https://github.com/ekelen/tarot-api/blob/master/static/card_data.json （static/card_data.json，内容逐字取自 A. E. Waite《The Pictorial Key to the Tarot》1911 年版，公有领域）",
+  "_date": "2026-10-15",
+  "_note": "en.* 为 Waite 1911 原文占卜词表（meaning_up / meaning_rev 的完整条目，比常见现代牌义表更全、含人物牌的传统人物含义）；cn.* 为本项目精炼中文对照（关键词式，每条 1 句），与 site/data/tarot.json 的单句式解读互补使用：tarot.json 管『读起来像话』，本文件管『词根可组合』。",
+  "_usage": "组合解读引擎可按 kw 拆词根做牌与牌关系推导；人物牌（Page/Knight/Queen/King）的 Waite 原文含传统『人物侧写』含义，现有语料缺这部分，可用于问『某人』类问题。",
+  "cards": {
+    "ar00": {
+      "name": "The Fool", "cn": "愚者",
+      "en": { "up": "Folly, mania, extravagance, intoxication, delirium, frenzy, bewrayment.", "rev": "Negligence, absence, distribution, carelessness, apathy, nullity, vanity." },
+      "cn": { "up": "忘乎所以的狂喜、不计后果的开端、痴迷与放纵。", "rev": "疏忽、心不在焉、冷漠、虚无、徒劳。" }
+    },
+    "ar01": {
+      "name": "The Magician", "cn": "魔术师",
+      "en": { "up": "Skill, diplomacy, address, subtlety; sickness, pain, loss, disaster, snares of enemies; self-confidence, will; the Querent, if male.", "rev": "Physician, Magus, mental disease, disgrace, disquiet." },
+      "cn": { "up": "技艺与手腕、自信与意志、以智取胜；亦含病痛与敌暗算的双面义。", "rev": "医师／智者的身份义；心疾、失态、不安。" }
+    },
+    "ar02": {
+      "name": "The High Priestess", "cn": "女祭司",
+      "en": { "up": "Secrets, mystery, the future as yet unrevealed; the woman who interests the Querent; silence, tenacity; mystery, wisdom, science.", "rev": "Passion, moral or physical ardour, conceit, surface knowledge." },
+      "cn": { "up": "秘密与未知、沉默与坚韧、秘传的智慧与学问。", "rev": "炽情、自负、一知半解的表层知识。" }
+    },
+    "ar03": {
+      "name": "The Empress", "cn": "女皇",
+      "en": { "up": "Fruitfulness, action, initiative, length of days; the unknown, clandestine; also difficulty, doubt, ignorance.", "rev": "Light, truth, the unravelling of involved matters, public rejoicings; according to another reading, vacillation." },
+      "cn": { "up": "丰饶与多产、主动作为、绵长福泽；亦含隐秘与疑难。", "rev": "真相大白、难题解开、公开的喜事；另一解：犹豫不决。" }
+    },
+    "ar04": {
+      "name": "The Emperor", "cn": "皇帝",
+      "en": { "up": "Stability, power, protection, realization; a great person; aid, reason, conviction; also authority and will.", "rev": "Benevolence, compassion, credit; also confusion to enemies, obstruction, immaturity." },
+      "cn": { "up": "稳固、权力与庇护、理性与信念、权威与意志。", "rev": "仁慈与宽恕、信誉；亦含阻碍与不成熟。" }
+    },
+    "ar05": {
+      "name": "The Hierophant", "cn": "教皇",
+      "en": { "up": "Marriage, alliance, captivity, servitude; by another account, mercy and goodness; inspiration; the man to whom the Querent has recourse.", "rev": "Society, good understanding, concord, overkindness, weakness." },
+      "cn": { "up": "婚约与同盟、受制与束缚、良师与依靠、灵感。", "rev": "社交与谅解、和睦；过度的善意即软弱。" }
+    },
+    "ar06": {
+      "name": "The Lovers", "cn": "恋人",
+      "en": { "up": "Attraction, love, beauty, trials overcome.", "rev": "Failure, foolish designs. Another account speaks of marriage frustrated and contrarieties of all kinds." },
+      "cn": { "up": "吸引与爱、美、渡过试炼。", "rev": "失算与愚蠢的计划、婚事受挫、诸事相违。" }
+    },
+    "ar07": {
+      "name": "The Chariot", "cn": "战车",
+      "en": { "up": "Succour, providence also war, triumph, presumption, vengeance, trouble.", "rev": "Riot, quarrel, dispute, litigation, defeat." },
+      "cn": { "up": "驰援与护佑、战争与凯旋；亦含僭越与祸患。", "rev": "骚乱、口角、争端、诉讼、败北。" }
+    },
+    "ar08": {
+      "name": "Strength", "cn": "力量",
+      "en": { "up": "Power, energy, action, courage, magnanimity; also complete success and honours.", "rev": "Despotism, abuse of power, weakness, discord, sometimes even disgrace." },
+      "cn": { "up": "力量与行动、勇气与宽宏、圆满成功与荣誉。", "rev": "专横与滥权、软弱与失和，甚或蒙羞。" }
+    },
+    "ar09": {
+      "name": "The Hermit", "cn": "隐士",
+      "en": { "up": "Prudence, circumspection; also and especially treason, dissimulation, roguery, corruption.", "rev": "Concealment, disguise, policy, fear, unreasoned caution." },
+      "cn": { "up": "审慎与周虑；亦含背叛、伪装与堕落的警示义。", "rev": "藏匿与掩饰、权谋、恐惧、无谓的过度谨慎。" }
+    },
+    "ar10": {
+      "name": "Wheel of Fortune", "cn": "命运之轮",
+      "en": { "up": "Destiny, fortune, success, elevation, luck, felicity.", "rev": "Increase, abundance, superfluity." },
+      "cn": { "up": "命运与机运、成功与跃升、福气。", "rev": "增益与丰盛，过犹不及的『多』。" }
+    },
+    "ar11": {
+      "name": "Justice", "cn": "正义",
+      "en": { "up": "Equity, rightness, probity, executive; triumph of the deserving side in law.", "rev": "Law in all its departments, legal complications, bigotry, bias, excessive severity." },
+      "cn": { "up": "公平与正直、执行力、有理者胜诉。", "rev": "法律纠纷、偏执与偏袒、执法过苛。" }
+    },
+    "ar12": {
+      "name": "The Hanged Man", "cn": "倒吊人",
+      "en": { "up": "Wisdom, circumspection, discernment, trials, sacrifice, intuition, divination, prophecy.", "rev": "Selfishness, the crowd, body politic." },
+      "cn": { "up": "智慧与明辨、试炼与牺牲、直觉与预言。", "rev": "自私自利、随波逐流的群体性。" }
+    },
+    "ar13": {
+      "name": "Death", "cn": "死神",
+      "en": { "up": "End, mortality, destruction, corruption; also, for a man, the loss of a benefactor; for a woman, many contrarieties; for a maid, failure of marriage projects.", "rev": "Inertia, sleep, lethargy, petrifaction, somnambulism; hope destroyed." },
+      "cn": { "up": "终结与死生、毁坏与朽坏；亦指恩主之失、诸事乖违。", "rev": "僵滞与昏睡、木然麻木、希望破灭。" }
+    },
+    "ar14": {
+      "name": "Temperance", "cn": "节制",
+      "en": { "up": "Economy, moderation, frugality, management, accommodation.", "rev": "Things connected with churches, religions, sects, the priesthood; also disunion, unfortunate combinations, competing interests." },
+      "cn": { "up": "节制与俭省、经营与协调、从容调度。", "rev": "教派与神职相关之事；失和、组合失当、利益相争。" }
+    },
+    "ar15": {
+      "name": "The Devil", "cn": "恶魔",
+      "en": { "up": "Ravage, violence, vehemence, extraordinary efforts, force, fatality; that which is predestined but is not for this reason evil.", "rev": "Evil fatality, weakness, pettiness, blindness." },
+      "cn": { "up": "狂暴与强力、殊死的努力、宿命之力（宿命未必为恶）。", "rev": "恶性的宿命、孱弱、琐碎、蒙蔽。" }
+    },
+    "ar16": {
+      "name": "The Tower", "cn": "高塔",
+      "en": { "up": "Misery, distress, indigence, adversity, calamity, disgrace, deception, ruin. It is a card in particular of unforeseen catastrophe.", "rev": "According to one account, the same in a lesser degree; also oppression, imprisonment, tyranny." },
+      "cn": { "up": "困苦与灾厄、耻辱与欺瞒、倾覆——尤指飞来横祸。", "rev": "同类灾祸较轻的一档；亦指压迫、禁锢、暴虐。" }
+    },
+    "ar17": {
+      "name": "The Star", "cn": "星星",
+      "en": { "up": "Loss, theft, privation, abandonment; another reading says—hope and bright prospects.", "rev": "Arrogance, haughtiness, impotence." },
+      "cn": { "up": "失窃与匮乏、被弃；另一解：希望与光明前景。", "rev": "傲慢与倨傲、力不从心。" }
+    },
+    "ar18": {
+      "name": "The Moon", "cn": "月亮",
+      "en": { "up": "Hidden enemies, danger, calumny, darkness, terror, deception, occult forces, error.", "rev": "Instability, inconstancy, silence, lesser degrees of deception and error." },
+      "cn": { "up": "暗敌与危险、中伤与黑暗、欺诈与迷误、隐秘之力。", "rev": "动摇与反复、沉默、程度较轻的欺瞒与谬误。" }
+    },
+    "ar19": {
+      "name": "The Sun", "cn": "太阳",
+      "en": { "up": "Material happiness, fortunate marriage, contentment.", "rev": "The same in a lesser sense." },
+      "cn": { "up": "现世的幸福、美满姻缘、心满意足。", "rev": "同义但程度较轻，喜中略有折损。" }
+    },
+    "ar20": {
+      "name": "Judgement", "cn": "审判",
+      "en": { "up": "Change of position, renewal, outcome. Another account specifies total loss though lawsuit.", "rev": "Weakness, pusillanimity, simplicity; also deliberation, decision, sentence." },
+      "cn": { "up": "地位变更、更新与结局；另一解：因讼大损。", "rev": "怯懦与天真；亦指深思、裁决与判词。" }
+    },
+    "ar21": {
+      "name": "The World", "cn": "世界",
+      "en": { "up": "Assured success, recompense, voyage, route, emigration, flight, change of place.", "rev": "Inertia, fixity, stagnation, permanence." },
+      "cn": { "up": "稳操的成功与回报、远行与迁居、换环境。", "rev": "惰性与凝滞、原地不动、局面的固化。" }
+    },
+    "wa01": {
+      "name": "Ace of Wands", "cn": "权杖王牌",
+      "en": { "up": "Creation, invention, enterprise, the powers which result in these; principle, beginning, source; birth, family, origin; the starting point of enterprises; according to another account, money, fortune, inheritance.", "rev": "Fall, decadence, ruin, perdition, to perish; also a certain clouded joy." },
+      "cn": { "up": "创造与发明、开创事业之力、起源与开端；另一解：钱财与遗产。", "rev": "衰落与倾颓、毁灭；亦指蒙尘的喜悦。" }
+    },
+    "wa02": {
+      "name": "Two of Wands", "cn": "权杖二",
+      "en": { "up": "Riches, fortune, magnificence; on the other hand, physical suffering, disease, chagrin, sadness, mortification. A lord overlooking his dominion and alternately contemplating a globe.", "rev": "Surprise, wonder, enchantment, emotion, trouble, fear." },
+      "cn": { "up": "财富与鸿图；亦含病痛、失意与悲苦的双面义。", "rev": "惊讶与奇遇、迷醉、忧惧与纷扰。" }
+    },
+    "wa03": {
+      "name": "Three of Wands", "cn": "权杖三",
+      "en": { "up": "Established strength, enterprise, effort, trade, commerce, discovery; able co-operation in business.", "rev": "The end of troubles, suspension or cessation of adversity, toil and disappointment." },
+      "cn": { "up": "已立之势、实业与商贾、探索、得力的协作。", "rev": "烦难将尽、逆境与辛劳告一段落。" }
+    },
+    "wa04": {
+      "name": "Four of Wands", "cn": "权杖四",
+      "en": { "up": "Country life, haven of refuge, a species of domestic harvest-home, repose, concord, harmony, prosperity, peace, and the perfected work of these.", "rev": "The meaning remains unaltered; it is prosperity, increase, felicity, beauty, embellishment." },
+      "cn": { "up": "田园安居、休憩与和睦、家宅丰登、功成之作。", "rev": "义不变：兴盛、增益、福乐与添彩。" }
+    },
+    "wa05": {
+      "name": "Five of Wands", "cn": "权杖五",
+      "en": { "up": "Imitation, sham fight, but also the strenuous competition and struggle of the search after riches and fortune; some attributions say gold, gain, opulence.", "rev": "Litigation, disputes, trickery, contradiction." },
+      "cn": { "up": "模拟与演练、为求财获利的激烈竞争；另一解：得金与富足。", "rev": "诉讼与争端、诡诈、彼此相左。" }
+    },
+    "wa06": {
+      "name": "Six of Wands", "cn": "权杖六",
+      "en": { "up": "A victor triumphing; great news carried in state by the King's courier; expectation crowned with its own desire, the crown of hope.", "rev": "Apprehension, fear, as of a victorious enemy at the gate; treachery, disloyalty; also indefinite delay." },
+      "cn": { "up": "凯旋与捷报、所望所求终得加冕。", "rev": "忧惧如败兵压境、背叛与不忠、遥遥无期的延宕。" }
+    },
+    "wa07": {
+      "name": "Seven of Wands", "cn": "权杖七",
+      "en": { "up": "Valour; six attacking one who has the vantage position; discussion, wordy strife; negotiations, war of trade, competition; a card of success.", "rev": "Perplexity, embarrassments, anxiety; a caution against indecision." },
+      "cn": { "up": "踞高临下的勇气、论战与谈判、商战与竞争——终属成功之牌。", "rev": "困窘与焦虑；警惕优柔寡断。" }
+    },
+    "wa08": {
+      "name": "Eight of Wands", "cn": "权杖八",
+      "en": { "up": "Activity in undertakings, swiftness, great haste, great hope, speed towards an assured felicity; that which is on the move; also the arrows of love.", "rev": "Arrows of jealousy, internal dispute, stingings of conscience, quarrels; domestic disputes." },
+      "cn": { "up": "事业骤速、疾行与厚望、奔向可期之福；亦指爱神之箭。", "rev": "嫉妒之矢、内讧与良心刺痛、争吵与家内不和。" }
+    },
+    "wa09": {
+      "name": "Nine of Wands", "cn": "权杖九",
+      "en": { "up": "Strength in opposition; meeting an onslaught boldly; delay, suspension, adjournment.", "rev": "Obstacles, adversity, calamity." },
+      "cn": { "up": "迎击之力、正面硬撼；亦指延期与暂缓。", "rev": "障碍与逆境、祸患。" }
+    },
+    "wa10": {
+      "name": "Ten of Wands", "cn": "权杖十",
+      "en": { "up": "Oppression simply; also fortune, gain, any kind of success; a card of false-seeming, disguise, perfidy. Success is stultified if the Nine of Swords follows.", "rev": "Contrarieties, difficulties, intrigues, and their analogies." },
+      "cn": { "up": "重压与负荷；亦指财利与成功；兼有虚饰与欺瞒义。", "rev": "乖违与困难、暗中搅局。" }
+    },
+    "wa11": {
+      "name": "Page of Wands", "cn": "权杖侍从",
+      "en": { "up": "Dark young man, faithful, a lover, an envoy, a postman; favourable testimony; a dangerous rival if followed by the Page of Cups; has the chief qualities of his suit; may signify family intelligence.", "rev": "Anecdotes, announcements, evil news; indecision and the instability which accompanies it." },
+      "cn": { "up": "忠实的年轻人、传信者与使者；具本花色诸质；亦指家中音讯。", "rev": "传闻与公告、噩耗；摇摆不定。" }
+    },
+    "wa12": {
+      "name": "Knight of Wands", "cn": "权杖骑士",
+      "en": { "up": "Departure, absence, flight, emigration; a dark young man, friendly; change of residence.", "rev": "Rupture, division, interruption, discord." },
+      "cn": { "up": "启程与远走、离乡迁居；友善的年轻人。", "rev": "决裂与分裂、中断、失和。" }
+    },
+    "wa13": {
+      "name": "Queen of Wands", "cn": "权杖王后",
+      "en": { "up": "A dark woman, countrywoman, friendly, chaste, loving, honourable; love of money, or a certain success in business.", "rev": "Good, economical, obliging, serviceable; also opposition, jealousy, even deceit and infidelity, in certain positions." },
+      "cn": { "up": "亲切可敬的女性、贞静有爱；亦指爱财、生意小成。", "rev": "勤俭而乐于助人；特定牌位下亦指敌意、嫉妒、欺瞒与不忠。" }
+    },
+    "wa14": {
+      "name": "King of Wands", "cn": "权杖国王",
+      "en": { "up": "Dark man, friendly, countryman, generally married, honest and conscientious; the card always signifies honesty; news concerning an unexpected heritage.", "rev": "Good, but severe; austere, yet tolerant." },
+      "cn": { "up": "诚实有担待的男性、意外遗产的消息；此牌恒指诚信。", "rev": "良善而严厉、清峻却宽容。" }
+    },
+    "cu01": {
+      "name": "Ace of Cups", "cn": "圣杯王牌",
+      "en": { "up": "House of the true heart, joy, content, abode, nourishment, abundance, fertility; Holy Table, felicity hereof.", "rev": "House of the false heart, mutation, instability, revolution." },
+      "cn": { "up": "真心之宅、喜乐与满足、滋养与丰饶。", "rev": "假意之宅、变故、不稳、颠覆。" }
+    },
+    "cu02": {
+      "name": "Two of Cups", "cn": "圣杯二",
+      "en": { "up": "Love, passion, friendship, affinity, union, concord, sympathy, the interrelation of the sexes.", "rev": "Lust, cupidity, jealousy, wish, desire." },
+      "cn": { "up": "爱与情谊、两情相契、结合与和睦。", "rev": "贪欲与占有、嫉妒、单方面的欲求。" }
+    },
+    "cu03": {
+      "name": "Three of Cups", "cn": "圣杯三",
+      "en": { "up": "The conclusion of any matter in plenty, perfection and merriment; happy issue, victory, fulfilment, solace, healing.", "rev": "Expedition, dispatch, achievement, end; also the side of excess in physical enjoyment, and the pleasures of the senses." },
+      "cn": { "up": "丰美圆满的收束、喜果与痊愈、慰藉。", "rev": "速成与收尾；亦指感官享乐之过度。" }
+    },
+    "cu04": {
+      "name": "Four of Cups", "cn": "圣杯四",
+      "en": { "up": "Weariness, disgust, aversion, imaginary vexations, satiety; another wine is offered the wastrel, but he sees no consolation therein; a card of blended pleasure.", "rev": "Novelty, presage, new instruction, new relations." },
+      "cn": { "up": "倦怠与厌腻、想象出来的烦忧、福至而不觉。", "rev": "新奇与预兆、新的指点、新的关系。" }
+    },
+    "cu05": {
+      "name": "Five of Cups", "cn": "圣杯五",
+      "en": { "up": "A card of loss, but something remains over; three have been taken, but two are left; a card of inheritance, patrimony, transmission, but not corresponding to expectations; with some interpreters, marriage not without bitterness.", "rev": "News, alliances, affinity, consanguinity, ancestry, return, false projects." },
+      "cn": { "up": "有失而未尽失——三倾二立；继承与传承、不如所期。", "rev": "音讯与结盟、亲缘与归返、虚妄的计划。" }
+    },
+    "cu06": {
+      "name": "Six of Cups", "cn": "圣杯六",
+      "en": { "up": "A card of the past and of memories, looking back on childhood; happiness coming rather from the past; another reading gives new relations, new knowledge, new environment.", "rev": "The future, renewal, that which will come to pass presently." },
+      "cn": { "up": "怀旧与童年记忆、来自过去的快乐；另一解：新环境新关系。", "rev": "未来将至之事、更新与到来。" }
+    },
+    "cu07": {
+      "name": "Seven of Cups", "cn": "圣杯七",
+      "en": { "up": "Fairy favours, images of reflection, sentiment, imagination, things seen in the glass of contemplation; some attainment, but nothing permanent or substantial.", "rev": "Desire, will, determination, project." },
+      "cn": { "up": "镜花水月的意象、情思与想象、有小得而无恒产。", "rev": "欲念与意志、决心与规划。" }
+    },
+    "cu08": {
+      "name": "Eight of Cups", "cn": "圣杯八",
+      "en": { "up": "The decline of a matter, or that a matter thought important is really of slight consequence; other readings antithetical: joy, mildness, timidity, honour, modesty.", "rev": "Great joy, happiness, feasting." },
+      "cn": { "up": "事态消退、自以为重者实为轻末；另一解：谦和与体面。", "rev": "大喜与欢宴。" }
+    },
+    "cu09": {
+      "name": "Nine of Cups", "cn": "圣杯九",
+      "en": { "up": "Concord, contentment, physical bien-être; also victory, success, advantage; satisfaction for the Querent.", "rev": "Truth, loyalty, liberty; but the readings vary and include mistakes, imperfections." },
+      "cn": { "up": "和睦与满足、身心安适、胜算与实利。", "rev": "真话与忠诚、自在；另解：差错与不圆满。" }
+    },
+    "cu10": {
+      "name": "Ten of Cups", "cn": "圣杯十",
+      "en": { "up": "Contentment, repose of the entire heart; perfection of human love and friendship; the town, village or country inhabited by the Querent.", "rev": "Repose of the false heart, indignation, violence." },
+      "cn": { "up": "全心安顿、人间爱与友爱的圆满、家宅之邦。", "rev": "假意安顿、愤懑与暴戾。" }
+    },
+    "cu11": {
+      "name": "Page of Cups", "cn": "圣杯侍从",
+      "en": { "up": "Fair young man, impelled to render service; a studious youth; news, message; application, reflection, meditation.", "rev": "Taste, inclination, attachment, seduction, deception, artifice." },
+      "cn": { "up": "乐于效劳的少年、勤思好学；音讯与消息。", "rev": "嗜好与依恋、诱惑与巧诈。" }
+    },
+    "cu12": {
+      "name": "Knight of Cups", "cn": "圣杯骑士",
+      "en": { "up": "Arrival, approach—sometimes that of a messenger; advances, proposition, invitation, incitement.", "rev": "Trickery, artifice, subtlety, swindling, duplicity, fraud." },
+      "cn": { "up": "到来与趋近（常为信使）、提议与邀约、鼓动。", "rev": "机巧与手腕、诓骗与两面手法。" }
+    },
+    "cu13": {
+      "name": "Queen of Cups", "cn": "圣杯王后",
+      "en": { "up": "Good, fair woman; honest, devoted woman who will do service; loving intelligence, the gift of vision; success, happiness, pleasure; wisdom, virtue; a perfect spouse and a good mother.", "rev": "The accounts vary; distinguished woman but one not to be trusted; perverse woman; vice, dishonour, depravity." },
+      "cn": { "up": "良善的女性、深情的智慧与远见、贤妻良母之象。", "rev": "诸解不一：不可尽信的显贵女子；失德与败坏。" }
+    },
+    "cu14": {
+      "name": "King of Cups", "cn": "圣杯国王",
+      "en": { "up": "Fair man, man of business, law, or divinity; responsible, disposed to oblige; equity, art and science; creative intelligence.", "rev": "Dishonest, double-dealing man; roguery, exaction, injustice, vice, scandal, pillage, considerable loss." },
+      "cn": { "up": "务实公正的男性（商/法/神职）、创造力、乐于成人之美。", "rev": "两面三刀之人、不义与丑闻、重大损失。" }
+    },
+    "sw01": {
+      "name": "Ace of Swords", "cn": "宝剑王牌",
+      "en": { "up": "Triumph, the excessive degree in everything, conquest, triumph of force; a card of great force, in love as well as in hatred.", "rev": "The same, but the results are disastrous; another account says—conception, childbirth, augmentation, multiplicity." },
+      "cn": { "up": "彻底的征服、凡事臻于极致、爱与恨皆大力的极端之牌。", "rev": "同类大力但结果成灾；另一解：受孕、生育、增殖。" }
+    },
+    "sw02": {
+      "name": "Two of Swords", "cn": "宝剑二",
+      "en": { "up": "Conformity and the equipoise which it suggests, courage, friendship, concord in a state of arms; another reading: tenderness, affection, intimacy.", "rev": "Imposture, falsehood, duplicity, disloyalty." },
+      "cn": { "up": "均衡与相持、武装下的和局；另一解：柔情与亲昵。", "rev": "冒名与虚妄、口是心非、不忠。" }
+    },
+    "sw03": {
+      "name": "Three of Swords", "cn": "宝剑三",
+      "en": { "up": "Removal, absence, delay, division, rupture, dispersion.", "rev": "Mental alienation, error, loss, distraction, disorder, confusion." },
+      "cn": { "up": "离去与缺席、延宕与分离、决裂。", "rev": "心智迷乱、过错与损失、失序。" }
+    },
+    "sw04": {
+      "name": "Four of Swords", "cn": "宝剑四",
+      "en": { "up": "Vigilance, retreat, solitude, hermit's repose, exile, tomb and coffin.", "rev": "Wise administration, circumspection, economy, avarice, precaution, testament." },
+      "cn": { "up": "警戒与退守、独处与休憩、放逐；墓与棺的终局意象。", "rev": "稳妥的操持、节俭与戒备、遗嘱。" }
+    },
+    "sw05": {
+      "name": "Five of Swords", "cn": "宝剑五",
+      "en": { "up": "Degradation, destruction, revocation, infamy, dishonour, loss.", "rev": "The same; burial and obsequies." },
+      "cn": { "up": "败落与撤销、羞辱与损失。", "rev": "同前义；葬仪与收场。" }
+    },
+    "sw06": {
+      "name": "Six of Swords", "cn": "宝剑六",
+      "en": { "up": "Journey by water, route, way, envoy, commissionary, expedient.", "rev": "Declaration, confession, publicity; a proposal of love." },
+      "cn": { "up": "水路之旅、路线与通道、使者与权宜之计。", "rev": "坦白与公开；亦有爱的告白一解。" }
+    },
+    "sw07": {
+      "name": "Seven of Swords", "cn": "宝剑七",
+      "en": { "up": "Design, attempt, wish, hope, confidence; also quarrelling, a plan that may fail, annoyance.", "rev": "Good advice, counsel, instruction, slander, babbling." },
+      "cn": { "up": "图谋与尝试、期望与自信；亦指争执与可能落空的计划。", "rev": "良策与指点；亦指中伤与碎语。" }
+    },
+    "sw08": {
+      "name": "Eight of Swords", "cn": "宝剑八",
+      "en": { "up": "Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness.", "rev": "Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality." },
+      "cn": { "up": "噩耗与剧怒、危机与责难、受缚之力、疾病。", "rev": "惶惑与困难、对抗与意外、背叛与不可抗。" }
+    },
+    "sw09": {
+      "name": "Nine of Swords", "cn": "宝剑九",
+      "en": { "up": "Death, failure, miscarriage, delay, deception, disappointment, despair.", "rev": "Imprisonment, suspicion, doubt, reasonable fear, shame." },
+      "cn": { "up": "夭折与挫败、延宕与欺骗、失望与绝望。", "rev": "困守与猜疑、合理的恐惧、羞愧。" }
+    },
+    "sw10": {
+      "name": "Ten of Swords", "cn": "宝剑十",
+      "en": { "up": "Pain, affliction, tears, sadness, desolation; not especially a card of violent death.", "rev": "Advantage, profit, success, favour, but none of these are permanent; also power and authority." },
+      "cn": { "up": "剧痛与摧折、泪与凄凉（并非横死之牌）。", "rev": "利益与成功、眷顾与权势——但皆不长久。" }
+    },
+    "sw11": {
+      "name": "Page of Swords", "cn": "宝剑侍从",
+      "en": { "up": "Authority, overseeing, secret service, vigilance, spying, examination.", "rev": "The more evil side of these qualities; what is unforeseen, unprepared state; sickness is also intimated." },
+      "cn": { "up": "监察与督导、耳目与侦讯、警觉。", "rev": "上述诸义的恶面：猝不及防、毫无准备；亦暗示病痛。" }
+    },
+    "sw12": {
+      "name": "Knight of Swords", "cn": "宝剑骑士",
+      "en": { "up": "Skill, bravery, capacity, defence, address, enmity, wrath, war, destruction, opposition, resistance, ruin.", "rev": "Imprudence, incapacity, extravagance." },
+      "cn": { "up": "骁勇与防御之才；亦含敌意、怒战、毁灭的锋刃面。", "rev": "轻率与无能、挥霍无度。" }
+    },
+    "sw13": {
+      "name": "Queen of Swords", "cn": "宝剑王后",
+      "en": { "up": "Widowhood, female sadness and embarrassment, absence, sterility, mourning, privation, separation.", "rev": "Malice, bigotry, artifice, prudery, bale, deceit." },
+      "cn": { "up": "孀居与哀伤、缺席与分离、贫瘠与悼亡。", "rev": "恶意与偏执、伪饰与欺瞒。" }
+    },
+    "sw14": {
+      "name": "King of Swords", "cn": "宝剑国王",
+      "en": { "up": "Whatsoever arises out of the idea of judgment and all its connexions—power, command, authority, militant intelligence, law, offices of the crown.", "rev": "Cruelty, perversity, barbarity, perfidy, evil intention." },
+      "cn": { "up": "审判所系的权力与号令、法度、锐智。", "rev": "冷酷与乖张、残暴与背信、不轨之心。" }
+    },
+    "pe01": {
+      "name": "Ace of Pentacles", "cn": "星币王牌",
+      "en": { "up": "Perfect contentment, felicity, ecstasy; also speedy intelligence; gold.", "rev": "The evil side of wealth, bad intelligence; also great riches. Prosperity, comfortable material conditions, whether of advantage depending on the card's position." },
+      "cn": { "up": "圆满的至乐、灵通的快讯、黄金。", "rev": "财之恶面与坏消息；亦指巨富——物质丰裕是否为福，视牌位而定。" }
+    },
+    "pe02": {
+      "name": "Two of Pentacles", "cn": "星币二",
+      "en": { "up": "A card of gaiety, recreation; read also as news and messages in writing, as obstacles, agitation, trouble, embroilment.", "rev": "Enforced gaiety, simulated enjoyment, literal sense, handwriting, composition, letters of exchange." },
+      "cn": { "up": "欢愉与消遣；亦指书面音讯、阻碍与搅扰。", "rev": "强颜欢笑、佯乐；文书、手迹、票据往来的字面义。" }
+    },
+    "pe03": {
+      "name": "Three of Pentacles", "cn": "星币三",
+      "en": { "up": "Métier, trade, skilled labour; usually regarded as a card of nobility, aristocracy, renown, glory.", "rev": "Mediocrity, in work and otherwise, puerility, pettiness, weakness." },
+      "cn": { "up": "行当与手艺、专业劳作；常解为名望与荣光。", "rev": "平庸之作、幼稚与狭隘、乏力。" }
+    },
+    "pe04": {
+      "name": "Four of Pentacles", "cn": "星币四",
+      "en": { "up": "The surety of possessions, cleaving to that which one has, gift, legacy, inheritance.", "rev": "Suspense, delay, opposition." },
+      "cn": { "up": "守产之固、紧握所有；馈赠与遗产。", "rev": "悬而未决、拖延、阻力。" }
+    },
+    "pe05": {
+      "name": "Five of Pentacles", "cn": "星币五",
+      "en": { "up": "Material trouble above all, destitution; for some cartomancists, a card of love and lovers—wife, husband, friend, mistress; concordance, affinities.", "rev": "Disorder, chaos, ruin, discord, profligacy." },
+      "cn": { "up": "首指物质困顿与匮乏；另一派解作爱侣与相契。", "rev": "失序与倾覆、失和、挥霍。" }
+    },
+    "pe06": {
+      "name": "Six of Pentacles", "cn": "星币六",
+      "en": { "up": "Presents, gifts, gratification; another account: attention, vigilance—now is the accepted time, present prosperity.", "rev": "Desire, cupidity, envy, jealousy, illusion." },
+      "cn": { "up": "礼物与馈赠、当下即受施之时、眼前的兴盛。", "rev": "欲念与贪婪、妒忌、幻象。" }
+    },
+    "pe07": {
+      "name": "Seven of Pentacles", "cn": "星币七",
+      "en": { "up": "A card of money, business, barter; but one reading gives altercation, quarrels—and another innocence, ingenuity, purgation.", "rev": "Cause for anxiety regarding money which it may be proposed to lend." },
+      "cn": { "up": "钱财与经营、易货交易；另解：争执、或纯真与涤净。", "rev": "对拟出借之钱的担忧。" }
+    },
+    "pe08": {
+      "name": "Eight of Pentacles", "cn": "星币八",
+      "en": { "up": "Work, employment, commission, craftsmanship, skill in craft and business, perhaps in the preparatory stage.", "rev": "Voided ambition, vanity, cupidity, exaction, usury; also ingenious mind turned to cunning and intrigue." },
+      "cn": { "up": "工作与承揽、匠艺与练手、尚在预备阶段。", "rev": "壮志落空、虚荣与贪敛；亦指巧智流入狡诈。" }
+    },
+    "pe09": {
+      "name": "Nine of Pentacles", "cn": "星币九",
+      "en": { "up": "Prudence, safety, success, accomplishment, certitude, discernment.", "rev": "Roguery, deception, voided project, bad faith." },
+      "cn": { "up": "稳健与自安、成事与确信、明辨。", "rev": "无赖与欺瞒、计划落空、居心不良。" }
+    },
+    "pe10": {
+      "name": "Ten of Pentacles", "cn": "星币十",
+      "en": { "up": "Gain, riches; family matters, archives, extraction, the abode of a family.", "rev": "Chance, fatality, loss, robbery, games of hazard; sometimes gift, dowry, pension." },
+      "cn": { "up": "财利与家业、门第与谱系、家族宅邸。", "rev": "偶然与宿命、失窃与赌局；另解：赠礼、嫁资、年金。" }
+    },
+    "pe11": {
+      "name": "Page of Pentacles", "cn": "星币侍从",
+      "en": { "up": "Application, study, scholarship, reflection; another reading: news, messages and the bringer thereof; rule, management.", "rev": "Prodigality, dissipation, liberality, luxury; unfavourable news." },
+      "cn": { "up": "勤学与治学、沉思；另解：带来消息之人、治理之才。", "rev": "挥霍与放纵、奢华；不利音讯。" }
+    },
+    "pe12": {
+      "name": "Knight of Pentacles", "cn": "星币骑士",
+      "en": { "up": "Utility, serviceableness, interest, responsibility, rectitude—all on the normal and external plane.", "rev": "Inertia, idleness, stagnation; also placidity, discouragement, carelessness." },
+      "cn": { "up": "实用与可靠、责任与正直——皆落在寻常外务层面。", "rev": "惰性与闲置、停滞；亦指迟钝、气馁、疏忽。" }
+    },
+    "pe13": {
+      "name": "Queen of Pentacles", "cn": "星币王后",
+      "en": { "up": "Opulence, generosity, magnificence, security, liberty.", "rev": "Evil, suspicion, suspense, fear, mistrust." },
+      "cn": { "up": "丰裕与慷慨、雍容、安稳与自在。", "rev": "凶兆与疑心、悬虑、恐惧与不信任。" }
+    },
+    "pe14": {
+      "name": "King of Pentacles", "cn": "星币国王",
+      "en": { "up": "Valour, realizing intelligence, business and normal intellectual aptitude, sometimes mathematical gifts; success in these paths.", "rev": "Vice, weakness, ugliness, perversity, corruption, peril." },
+      "cn": { "up": "实干之智与经营之才、数学禀赋，循此路而成。", "rev": "恶行与孱弱、乖僻与堕落、凶险。" }
+    }
+  }
+}
