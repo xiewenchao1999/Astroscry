@@ -115,3 +115,37 @@ test('流程读盘：基准盘 2000-01-01 12:00 五步结构与盘眼结论', ()
   const ov = rd.steps.find((s) => s.key === 'overview');
   assert.ok(ov.items.every((it) => typeof it.value === 'string' && it.value.length > 0));
 });
+
+test('按所问之事聚焦：对应用神排到最前并标记，未选时保持原序（兼容旧行为）', () => {
+  const q = castQimen({ year: 2000, month: 1, day: 1, hour: 12, minute: 0 });
+  const R = QMEN_INTERP.reading;
+  const defaultOrder = [R.yCareer, R.yWealth, R.yMarriage, R.yHealth];
+  const ysOf = (topic) => readQimen(q, QMEN_INTERP, topic).steps.find((s) => s.key === 'yongshen').items;
+
+  const base = ysOf(undefined);
+  assert.deepEqual(base.map((x) => x.label), defaultOrder, '未指定主题时应保持原序');
+  assert.ok(base.every((x) => !x.focused), '未指定主题时不应有聚焦标记');
+
+  for (const [topic, label] of [
+    ['career', R.yCareer], ['wealth', R.yWealth], ['marriage', R.yMarriage], ['health', R.yHealth],
+  ]) {
+    const items = ysOf(topic);
+    assert.equal(items.length, 4, `${topic} 仍应输出四项用神（只是排序变化）`);
+    assert.equal(items[0].label, label, `${topic} 的用神应排在最前`);
+    assert.equal(items[0].focused, true, `${topic} 的首项应标记为聚焦`);
+    assert.equal(items.filter((x) => x.focused).length, 1, '聚焦标记只应有一个');
+    assert.deepEqual(items.slice(1).map((x) => x.label), defaultOrder.filter((l) => l !== label), '其余项保持原相对顺序');
+  }
+
+  assert.deepEqual(ysOf('unknown').map((x) => x.label), defaultOrder, '未知主题应按原序（不得静默改变输出）');
+});
+
+test('奇门聚焦语料：五个选项与标题说明齐备', () => {
+  const f = QMEN_INTERP.focus;
+  assert.ok(f, '缺 focus 节');
+  assert.deepEqual(Object.keys(f.options), ['general', 'career', 'wealth', 'marriage', 'health'], '选项键与顺序应稳定');
+  for (const [k, v] of Object.entries(f.options)) assert.ok(v.length >= 2, `选项 ${k} 文案缺失`);
+  for (const k of ['title', 'note', 'focusedLabel']) assert.ok(f[k] && f[k].length >= 4, `缺 focus.${k}`);
+  // 四个聚焦键必须都能在语料里找到对应的用神标签，否则选项点了没有效果
+  for (const k of ['career', 'wealth', 'marriage', 'health']) assert.ok(k in f.options);
+});

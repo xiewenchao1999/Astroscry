@@ -16,9 +16,13 @@ const toneOf = (jx) => (jx.includes('凶') ? 'bad' : jx.includes('吉') ? 'good'
 
 /**
  * 流程化读盘：识局 → 盘眼 → 用神 → 举要 → 阻隔。
- * @returns {{ summary: string, steps: Array<{key: string, items: Array<{label: string, value: string, tone?: string}>}> }}
+ * @param {object} q castQimen 输出
+ * @param {object} interp interpret-qimen.json 语料
+ * @param {string} topic 所问之事（general|career|wealth|marriage|health）：把对应用神提到最前并标记 focused；
+ *                       未选或未知一律按原序输出（默认行为与旧版完全一致）
+ * @returns {{ summary: string, steps: Array<{key: string, items: Array<{label: string, value: string, tone?: string, focused?: boolean}>}> }}
  */
-export function readQimen(q, interp) {
+export function readQimen(q, interp, topic = 'general') {
   const R = interp.reading;
   const zf = interp.stars[q.zhiFuStar];
   const zs = interp.doors[q.zhiShiDoor];
@@ -56,14 +60,20 @@ export function readQimen(q, interp) {
   const yi = findStem(q, '乙')[0];
   const geng = findStem(q, '庚')[0];
   const on = (p) => (p ? `落${gongName(p)}宫，利${GONG_DIR[p]}方` : '不上盘');
+  // 用神四项：按所问之事把对应项提到最前并标记（未选/未知则原序，行为与旧版一致）
+  const yongshen = [
+    { k: 'career', label: R.yCareer, value: `开门${on(kai)}`, tone: kai ? 'good' : undefined },
+    { k: 'wealth', label: R.yWealth, value: `生门${on(sheng)}；戊${wu ? `落${gongName(wu)}宫` : '不上盘'}`, tone: sheng ? 'good' : undefined },
+    { k: 'marriage', label: R.yMarriage, value: `六合${on(liuhe)}；乙${yi ? `落${gongName(yi)}宫` : '不上盘'}、庚${geng ? `落${gongName(geng)}宫` : '不上盘'}` },
+    { k: 'health', label: R.yHealth, value: `天芮${on(rui)}；天心${xin ? `落${gongName(xin)}宫` : '不上盘'}`, tone: rui ? 'bad' : undefined },
+  ];
+  const hasTopic = yongshen.some((x) => x.k === topic);
+  const ordered = hasTopic
+    ? [{ ...yongshen.find((x) => x.k === topic), focused: true }, ...yongshen.filter((x) => x.k !== topic)]
+    : yongshen;
   steps.push({
     key: 'yongshen',
-    items: [
-      { label: R.yCareer, value: `开门${on(kai)}`, tone: kai ? 'good' : undefined },
-      { label: R.yWealth, value: `生门${on(sheng)}；戊${wu ? `落${gongName(wu)}宫` : '不上盘'}`, tone: sheng ? 'good' : undefined },
-      { label: R.yMarriage, value: `六合${on(liuhe)}；乙${yi ? `落${gongName(yi)}宫` : '不上盘'}、庚${geng ? `落${gongName(geng)}宫` : '不上盘'}` },
-      { label: R.yHealth, value: `天芮${on(rui)}；天心${xin ? `落${gongName(xin)}宫` : '不上盘'}`, tone: rui ? 'bad' : undefined },
-    ],
+    items: ordered.map(({ label, value, tone, focused }) => ({ label, value, tone, focused: !!focused })),
   });
 
   // 第四步 · 全盘吉凶举要：八门按吉/凶/平分列落宫

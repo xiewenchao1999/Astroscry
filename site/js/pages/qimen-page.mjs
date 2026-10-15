@@ -9,6 +9,8 @@ renderLayout();
 
 const els = { time: document.getElementById('qtime'), cast: document.getElementById('cast'), stage: document.getElementById('stage') };
 let interp = null;
+let topic = 'general'; // 所问之事（影响用神排序）；重渲染时保留
+let lastQ = null;      // 最近一次的排盘结果，供切换聚焦时原地重渲染
 
 // 默认起局时间 = 现在（datetime-local 需要本地时区格式）
 {
@@ -38,6 +40,7 @@ els.cast.addEventListener('click', () => {
 });
 
 function render(q) {
+  lastQ = q;
   setAISource('qimen', q, q.juName);
   els.stage.innerHTML = `
     <div class="card" style="margin-bottom:14px;">
@@ -55,12 +58,14 @@ function render(q) {
     </div>
     <div id="detail" class="result" style="margin-top:14px;"></div>
     <div class="card" style="margin-top:14px;"><h3>流程读盘</h3>
-      ${(() => { const rd = readQimen(q, interp); return `
+      <p class="hint" style="text-align:center;">${interp.focus.title}：<select id="qtopic" style="margin-left:4px;">${Object.entries(interp.focus.options).map(([k, v]) => `<option value="${k}"${k === topic ? ' selected' : ''}>${esc(v)}</option>`).join('')}</select></p>
+      <p class="hint">${interp.focus.note}</p>
+      ${(() => { const rd = readQimen(q, interp, topic); return `
       <p style="text-align:center;color:var(--accent);font-weight:700;">${rd.summary}</p>
       ${rd.steps.map((s, i) => `
         <details style="margin-top:8px;" ${i === 0 ? 'open' : ''}>
           <summary style="cursor:pointer;color:var(--accent2);font-weight:600;">${interp.reading.titles[s.key]}</summary>
-          ${s.items.map((it) => `<p${it.tone ? ` style="color:var(--${it.tone})"` : ''}><b>${it.label}：</b>${it.value}</p>`).join('')}
+          ${s.items.map((it) => `<p${it.tone ? ` style="color:var(--${it.tone})"` : ''}><b>${it.label}：</b>${it.focused ? `<span class="pill gold">${interp.focus.focusedLabel}</span> ` : ''}${it.value}</p>`).join('')}
         </details>`).join('')}`; })()}
       <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--muted);">读盘总则</summary>
         ${interp.guide.map((g) => `<p class="note">▸ ${g}</p>`).join('')}
@@ -78,6 +83,11 @@ function render(q) {
     });
   });
   detail(q, q.zhiFuPalace); // 默认展示值符宫
+  // 切换所问之事：保留 topic 并原地重渲染（排盘结果不重算）
+  els.stage.querySelector('#qtopic')?.addEventListener('change', (e) => {
+    topic = e.target.value;
+    if (lastQ) render(lastQ);
+  });
 }
 
 function cell(q, p) {
