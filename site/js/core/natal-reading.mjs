@@ -18,7 +18,8 @@ function patternLines(n, interp) {
   const out = [];
   const seen = new Set();
   for (const p of detectPatterns(n.planets, n.aspects)) {
-    if (seen.has(p.kind) || out.length >= 3) break;
+    if (out.length >= 3) break;       // 总量上限：到 3 类即停
+    if (seen.has(p.kind)) continue;   // 同类多组取首个，继续扫后续类别（P07：break 会把其后异类图形整批丢弃）
     const kind = kinds[p.kind];
     if (!kind) continue; // 语料未定义 → 跳过而非拼出病句
     seen.add(p.kind);

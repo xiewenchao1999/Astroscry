@@ -203,6 +203,45 @@ test('相位图形：无图形时返回空数组；排序为大十字→T三角�
   assert.ok(kinds.indexOf('grandTrine') < kinds.indexOf('stellium'), '大三角应按优先级排在群星之前');
 });
 
+// —— P07 回归：patternLines 同类多组不得中断后续异类图形 ——
+// 几何夹具：两组互不相干的 T 三角（日-月-水 / 金-火-木）+ 一组大三角（土-天-冥）。
+// detectPatterns 排序输出 [tSquare, tSquare, grandTrine]：修复前第二组同类触发 break，
+// 会把排在其后的 grandTrine 整个丢弃（骨架卡缺信息）。
+const mkLon = (key, cn, lon) => {
+  const signIndex = Math.floor((((lon % 360) + 360) % 360) / 30);
+  return [key, { key, cn, lon, signIndex, signKey: SIGNS[signIndex].key, signCn: SIGNS[signIndex].cn, signElement: SIGNS[signIndex].element, house: 1, degInSign: lon % 30, retrograde: false }];
+};
+
+test('相位图形判词：同类多组取首个，异类图形不被中断（P07 回归夹具）', () => {
+  const planets = Object.fromEntries([
+    mkLon('sun', '太阳', 0), mkLon('moon', '月亮', 180), mkLon('mercury', '水星', 90),      // T 三角 1
+    mkLon('venus', '金星', 30), mkLon('mars', '火星', 210), mkLon('jupiter', '木星', 120),  // T 三角 2
+    mkLon('saturn', '土星', 200), mkLon('uranus', '天王星', 320), mkLon('pluto', '冥王星', 80), // 大三角
+  ]);
+  const aspects = [
+    asp('sun', 'moon', 180), asp('sun', 'mercury', 90), asp('moon', 'mercury', 90),
+    asp('venus', 'mars', 180), asp('venus', 'jupiter', 90), asp('mars', 'jupiter', 90),
+    asp('saturn', 'uranus', 120), asp('saturn', 'pluto', 120), asp('uranus', 'pluto', 120),
+  ];
+  // 夹具自检：确认检测顺序确为「同类重复在前、异类在后」
+  const detected = detectPatterns(planets, aspects);
+  assert.deepEqual(detected.map((p) => p.kind), ['tSquare', 'tSquare', 'grandTrine']);
+
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const n = {
+    input: { cityName: '测试' }, ascSign: '白羊', mcSign: '摩羯', ascSignIndex: 0,
+    planets,
+    aspects: aspects.map((x) => ({ ...x, orb: 1, aCn: planets[x.a].cn, bCn: planets[x.b].cn, aspectCn: '刑', color: '' })),
+    houses: Array.from({ length: 12 }, (_, i) => ({ house: i + 1, sign: '白羊', signKey: 'aries', lon: 0 })),
+    elements: { 火: 1, 土: 1, 风: 1, 水: 1 },
+  };
+  const rd = readNatal(n, interp);
+  const kinds = rd.patterns.map((p) => p.kind);
+  assert.ok(kinds.includes('tSquare'), 'T 三角判词应存在');
+  assert.ok(kinds.includes('grandTrine'), '大三角判词不应被同类重复中断（修复前 break 丢弃）');
+  assert.equal(kinds.filter((k) => k === 'tSquare').length, 1, '同类多组只取检测顺序首个');
+});
+
 test('本命盘解读：patterns 块句式完整且无未替换占位符（基准盘 2000-08-16 北京）', () => {
   const n = castNatal({ year: 2000, month: 8, day: 16, hour: 12, minute: 0, lat: 39.9042, lon: 116.4074, tzOffsetHours: 8 });
   const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
