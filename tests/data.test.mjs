@@ -196,3 +196,44 @@ test('本命盘语料：七主星两两逐对判词 21 对，键序与取相位�
   assert.equal(seen.size, pairs.length, '出现重复的行星对');
   assert.deepEqual(Object.keys(n.orbNotes ?? {}), ['tight', 'mid', 'loose'], '容许度深浅措辞应为三档');
 });
+
+test('塔罗逐牌分域释义：大阿卡纳 22 张 × 5 域全覆盖、花色兜底 4 类，键与问事主题一致', () => {
+  const t = D('interpret-tarot.json');
+  const cards = D('tarot.json').cards;
+  const topics = Object.keys(t.topicLens).filter((k) => k !== 'general');
+  assert.deepEqual(topics, ['love', 'career', 'money', 'health', 'spirit'], '域键必须与问事主题（除综合外）一致');
+
+  const cd = t.cardDomains;
+  assert.ok(cd, '缺 cardDomains 节');
+  const majorIds = cards.filter((c) => c.arcana === 'major').map((c) => c.id);
+  assert.equal(Object.keys(cd.majors).length, 22, '大阿卡纳应为 22 张');
+  assert.deepEqual(Object.keys(cd.majors), majorIds, '大阿卡纳键应与 tarot.json 的 id 一一对应且同序');
+
+  const all = [];
+  for (const id of majorIds) {
+    for (const tp of topics) {
+      const text = cd.majors[id][tp];
+      assert.ok(typeof text === 'string' && text.length >= 10, `${id}.${tp} 缺失或过短`);
+      all.push(text);
+    }
+  }
+  const suitKeys = cards.filter((c) => c.arcana === 'minor').map((c) => c.suit);
+  const uniqSuits = [...new Set(suitKeys)];
+  assert.deepEqual(Object.keys(cd.suits).sort(), uniqSuits.sort(), '花色兜底应与牌库中的花色一致');
+  for (const s of uniqSuits) {
+    for (const tp of topics) {
+      const text = cd.suits[s][tp];
+      assert.ok(typeof text === 'string' && text.length >= 10, `${s}.${tp} 缺失或过短`);
+      all.push(text);
+    }
+  }
+  assert.equal(all.length, 22 * 5 + 4 * 5, '总条目应为 22×5 + 4×5 = 130');
+  assert.equal(new Set(all).size, all.length, '逐牌分域释义出现重复文本');
+
+  // 覆盖率：牌库里每一张牌都必须能取到对应域释义（大阿卡纳按 id，其余按花色）
+  for (const c of cards) {
+    const src = c.arcana === 'major' ? cd.majors[c.id] : cd.suits[c.suit];
+    assert.ok(src, `牌 ${c.id}（${c.cn}）取不到分域释义`);
+    for (const tp of topics) assert.ok(src[tp], `牌 ${c.id} 的 ${tp} 域缺失`);
+  }
+});

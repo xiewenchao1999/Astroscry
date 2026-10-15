@@ -199,6 +199,18 @@ function renderStructure() {
   revealCards(box);
 }
 
+/** 逐牌分域释义：大阿卡纳按牌 id 取，数字牌/宫廷牌按花色取；未选主题或不聚焦时返回空串 */
+function cardDomainLine(card) {
+  const topic = els.topic.value;
+  if (topic === 'general') return '';
+  const cd = interp.cardDomains;
+  if (!cd) return '';
+  const text = card.arcana === 'major'
+    ? cd.majors?.[card.id]?.[topic]
+    : cd.suits?.[card.suit]?.[topic];
+  return text ? `<p class="hint"><b>${interp.topicLens?.[topic]?.label ?? ''}视角：</b>${text}</p>` : '';
+}
+
 /** 牌义卡：按翻开顺序增量追加（不重建已渲染的卡，避免旧卡重播入场动画） */
 function appendMeaning(i) {
   const box = els.stage.querySelector('#meanings');
@@ -208,6 +220,7 @@ function appendMeaning(i) {
     <div class="card"><h3>${c.positionCn} · ${c.card.cn}（${c.reversed ? '逆位' : '正位'}）</h3>
       <p class="hint" title="位置职责">${c.positionDuty}</p>
       <p>${meaning}</p>
+      ${cardDomainLine(c.card)}
       <div>${(c.reversed ? c.card.kwRev : c.card.kwUp).map((k) => `<span class="pill">${k}</span>`).join('')}</div>
     </div>`);
   const el = box.lastElementChild;
