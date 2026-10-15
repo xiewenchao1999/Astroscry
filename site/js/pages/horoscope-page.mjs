@@ -15,12 +15,13 @@ els.sign.value = 'leo';
 // 已保存出生信息时自动选中太阳星座
 const savedProfile = loadProfile();
 if (savedProfile) els.sign.value = sunSignByDate(savedProfile.month, savedProfile.day);
-window.__infer = () => {
+// P15：按生日推断太阳星座（原 window.__infer 全局 + inline onchange 已移除，改模块内监听）
+els.birth.addEventListener('change', () => {
   const d = els.birth.value;
   if (!d) return;
   const [y, m, dd] = d.split('-').map(Number);
   els.sign.value = sunSignByDate(m, dd);
-};
+});
 
 async function boot() {
   try {
@@ -51,7 +52,7 @@ function renderSky() {
 
 function renderAll() {
   els.all.innerHTML = fortune.map((f) => `
-    <div class="card" style="cursor:pointer;margin-bottom:0" onclick="window.__pick('${f.signKey}')">
+    <div class="card" style="cursor:pointer;margin-bottom:0" data-sign="${f.signKey}">
       <h3>${f.signCn} <span class="pill ${f.level === '旺' || f.level === '顺' ? 'good' : f.level === '滞' ? 'bad' : 'gold'}">${f.level} ${f.score}</span></h3>
       <div class="meter" style="background:rgba(255,255,255,0.06);border-radius:6px;height:6px;">
         <i style="width:0;background:linear-gradient(90deg,var(--accent2),var(--accent))" data-w="${f.score}"></i></div>
@@ -59,8 +60,15 @@ function renderAll() {
   stagger(els.all, '.card');
   revealCards(els.all);
   animateMeters(els.all);
-  window.__pick = (key) => { els.sign.value = key; renderDetail(key); };
 }
+
+// P15：星座卡点击走事件委托（原 inline onclick="window.__pick(...)" 已移除，对全站 addEventListener 模式对齐且免 CSP 顾虑）
+els.all.addEventListener('click', (e) => {
+  const card = e.target.closest('[data-sign]');
+  if (!card) return;
+  els.sign.value = card.dataset.sign;
+  renderDetail(card.dataset.sign);
+});
 
 /** 星座档案：关键词 + 六域评语 + 相性（语料来自 interpret-horoscope.json 的 signs[x]） */
 function signProfile(s) {

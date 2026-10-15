@@ -25,7 +25,7 @@ function zhiRelation(za, zb, weights) {
  * @param {object} b castBazi 输出（另一方）
  * @param {object} weights wuxing-weights.json
  * @param {object} interp interpret-bazi.json（需 synastry 节）
- * @returns {{ score: number, band: object, summary: string, items: Array<{area: string, typeCn: string, pair: string, verdict: string}>, complementary: { level: string, text: string } }}
+ * @returns {{ score: number, band: object, summary: string, items: Array<{area: string, typeCn: string, pair: string, verdict: string}> }}
  */
 export function matchBazi(a, b, weights, interp) {
   const S = interp.synastry;
@@ -83,5 +83,5 @@ export function matchBazi(a, b, weights, interp) {
   score = clamp(Math.round(score));
   const band = S.bands.find((x) => score >= x.min);
   const summary = `${band.cn}（${score} 分）：${band.text}`;
-  return { score, band, summary, items, complementary: null };
+  return { score, band, summary, items }; // P16：complementary 死字段（恒 null 且零消费方）已删
 }

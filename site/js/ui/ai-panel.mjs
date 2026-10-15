@@ -22,6 +22,7 @@ function saveSession(s) {
 
 let current = null; // { domain, structured, summary }
 let els = null;
+let activeAbort = null; // P13：进行中的流式请求控制器（非 null 时发送键为「停止」）
 
 /** 页面排盘成功后调用：注册当前页数据源并写入会话缓存（同 domain 覆盖最近一次） */
 export function setAISource(domain, structured, summary = '') {
@@ -78,6 +79,8 @@ export function mountAIPanel() {
   });
   els.panel.querySelector('#ai-ask').addEventListener('submit', (e) => {
     e.preventDefault();
+    // P13：流式进行中发送键即「停止」——点击中断当前请求，不发新提问
+    if (activeAbort) { activeAbort.abort(); return; }
     ask(els.q.value.trim());
   });
   els.comb.addEventListener('click', () => {
@@ -162,17 +165,25 @@ function guardEnabled() {
   return false;
 }
 
-async function runStream(iter) {
+async function runStream(iter, controller) {
   els.out.textContent = '';
-  els.send.disabled = true;
+  els.send.textContent = '停止'; // P13：发送中发送键临时变「停止」，点击触发 abort
+  els.send.disabled = false;
   els.comb.disabled = true;
+  activeAbort = controller ?? null;
   let n = 0;
   try {
     for await (const chunk of iter) { els.out.textContent += chunk; n++; }
     if (n === 0) els.out.textContent = '（端点返回空响应，请检查模型 / 密钥 / 端点 URL）';
   } catch (e) {
-    els.out.textContent = `AI 解读失败：${e.message}。本页规则解读不受影响。`; // textContent 防注入（layout 的 esc 会循环 import）
+    if (e?.name === 'AbortError') {
+      els.out.textContent += (els.out.textContent ? '\n' : '') + '（已停止生成。）';
+    } else {
+      els.out.textContent = `AI 解读失败：${e.message}。本页规则解读不受影响。`; // textContent 防注入（layout 的 esc 会循环 import）
+    }
   } finally {
+    activeAbort = null;
+    els.send.textContent = '发送';
     els.send.disabled = false;
     renderSrc();
   }
@@ -186,7 +197,8 @@ async function ask(question) {
     return;
   }
   if (!guardEnabled()) return;
-  const answer = await runStream(streamReading(current.domain, current.structured, question));
+  const controller = new AbortController(); // P13：可中断的流式请求
+  const answer = await runStream(streamReading(current.domain, current.structured, question, controller.signal), controller);
   if (!answer) return;
   const s = loadSession();
   const src = s.sources[current.domain];
@@ -200,5 +212,6 @@ async function askCombined(question) {
   const sources = Object.values(loadSession().sources);
   if (!sources.length) { els.out.innerHTML = '<span class="hint">暂无任何排盘数据：先在任意页完成排盘。</span>'; return; }
   if (!guardEnabled()) return;
-  await runStream(streamCombined(sources, question));
+  const controller = new AbortController();
+  await runStream(streamCombined(sources, question, controller.signal), controller);
 }

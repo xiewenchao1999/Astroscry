@@ -15,7 +15,12 @@ export function loadProfile(opts) {
   try { return JSON.parse(localStorage.getItem(keyOf(opts))); } catch { return null; }
 }
 export function saveProfile(p, opts) {
-  localStorage.setItem(keyOf(opts), JSON.stringify(p));
+  try {
+    localStorage.setItem(keyOf(opts), JSON.stringify(p));
+  } catch {
+    // P14：隐私模式/配额满时 setItem 直接抛异常——转译成用户可读提示，由调用方的 hint 机制展示
+    throw new Error('本机存储不可用（隐私模式或存储配额已满），出生信息未能保存');
+  }
   window.dispatchEvent(new CustomEvent('astroscry:profile-saved')); // 首页等监听方刷新派生视图
 }
 export function clearProfile(opts) {

@@ -121,18 +121,19 @@ export function buildCombinedPromptText(sources, question) {
   ].join('\n');
 }
 
-/** 站内流式解读：`for await (const chunk of streamReading(domain, structured, question))` */
-export async function* streamReading(domain, structured, question) {
-  yield* streamChat(buildMessages(domain, structured, question));
+/** 站内流式解读：`for await (const chunk of streamReading(domain, structured, question, signal))` */
+export async function* streamReading(domain, structured, question, signal) {
+  yield* streamChat(buildMessages(domain, structured, question), signal);
 }
 
-/** 跨页综合流式解读：`for await (const chunk of streamCombined(sources, question))` */
-export async function* streamCombined(sources, question) {
-  yield* streamChat(buildCombinedMessages(sources, question));
+/** 跨页综合流式解读：`for await (const chunk of streamCombined(sources, question, signal))` */
+export async function* streamCombined(sources, question, signal) {
+  yield* streamChat(buildCombinedMessages(sources, question), signal);
 }
 
-/** 共用底层：fetch + SSE 增量解析；失败抛错，调用方负责降级（ADR-002） */
-async function* streamChat(messages) {
+/** 共用底层：fetch + SSE 增量解析；失败抛错，调用方负责降级（ADR-002）。
+ *  signal（可选 AbortSignal）：P13——调用方可中断流式请求（fetch 与读流全程生效），中断抛 AbortError。 */
+async function* streamChat(messages, signal) {
   const config = loadAIConfig();
   if (!aiEnabled(config)) throw new Error('AI 解读未开启或配置不完整');
 
@@ -143,6 +144,7 @@ async function* streamChat(messages) {
       'Authorization': `Bearer ${config.key}`,
     },
     body: JSON.stringify({ model: config.model, messages, stream: true }),
+    signal,
   });
   if (!res.ok) throw new Error(`端点返回 ${res.status} ${res.statusText}`);
   if (!res.body) throw new Error('端点未返回流式响应');

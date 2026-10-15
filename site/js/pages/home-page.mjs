@@ -44,20 +44,29 @@ document.getElementById('today').innerHTML = `
 
 // —— 今日综合运势（五域） ——
 const elsDaily = document.getElementById('daily');
+// P18：homeInterp 单独加载——这样 interpret-home.json 成功而其它语料失败时，
+// 失败分支可以取到语料里的 failNote；homeInterp 自身失败时 failNote 同样不可达，用同文兜底
 let homeInterp = null, qimenInterp = null, deck = null;
 try {
-  [homeInterp, qimenInterp, deck] = await Promise.all([
-    loadData('data/interpret-home.json'),
+  homeInterp = await loadData('data/interpret-home.json');
+} catch { /* interpret-home 缺失：下方失败分支走兜底文案 */ }
+try {
+  [qimenInterp, deck] = await Promise.all([
     loadData('data/interpret-qimen.json'),
     loadData('data/tarot.json').then((d) => d.cards),
   ]);
-} catch { /* 语料失败：daily 卡显示占位，其余页面功能不受影响 */ }
+} catch { /* 语料失败：daily 卡显示失败提示，其余页面功能不受影响 */ }
 
 // 今日 12:00 本地（东八区）—— 与每日星象页同一口径
 const noonUtc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 4, 0, 0));
 
 function renderDaily() {
-  if (!homeInterp) { elsDaily.innerHTML = `<p class="hint">语料加载失败，今日综合暂不可用。</p>`; return; }
+  // 加载失败分支（P18）：文案取语料 failNote；homeInterp 自身缺失时该键同样不可达，用同文兜底
+  const failNote = homeInterp?.failNote ?? '语料加载失败，今日综合暂不可用。';
+  if (!homeInterp || (!qimenInterp && !deck)) {
+    elsDaily.innerHTML = `<h3>今日综合运势</h3><p class="hint">${failNote}</p>`;
+    return;
+  }
   const p = loadProfile();
   if (!(p && p.year)) {
     elsDaily.innerHTML = `<h3>今日综合运势</h3><p class="hint">${homeInterp.needBirth}</p>`;

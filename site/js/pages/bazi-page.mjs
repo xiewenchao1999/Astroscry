@@ -170,11 +170,11 @@ function render(b) {
   setAISource('bazi', {
     ...b,
     shensha: shensha.filter((x) => x.hits.length).map((x) => ({ name: x.name, value: x.value, hit: x.hits })),
-  }, `日主${b.pillars.day?.[0] ?? ''}`);
+  }, `日主${b.dayGan ?? ''}`);
   const fiveEntries = Object.entries(b.fiveElements);
   const strongest = fiveEntries.reduce((a, x) => (x[1] > a[1] ? x : a));
   const weakest = fiveEntries.reduce((a, x) => (x[1] < a[1] ? x : a));
-  const age = new Date().getFullYear() - b.input.year;
+  const nowYear = new Date().getFullYear();
   const shiShenItems = ['year', 'month', 'time'].map((k) => {
     const p = b.pillars[k];
     if (p.ganShiShen === '日主') return '';
@@ -206,7 +206,7 @@ function render(b) {
       <div class="card"><h3>五行分布（含藏干）</h3>${wuxingBar(b.fiveElements)}</div>
       <div class="card"><h3>大运（每步十年）</h3>
         <table class="plain"><tr><th>步骤</th><th>干支</th><th>起运年龄</th><th>起始年份</th></tr>
-        ${b.daYun.map((d) => `<tr ${d.startAge <= age && d.startAge + 10 > age ? 'style="color:var(--accent)"' : ''}><td>${d.index === 0 ? '—' : d.index}</td><td>${d.ganZhi || '起运前'}</td><td>${d.startAge}</td><td>${d.startYear}</td></tr>`).join('')}
+        ${b.daYun.map((d) => `<tr ${d.startYear <= nowYear && nowYear < d.startYear + 10 ? 'style="color:var(--accent)"' : ''}><td>${d.index === 0 ? '—' : d.index}</td><td>${d.ganZhi || '起运前'}</td><td>${d.startAge}</td><td>${d.startYear}</td></tr>`).join('')}
         </table>
         <div class="note">起运：出生后 ${b.qiYun.years} 年 ${b.qiYun.months} 个月 ${b.qiYun.days} 天（${b.qiYun.solar}）。高亮为当前所行大运。</div>
       </div>

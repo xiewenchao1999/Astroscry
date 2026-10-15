@@ -21,33 +21,44 @@ export const SIGNS = [
   { key: 'pisces', cn: '双鱼', en: 'Pisces', element: '水', modality: '变动', ruler: '木星', dateRange: '2.19-3.20' },
 ];
 
-export const PLANETS = [
-  { key: 'sun', cn: '太阳', body: 'Sun' },
-  { key: 'moon', cn: '月亮', body: 'Moon' },
-  { key: 'mercury', cn: '水星', body: 'Mercury' },
-  { key: 'venus', cn: '金星', body: 'Venus' },
-  { key: 'mars', cn: '火星', body: 'Mars' },
-  { key: 'jupiter', cn: '木星', body: 'Jupiter' },
-  { key: 'saturn', cn: '土星', body: 'Saturn' },
-  { key: 'uranus', cn: '天王星', body: 'Uranus' },
-  { key: 'neptune', cn: '海王星', body: 'Neptune' },
-  { key: 'pluto', cn: '冥王星', body: 'Pluto' },
-  { key: 'northnode', cn: '北交点', body: null },
-];
+// —— CONFIG：本模块全部可调参数集中声明（P19：行星集 / 相位表 / 元素权重 / 个人行星集合）——
+// ponytail: 配置面升级路径：迁 data 文件 + 页面开关（用户可选行星集/相位集/流派权重）；v1 不上 UI
+export const CONFIG = {
+  // 参与计算的 11 个天体（body 为 null 者用解析式，如北交点）
+  PLANETS: [
+    { key: 'sun', cn: '太阳', body: 'Sun' },
+    { key: 'moon', cn: '月亮', body: 'Moon' },
+    { key: 'mercury', cn: '水星', body: 'Mercury' },
+    { key: 'venus', cn: '金星', body: 'Venus' },
+    { key: 'mars', cn: '火星', body: 'Mars' },
+    { key: 'jupiter', cn: '木星', body: 'Jupiter' },
+    { key: 'saturn', cn: '土星', body: 'Saturn' },
+    { key: 'uranus', cn: '天王星', body: 'Uranus' },
+    { key: 'neptune', cn: '海王星', body: 'Neptune' },
+    { key: 'pluto', cn: '冥王星', body: 'Pluto' },
+    { key: 'northnode', cn: '北交点', body: null },
+  ],
+  // 相位定义（单一事实来源，O06）：本命 calcAspects 与跨盘 interAspects（astro-synastry.mjs）共用此表。
+  // inNatal:false 的相位（150°/30°）只用于合盘与行运卡；本命页/星盘轮按 inNatal 过滤，仍只画前 5 种。
+  // luminaryBonus：任一端为发光体（日/月）时的容许度加成（O06 归一：natal 与 synastry 统一 2°，原 synastry 为 1.5°）。
+  // nature：吉凶性质（合盘汇总用）；conj 特殊处理为 neutral（见 astro-synastry.interAspects）。
+  ASPECTS: [
+    { angle: 0, cn: '合相', key: 'conj', orb: 8, color: '#7dd3fc', luminaryBonus: 2, inNatal: true, nature: 'neutral' },
+    { angle: 60, cn: '六合', key: 'sextile', orb: 4, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
+    { angle: 90, cn: '刑相', key: 'square', orb: 6, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
+    { angle: 120, cn: '拱相', key: 'trine', orb: 6, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
+    { angle: 180, cn: '冲相', key: 'opp', orb: 8, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
+    { angle: 150, cn: '补十二分相', key: 'quincunx', orb: 3, color: '#c4b5fd', luminaryBonus: 2, inNatal: false, nature: 'challenging' },
+    { angle: 30, cn: '十二分相', key: 'semisextile', orb: 2, color: '#94a3b8', luminaryBonus: 2, inNatal: false, nature: 'neutral' },
+  ],
+  // 元素统计权重（countElements）：个人行星权重高，世代行星低，交点不计
+  ELEMENT_WEIGHTS: { sun: 3, moon: 3, mercury: 2, venus: 2, mars: 2, jupiter: 1, saturn: 1, uranus: 0.5, neptune: 0.5, pluto: 0.5, northnode: 0 },
+  // 个人行星集合（detectPatterns 的群星判定要求至少含一颗，避免世代行星同座误报个人配置）
+  PERSONAL_SET: ['sun', 'moon', 'mercury', 'venus', 'mars'],
+};
 
-// 相位定义（单一事实来源，O06）：本命 calcAspects 与跨盘 interAspects（astro-synastry.mjs）共用此表。
-// inNatal:false 的相位（150°/30°）只用于合盘与行运卡；本命页/星盘轮按 inNatal 过滤，仍只画前 5 种。
-// luminaryBonus：任一端为发光体（日/月）时的容许度加成（O06 归一：natal 与 synastry 统一 2°，原 synastry 为 1.5°）。
-// nature：吉凶性质（合盘汇总用）；conj 特殊处理为 neutral（见 astro-synastry.interAspects）。
-export const ASPECTS = [
-  { angle: 0, cn: '合相', key: 'conj', orb: 8, color: '#7dd3fc', luminaryBonus: 2, inNatal: true, nature: 'neutral' },
-  { angle: 60, cn: '六合', key: 'sextile', orb: 4, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
-  { angle: 90, cn: '刑相', key: 'square', orb: 6, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
-  { angle: 120, cn: '拱相', key: 'trine', orb: 6, color: '#86efac', luminaryBonus: 2, inNatal: true, nature: 'harmonious' },
-  { angle: 180, cn: '冲相', key: 'opp', orb: 8, color: '#fca5a5', luminaryBonus: 2, inNatal: true, nature: 'challenging' },
-  { angle: 150, cn: '补十二分相', key: 'quincunx', orb: 3, color: '#c4b5fd', luminaryBonus: 2, inNatal: false, nature: 'challenging' },
-  { angle: 30, cn: '十二分相', key: 'semisextile', orb: 2, color: '#94a3b8', luminaryBonus: 2, inNatal: false, nature: 'neutral' },
-];
+export const PLANETS = CONFIG.PLANETS;
+export const ASPECTS = CONFIG.ASPECTS;
 
 // 跨盘相位强度评分的行星权重（合盘 synastry 与行运 transits 共用，astro-synastry.mjs 引用）。
 // 注意与 countElements 的 ELEMENT_WEIGHTS 语义不同：此处衡量相位交互强度，彼处衡量元素占比。
@@ -182,7 +193,7 @@ export function castNatal(input) {
 
 export function countElements(planets) {
   const count = { 火: 0, 土: 0, 风: 0, 水: 0 };
-  const W = { sun: 3, moon: 3, mercury: 2, venus: 2, mars: 2, jupiter: 1, saturn: 1, uranus: 0.5, neptune: 0.5, pluto: 0.5, northnode: 0 };
+  const W = CONFIG.ELEMENT_WEIGHTS; // P19：权重集中于 CONFIG
   for (const [k, pl] of Object.entries(planets)) {
     const s = SIGNS[pl.signIndex];
     if (count[s.element] != null) count[s.element] += W[k] ?? 1;
@@ -234,8 +245,8 @@ export function detectPatterns(planets, aspects) {
   const has = (x, y, ang) => angleOf.get(pairId(x, y)) === ang;
   const out = [];
 
-  // 群星：同星座 ≥3 且含个人行星
-  const PERSONAL = new Set(['sun', 'moon', 'mercury', 'venus', 'mars']);
+  // 群星：同星座 ≥3 且含个人行星（集合集中于 CONFIG.PERSONAL_SET，P19）
+  const PERSONAL = new Set(CONFIG.PERSONAL_SET);
   const bySign = new Map();
   for (const k of keys) {
     if (!P[k].signKey) continue;
@@ -334,7 +345,7 @@ export function dailyFortune(dateUTC) {
     // 1) 守护星当日所受相位
     for (const asp of aspectPairs) {
       const other = asp.a === rulerKey ? asp.bCn : asp.b === rulerKey ? asp.aCn : null;
-      if (!other || asp.a === asp.b) continue;
+      if (!other) continue; // calcAspects 保证 i<j，相位对两侧必不相同（P16：原恒假的 asp.a===asp.b 判断已删）
       const delta = transitScore(asp.aspect, asp.a === rulerKey ? asp.b : asp.a);
       if (!delta) continue; // 收录但无权重因子的相位（如 150°/30°）不产出「+0」噪音因子
       score += delta;
