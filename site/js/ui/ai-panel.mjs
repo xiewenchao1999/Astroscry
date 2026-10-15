@@ -4,7 +4,7 @@
 // 隐私：跨页缓存仅存 sessionStorage（关标签页即清）；外发仍受 ai-settings opt-in 约束。
 
 import { aiEnabled, mountAICard } from './ai-settings.mjs';
-import { streamReading, streamCombined, domainLabel } from './ai-reading.mjs';
+import { streamReading, streamCombined, domainLabel, buildPromptText, buildCombinedPromptText } from './ai-reading.mjs';
 
 const SES_KEY = 'astroscry.ai.session.v1';
 // ponytail: qa 只保留每盘最近 3 条、回答截断 200 字，控制 prompt 体积；升级路径=完整对话历史 + 按盘裁剪
@@ -48,6 +48,7 @@ export function mountAIPanel() {
         <button class="btn" type="submit" id="ai-send">发送</button>
       </form>
       <div class="ai-foot">
+        <button class="btn" id="ai-copy" type="button" title="无需配置：把当前盘面 + 提问框架复制成一份完整提示词，粘到你常用的对话工具即可。内容含出生数据，请自行判断目标平台是否可信">复制提示词</button>
         <button class="btn ghost" id="ai-comb" type="button">综合解读</button>
         <button class="btn ghost" id="ai-setbtn" type="button" aria-expanded="false">设置</button>
       </div>
@@ -61,6 +62,7 @@ export function mountAIPanel() {
     out: dock.querySelector('#ai-out'),
     q: dock.querySelector('#ai-q'),
     send: dock.querySelector('#ai-send'),
+    copy: dock.querySelector('#ai-copy'),
     comb: dock.querySelector('#ai-comb'),
     setbtn: dock.querySelector('#ai-setbtn'),
     set: dock.querySelector('#ai-set'),
@@ -83,6 +85,7 @@ export function mountAIPanel() {
     els.q.value = '';
     askCombined(q);
   });
+  els.copy.addEventListener('click', copyPrompt);
 
   renderSrc();
 }
@@ -105,6 +108,51 @@ function renderSrc() {
   }
   els.comb.textContent = n > 0 ? `综合解读（${n} 盘）` : '综合解读';
   els.comb.disabled = n === 0;
+  els.copy.disabled = !current && n === 0; // 无可复制内容时禁用，避免点了没反应
+}
+
+/** 写剪贴板：优先 Clipboard API（需安全上下文），失败降级 execCommand（http 局域网访问场景） */
+async function copyText(text) {
+  try {
+    if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(text); return true; }
+  } catch { /* 权限被拒或非安全上下文 → 降级 */ }
+  try {
+    const ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.append(ta);
+    ta.select();
+    const ok = document.execCommand('copy');
+    ta.remove();
+    return ok;
+  } catch { return false; }
+}
+
+/** 零网络提示词出口：无数据 → 本页盘 / 有数据 → 跨页综合盘；不依赖 aiEnabled（关闭态照常可用） */
+async function copyPrompt() {
+  const question = els.q.value.trim();
+  let text;
+  if (current) text = buildPromptText(current.domain, current.structured, question);
+  else {
+    const sources = Object.values(loadSession().sources);
+    if (!sources.length) { els.out.innerHTML = '<span class="hint">本页尚未排盘，请先完成排盘；或先在其他页排盘后使用「复制提示词」汇总。</span>'; return; }
+    text = buildCombinedPromptText(sources, question);
+  }
+  if (await copyText(text)) {
+    els.out.innerHTML = '<span class="hint">已复制到剪贴板：把这份提示词粘贴到你常用的对话工具即可获得完整解读。内容含你的出生数据，请确认目标平台可信。</span>';
+    const orig = els.copy.dataset.originalText ?? els.copy.textContent;
+    els.copy.dataset.originalText = orig;
+    els.copy.textContent = '已复制 ✓';
+    setTimeout(() => { els.copy.textContent = orig; }, 1600);
+  } else {
+    // 复制不可用（如非安全上下文且 execCommand 被禁）：把文本落到输出区，让用户手动全选复制
+    els.out.innerHTML = '<span class="hint">复制未成功（浏览器限制）。已把提示词完整显示如下，请手动全选复制。</span>';
+    const pre = document.createElement('pre');
+    pre.textContent = text; // textContent 防注入：用户问题可能含 HTML
+    els.out.append(pre);
+  }
 }
 
 function guardEnabled() {

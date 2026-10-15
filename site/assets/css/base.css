@@ -338,6 +338,7 @@ table.plain th { color: var(--muted); font-weight: 500; }
   background: var(--card); border: 1px solid var(--card-border); border-radius: 10px;
 }
 .ai-out:empty::before { content: '暂无解读。完成排盘后在此提问；多页排盘后可用综合解读汇总。'; color: var(--muted); font-size: 12.5px; }
+.ai-out pre { white-space: pre-wrap; word-break: break-word; margin: 8px 0 0; font: inherit; }
 #ai-ask { display: flex; gap: 8px; }
 #ai-ask input { flex: 1; min-width: 0; }
 .ai-foot { display: flex; gap: 8px; flex-wrap: wrap; }
