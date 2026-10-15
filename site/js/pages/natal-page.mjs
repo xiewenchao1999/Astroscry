@@ -36,7 +36,8 @@ function transitsCard(n) {
 }
 
 function render(n) {
-  setAISource('natal', n);
+  const rd = readNatal(n, natalInterp);
+  setAISource('natal', { ...n, reading: { summary: rd.summary, patterns: rd.patterns } });
   const planetRows = Object.values(n.planets).map((p) => `
     <tr><td>${p.cn}${p.retrograde ? `<span class="pill retro" style="margin-left:4px" title="${(natalInterp.retrograde[p.key] ?? natalInterp.retrograde.general)}">℞逆行</span>` : ''}</td>
     <td>${p.signCn} ${Math.floor(p.degInSign)}°${String(Math.floor((p.degInSign % 1) * 60)).padStart(2, '0')}′</td>
@@ -78,18 +79,26 @@ function render(n) {
       <p><b>上升 · ${asc.cn}</b>：${asc.trait}（上升是你呈现给世界的第一层气质。）</p>
       <p class="note">${interp.disclaimer}</p>
     </div>
-    ${readingCard(n)}`;
+    ${readingCard(rd)}`;
 }
 
-/** 深入解读卡：综合判词 + 元素/模式 + 行星落宫主题 + 关键相位判词（readNatal 规则引擎） */
-function readingCard(n) {
-  const rd = readNatal(n, natalInterp);
+/** 深入解读卡：综合判词 + 相位图形 + 元素/模式 + 行星落宫主题 + 关键相位判词（readNatal 规则引擎） */
+function readingCard(rd) {
   const houseItems = rd.inHouses.map((x) => `<p><b>${x.cn}</b>（${x.signCn}，第 ${x.house} 宫）：${x.line}</p>`).join('');
   const aspectItems = rd.aspectLines.slice(0, 6).map((x) =>
     `<p style="color:${x.nature === 'harmony' ? 'var(--good)' : x.nature === 'tension' ? 'var(--bad)' : ''}"><b>${x.aCn} ${x.aspectCn} ${x.bCn}</b>（容许 ${x.orb}°）：${x.line}</p>`).join('');
+  const pat = natalInterp.patterns;
+  const patternBlock = pat ? `
+      <p style="margin-top:10px;"><b>${pat.title}</b></p>
+      <p class="hint">${pat.intro}</p>
+      ${rd.patterns.length
+        ? rd.patterns.map((p) => `<p><span class="pill gold">${p.label}</span> ${p.line}</p>`).join('')
+        : `<p>${pat.none}</p>`}
+      <p class="note">${pat.note}</p>` : '';
   return `
     <div class="card"><h3>深入解读 <span class="src-tag">规则引擎</span></h3>
       <p style="color:var(--accent);font-weight:700;">${rd.summary}</p>
+      ${patternBlock}
       <p><b>元素分布：</b>${rd.elements.detail}——${rd.elements.line}</p>
       <p><b>三态分布：</b>${rd.modality.line}</p>
       <details style="margin-top:8px;" open><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">行星落宫主题</summary>

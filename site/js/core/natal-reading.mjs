@@ -4,9 +4,31 @@
 // ponytail: 日/月/水/金/火五大个人行星已有逐座释义（signsByPlanet）；
 //           木土天海冥为世代行星（一代人共享落座）不逐座，仍用「主题 × 宫位」拼装。
 
-import { SIGNS } from './astro.mjs';
+import { SIGNS, detectPatterns } from './astro.mjs';
 
 const aspectNature = (angle) => (angle === 0 ? 'merge' : (angle === 120 || angle === 60) ? 'harmony' : 'tension');
+
+/**
+ * 相位图形判词：每类图形只取一个代表（同类多组时以检测顺序首个为准），最多 3 类。
+ * 语料缺该图形时跳过，不产出半成品句子。
+ */
+function patternLines(n, interp) {
+  const kinds = interp.patterns?.kinds;
+  if (!kinds) return [];
+  const out = [];
+  const seen = new Set();
+  for (const p of detectPatterns(n.planets, n.aspects)) {
+    if (seen.has(p.kind) || out.length >= 3) break;
+    const kind = kinds[p.kind];
+    if (!kind) continue; // 语料未定义 → 跳过而非拼出病句
+    seen.add(p.kind);
+    let line = kind.tpl.replace('{planets}', p.planets.map((k) => n.planets[k].cn).join('、'));
+    if (p.signCn) line = line.replace('{sign}', p.signCn);
+    if (p.element) line = line.replace('{element}', p.element);
+    out.push({ kind: p.kind, label: kind.label, line });
+  }
+  return out;
+}
 
 /**
  * 本命盘解读。
@@ -15,7 +37,8 @@ const aspectNature = (angle) => (angle === 0 ? 'merge' : (angle === 120 || angle
  *   inHouses: Array<{ cn: string, signCn: string, house: number, line: string }>,
  *   aspectLines: Array<{ aCn: string, aspectCn: string, bCn: string, orb: number, nature: string, line: string }>,
  *   elements: { dominant: string, missing: string[], line: string },
- *   modality: { dominant: string, line: string }
+ *   modality: { dominant: string, line: string },
+ *   patterns: Array<{ kind: string, label: string, line: string }>
  * }}
  */
 export function readNatal(n, interp) {
@@ -94,5 +117,5 @@ export function readNatal(n, interp) {
     .replace('{moon}', n.planets.moon.signCn)
     .replace('{asc}', n.ascSign);
 
-  return { summary, inHouses, aspectLines, elements, modality, love };
+  return { summary, inHouses, aspectLines, elements, modality, love, patterns: patternLines(n, interp) };
 }

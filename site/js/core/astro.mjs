@@ -200,6 +200,78 @@ export function calcAspects(planets) {
   return out;
 }
 
+function pairId(x, y) { return x < y ? `${x}|${y}` : `${y}|${x}`; }
+
+/**
+ * 相位图形识别（保守：只在几何关系成立时输出，宁缺勿错）。
+ * 检出：大十字（双对分轴 + 四刑）/ T 三角（对分轴 + 双刑）/ 大三角（三拱闭环）/ 群星（同星座 ≥3）。
+ * 群星要求至少含一颗个人行星——否则木土天海冥同座是世代现象，人人都有，不构成个人配置。
+ * 返回形状：[{ kind, planets: string[](行星 key), signCn?, element? }]
+ */
+export function detectPatterns(planets, aspects) {
+  const P = Object.fromEntries(Object.entries(planets).filter(([k]) => k !== 'northnode'));
+  const keys = Object.keys(P);
+  const angleOf = new Map();
+  for (const a of aspects) angleOf.set(pairId(a.a, a.b), a.angle);
+  const has = (x, y, ang) => angleOf.get(pairId(x, y)) === ang;
+  const out = [];
+
+  // 群星：同星座 ≥3 且含个人行星
+  const PERSONAL = new Set(['sun', 'moon', 'mercury', 'venus', 'mars']);
+  const bySign = new Map();
+  for (const k of keys) {
+    if (!P[k].signKey) continue;
+    if (!bySign.has(P[k].signKey)) bySign.set(P[k].signKey, []);
+    bySign.get(P[k].signKey).push(k);
+  }
+  for (const [, group] of bySign) {
+    if (group.length >= 3 && group.some((k) => PERSONAL.has(k))) {
+      out.push({ kind: 'stellium', planets: group, signCn: P[group[0]].signCn });
+    }
+  }
+
+  // 对分轴先收集
+  const oppos = [];
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = i + 1; j < keys.length; j++) if (has(keys[i], keys[j], 180)) oppos.push([keys[i], keys[j]]);
+  }
+
+  // 大十字：两组互不相交的对分轴之间四刑齐备（含此结构的 T 三角不再重复报告）
+  const crossed = new Set();
+  for (let i = 0; i < oppos.length; i++) {
+    for (let j = i + 1; j < oppos.length; j++) {
+      const [a, b] = oppos[i], [c, d] = oppos[j];
+      if (new Set([a, b, c, d]).size !== 4) continue;
+      if (has(a, c, 90) && has(a, d, 90) && has(b, c, 90) && has(b, d, 90)) {
+        out.push({ kind: 'grandCross', planets: [a, b, c, d] });
+        for (const k of [a, b, c, d]) crossed.add(k);
+      }
+    }
+  }
+
+  // 大三角：三颗两两成拱（120° 步进必然同元素，元素自动一致）
+  for (let i = 0; i < keys.length; i++) {
+    for (let j = i + 1; j < keys.length; j++) {
+      if (!has(keys[i], keys[j], 120)) continue;
+      for (let k = j + 1; k < keys.length; k++) {
+        if (has(keys[i], keys[k], 120) && has(keys[j], keys[k], 120)) {
+          out.push({ kind: 'grandTrine', planets: [keys[i], keys[j], keys[k]], element: P[keys[i]].signElement });
+        }
+      }
+    }
+  }
+
+  // T 三角：对分轴 + 第三颗对两端皆刑
+  for (const [a, b] of oppos) {
+    if (crossed.has(a) && crossed.has(b)) continue;
+    const apex = keys.find((c) => c !== a && c !== b && has(a, c, 90) && has(b, c, 90));
+    if (apex) out.push({ kind: 'tSquare', planets: [a, b, apex] });
+  }
+
+  const order = { grandCross: 0, tSquare: 1, grandTrine: 2, stellium: 3 };
+  return out.sort((x, y) => order[x.kind] - order[y.kind]);
+}
+
 /** 星座日期粗推（用于仅知道生日时反查太阳星座） */
 export function sunSignByDate(month, day) {
   // 边界取 c 期通表：每月 21 日前后切换，摩羯跨年

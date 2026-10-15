@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url);
 globalThis.self = globalThis;
 globalThis.Astronomy = require('../site/vendor/astronomy.min.js');
 
-import { computeSky, castNatal, ascendantMc, meanObliquity, meanNodeLon, sunSignByDate, dailyFortune, calcAspects, SIGNS } from '../site/js/core/astro.mjs';
+import { computeSky, castNatal, ascendantMc, meanObliquity, meanNodeLon, sunSignByDate, dailyFortune, calcAspects, detectPatterns, SIGNS } from '../site/js/core/astro.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -140,4 +140,75 @@ test('本命盘解读：姻缘视角块（月亮需求/金星爱语/第 7 宫伴
   const ascIdx = n.ascSignIndex;
   const dscIdx = n.houses.findIndex((h) => h.house === 7);
   assert.notEqual(dscIdx, -1);
+});
+
+// —— 相位图形检测：用几何造盘夹具驱动，不依赖真实历表 ——
+const mk = (key, cn, signIndex) => [key, {
+  key, cn, signIndex,
+  signKey: SIGNS[signIndex].key, signCn: SIGNS[signIndex].cn, signElement: SIGNS[signIndex].element,
+  lon: signIndex * 30 + 5,
+}];
+const asp = (a, b, angle) => ({ a, b, angle });
+
+test('相位图形：三拱闭环 → 大三角（含元素）', () => {
+  const planets = Object.fromEntries([mk('sun', '太阳', 0), mk('mars', '火星', 4), mk('jupiter', '木星', 8)]); // 白羊/狮子/射手，均火象
+  const out = detectPatterns(planets, [asp('sun', 'mars', 120), asp('mars', 'jupiter', 120), asp('sun', 'jupiter', 120)]);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].kind, 'grandTrine');
+  assert.equal(out[0].element, '火');
+  assert.equal(out[0].planets.length, 3);
+});
+
+test('相位图形：对分轴 + 双刑 → T 三角（不误报大三角）', () => {
+  const planets = Object.fromEntries([mk('sun', '太阳', 0), mk('moon', '月亮', 6), mk('saturn', '土星', 3)]);
+  const out = detectPatterns(planets, [asp('sun', 'moon', 180), asp('sun', 'saturn', 90), asp('moon', 'saturn', 90)]);
+  assert.equal(out.length, 1);
+  assert.equal(out[0].kind, 'tSquare');
+  assert.equal(out[0].planets.length, 3);
+});
+
+test('相位图形：双对分轴 + 四刑 → 大十字，且其内部 T 三角不重复报告', () => {
+  const planets = Object.fromEntries([mk('sun', '太阳', 0), mk('moon', '月亮', 6), mk('mars', '火星', 3), mk('saturn', '土星', 9)]);
+  const aspects = [
+    asp('sun', 'moon', 180), asp('mars', 'saturn', 180),
+    asp('sun', 'mars', 90), asp('sun', 'saturn', 90), asp('moon', 'mars', 90), asp('moon', 'saturn', 90),
+  ];
+  const out = detectPatterns(planets, aspects);
+  assert.equal(out.length, 1, '大十字内含的 T 三角不应重复报告');
+  assert.equal(out[0].kind, 'grandCross');
+  assert.equal(out[0].planets.length, 4);
+});
+
+test('相位图形：群星需含个人行星（木土天海冥同座是世代现象，不算个人配置）', () => {
+  const personal = Object.fromEntries([mk('sun', '太阳', 10), mk('venus', '金星', 10), mk('mercury', '水星', 10)]);
+  const out = detectPatterns(personal, []);
+  assert.equal(out.filter((p) => p.kind === 'stellium').length, 1);
+  assert.equal(out[0].signCn, SIGNS[10].cn);
+
+  const outerOnly = Object.fromEntries([mk('jupiter', '木星', 10), mk('saturn', '土星', 10), mk('uranus', '天王星', 10)]);
+  assert.equal(detectPatterns(outerOnly, []).length, 0, '无个人行星的同座聚集不应报群星');
+});
+
+test('相位图形：无图形时返回空数组；排序为大十字→T三角→大三角→群星', () => {
+  const planets = Object.fromEntries([mk('sun', '太阳', 0), mk('moon', '月亮', 6)]);
+  assert.deepEqual(detectPatterns(planets, [asp('sun', 'moon', 180)]), [], '只有对分轴不构成图形');
+
+  const trinePlanets = Object.fromEntries([mk('sun', '太阳', 0), mk('mars', '火星', 4), mk('jupiter', '木星', 8), mk('venus', '金星', 4), mk('mercury', '水星', 4)]);
+  const mixed = detectPatterns(trinePlanets, [asp('sun', 'mars', 120), asp('mars', 'jupiter', 120), asp('sun', 'jupiter', 120)]);
+  const kinds = mixed.map((p) => p.kind);
+  assert.ok(kinds.includes('grandTrine') && kinds.includes('stellium'));
+  assert.ok(kinds.indexOf('grandTrine') < kinds.indexOf('stellium'), '大三角应按优先级排在群星之前');
+});
+
+test('本命盘解读：patterns 块句式完整且无未替换占位符（基准盘 2000-08-16 北京）', () => {
+  const n = castNatal({ year: 2000, month: 8, day: 16, hour: 12, minute: 0, lat: 39.9042, lon: 116.4074, tzOffsetHours: 8 });
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const rd = readNatal(n, interp);
+  assert.ok(Array.isArray(rd.patterns), 'patterns 必须是数组');
+  for (const p of rd.patterns) {
+    assert.ok(p.label && p.line, '图形需含 label 与 line');
+    assert.ok(!/\{[a-zA-Z]+\}/.test(p.line), `图形判词存在未替换占位符：${p.line}`);
+    assert.ok(p.line.length > 20, '判词不应过短');
+  }
+  assert.ok(interp.patterns.kinds && interp.patterns.none, '语料需含图形定义与无图形兜底句');
 });
