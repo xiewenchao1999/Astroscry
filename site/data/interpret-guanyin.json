@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "source": "界面文案为本项目编写；签诗/典故/分项解取自 site/data/guanyin-signs.json（来源注记见其 _meta.provenance）",
+    "note": "分项解为传统签书体，按签非全键：渲染按 domainsOrder 顺序、缺键显示 missingNote"
+  },
+  "pageTitle": "求签掷杯",
+  "pageSub": "观音灵签一百签 · 掷圣杯问事 · 全部本地计算",
+  "tabs": { "sign": "求签", "jiaobei": "掷圣杯" },
+  "sign": {
+    "intro": "默念所求之事，点击「摇签」——签筒摇动后落出一支观音灵签，附掷筊验签。",
+    "shakeBtn": "诚心摇签",
+    "shaking": "摇签中……",
+    "shakeSteps": ["摇签中……", "签筒渐紧……", "一支签跃出——"],
+    "signNo": "第 {n} 签",
+    "poemTitle": "签诗",
+    "storyTitle": "典故",
+    "domainsTitle": "分项解",
+    "jiaobeiCheckTitle": "掷筊验签",
+    "jiaobeiCheckIntro": "抽得诗签后掷筊三次，确认神明是否愿意以此签作答（连续三次圣筊为准）。",
+    "jiaobeiCheckBtn": "掷筊三次",
+    "jiaobeiChecking": "掷筊中……",
+    "reShakeBtn": "再摇一签"
+  },
+  "luckStyle": { "上签": "good", "中签": "gold", "下签": "bad" },
+  "domainsOrder": ["总体", "家宅", "自身", "求财", "交易", "婚姻", "六甲(子嗣)", "出行", "迁移", "失物", "失物方位", "疾病", "诉讼", "蚕桑", "六畜", "坟地"],
+  "missingNote": "此签未列",
+  "jiaobei": {
+    "intro": "掷筊是「是非题」请示工具：默念问题（宜可否式，如「此事本月内可成否」），一次连掷三筊。",
+    "castBtn": "默念已毕，掷筊三次",
+    "casting": "掷筊中……",
+    "roundLabel": "第 {n} 掷",
+    "faces": { "flat": "平（阳面）", "convex": "凸（阴面）" },
+    "verdictTitle": "三掷总评",
+    "verdicts": {
+      "允": "连续三次圣筊——神明允准，可安心行事。",
+      "否": "三掷中见阴筊——此事不宜或时机未至；宜重新禀明、调整问法再请示。",
+      "未明": "未得三圣筊亦无阴筊——神明未置可否；可重新禀明后再掷。"
+    },
+    "rerollHint": "笑筊可重问、阴筊宜改问法——调整问题表述后再试。"
+  },
+  "disclaimer": "本页为民俗文化呈现，判定与解读均为确定性规则，仅供文化参考，不构成任何现实决策依据。",
+  "sourceNote": "签文语料：iowi/guanyin（MIT，浅草寺一百观音签体系）；白话为开源语料整理，仅供文化研究。掷筊判定口径见关于页来源表。"
+}

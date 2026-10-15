@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>求签掷杯 · 星卜 Astroscry</title>
+<link rel="stylesheet" href="../assets/css/base.css">
+<style>
+  /* 民俗页局部样式：摇签动效（仿「摇 → 落 → 签文淡入」仪式感）与签筒 */
+  .shake-box { text-align: center; font-size: 46px; padding: 26px 0 10px; user-select: none; }
+  .shake-box.shaking { animation: tube-shake 0.16s ease-in-out infinite alternate; }
+  @keyframes tube-shake {
+    from { transform: rotate(-9deg) translateY(0); }
+    to { transform: rotate(9deg) translateY(-7px); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .shake-box.shaking { animation: none; }
+  }
+  .poem { text-align: center; font-size: 17px; line-height: 2.1; letter-spacing: 3px; margin: 8px 0; }
+  .sign-head { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .domains { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 4px 18px; margin-top: 8px; }
+  .domain-item { font-size: 14px; padding: 3px 0; border-bottom: 1px dashed rgba(142, 168, 255, 0.15); }
+  .domain-item b { color: var(--accent2); margin-right: 8px; }
+  .cast-row { display: flex; gap: 10px; align-items: baseline; padding: 5px 0; flex-wrap: wrap; }
+  .verdict { font-size: 20px; font-weight: 800; color: var(--accent); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>求签掷杯</h1>
+  <p class="page-sub">观音灵签一百签 · 掷圣杯问事 · 全部本地计算</p>
+
+  <div class="card">
+    <div class="seg-group" id="tab" style="margin-bottom:6px;">
+      <button type="button" data-v="sign" class="active">求签</button>
+      <button type="button" data-v="jiaobei">掷圣杯</button>
+    </div>
+  </div>
+
+  <div id="panel-sign">
+    <div class="card">
+      <h3>观音灵签</h3>
+      <p class="hint" id="sign-intro"></p>
+      <div class="shake-box" id="tube" aria-hidden="true">🥢</div>
+      <form class="panel">
+        <div style="grid-column:1/-1;"><label>所求何事（可选，仅用于你自己聚焦与 AI 提问）</label><input type="text" id="sign-question" placeholder="如：今年事业运如何" autocomplete="off"></div>
+        <div style="align-self:end;"><button class="btn" type="button" id="shake">诚心摇签</button></div>
+      </form>
+    </div>
+    <div id="sign-stage"></div>
+  </div>
+
+  <div id="panel-jiaobei" hidden>
+    <div class="card">
+      <h3>掷圣杯（掷筊）</h3>
+      <p class="hint" id="jiaobei-intro"></p>
+      <form class="panel">
+        <div style="grid-column:1/-1;"><label>所问何事（宜「可否式」提问，如：此事本月内可成否）</label><input type="text" id="jb-question" autocomplete="off"></div>
+        <div style="align-self:end;"><button class="btn" type="button" id="jb-cast">默念已毕，掷筊三次</button></div>
+      </form>
+    </div>
+    <div id="jiaobei-stage"></div>
+  </div>
+</div>
+<script type="module" src="../js/pages/folk-page.mjs"></script>
+</body>
+</html>
