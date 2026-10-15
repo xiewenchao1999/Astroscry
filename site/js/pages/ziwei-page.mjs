@@ -70,6 +70,33 @@ function horoscopeCard(z, hzInfo) {
     </div>`;
 }
 
+/** 十二宫主星速览：每宫的 主星星性（语料 starNature）+ 宫职（语料 palaces）+ 亮度判词，三层并列 */
+function palaceStarsCard(z) {
+  const rows = z.palaces.map((p) => {
+    const stars = p.majorStars.length ? p.majorStars : null;
+    if (!stars) {
+      return `<p><b>${p.name}宫</b>（${p.stemBranch}）：无主星——借对宫主星参看，此宫的力量偏薄，宜主动借力。</p>`;
+    }
+    const head = `<p><b>${p.name}宫</b>（${p.stemBranch}）：主星 ${stars.map((s) => `${s.name}${s.brightness ? `（${s.brightness}）` : ''}${s.mutagen ? `化${s.mutagen}` : ''}`).join('、')}</p>`;
+    const starLines = stars.map((s) => {
+      const nat = interp.starNature?.[s.name];
+      const br = s.brightness ? interp.brightness?.[s.brightness] : '';
+      return `<p class="hint" style="margin-left:14px">▸ ${interp.palaceStarStarLabel}·${s.name}：${nat ?? '（本星未收录释义）'}${br ? ` ${br}` : ''}</p>`;
+    }).join('');
+    const duty = interp.palaces?.[p.name] ?? '';
+    return `${head}${starLines}${duty ? `<p class="hint" style="margin-left:14px">▸ ${interp.palaceStarDutyLabel}·${p.name}：${duty}</p>` : ''}`;
+  }).join('');
+  return `
+    <div class="card"><h3>${interp.palaceStarTitle} <span class="src-tag">释义</span></h3>
+      <p class="hint">${interp.palaceStarNote}</p>
+      <details style="margin-top:8px;" open>
+        <summary style="cursor:pointer;color:var(--accent2);font-weight:600;">逐宫展开（十二宫）</summary>
+        ${rows}
+      </details>
+      <p class="note">${interp.palaceStarBoundary}</p>
+    </div>`;
+}
+
 function render(z, hzInfo) {
   // AI 数据源：iztro 完整盘过大，只瘦身传关键字段（主星含四化/亮度、辅星、宫干支）+ 当前运限
   setAISource('ziwei', {
@@ -126,6 +153,7 @@ function render(z, hzInfo) {
       <p class="note">${interp.fiveElementsNote.replace('{cls}', z.fiveElementsClass)}</p>
       <p class="note">${interp.disclaimer}</p>
     </div>
+    ${palaceStarsCard(z)}
     ${horoscopeCard(z, hzInfo)}`;
 }
 

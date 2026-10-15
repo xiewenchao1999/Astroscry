@@ -85,3 +85,42 @@ test('紫微语料：运限段落齐备且模板占位符可闭合', () => {
   assert.ok(hz.decadal.includes('{from}') && hz.decadal.includes('{to}'), '大限句需含虚岁区间');
   assert.ok(hz.yearly.includes('{age}'), '流年句需含虚岁');
 });
+
+test('紫微语料：星性表 14 主星齐备、亮度七档齐备（顺序固定）', () => {
+  const i = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-ziwei.json'), 'utf8'));
+  assert.deepEqual(Object.keys(i.starNature), Object.keys(i.majorStars), '星性表的星与 majorStars 应一一对应（键序一致）');
+  for (const [name, text] of Object.entries(i.starNature)) {
+    assert.ok(text.length >= 18, `${name} 星性过短`);
+    // 星性必须与宫位解耦：不得把「命宫」写死在内，否则复用到其他宫就是错误陈述
+    assert.ok(!text.includes('命宫'), `${name} 的星性写死了「命宫」，无法复用到其他宫位`);
+    assert.ok(!text.includes('坐命'), `${name} 的星性写死了「坐命」`);
+  }
+  assert.deepEqual(Object.keys(i.brightness), ['庙', '旺', '得', '利', '平', '不', '陷'], '亮度七档与键序应稳定');
+  for (const [k, v] of Object.entries(i.brightness)) assert.ok(v.length >= 12, `亮度 ${k} 判词过短`);
+  for (const k of ['palaceStarTitle', 'palaceStarNote', 'palaceStarBoundary']) {
+    assert.ok(i[k] && i[k].length >= 6, `缺 palaceStar 段落 ${k}`);
+  }
+  for (const k of ['palaceStarStarLabel', 'palaceStarDutyLabel']) {
+    assert.ok(i[k] && i[k].length >= 2, `缺 palaceStar 标签 ${k}`);
+  }
+  // 宫职表必须覆盖十二宫，否则主星速览会缺行
+  assert.equal(Object.keys(i.palaces).length, 12, '宫职释义应为 12 宫');
+});
+
+test('紫微速览渲染契约：每宫主星都能查到星性，亮度的七个取值都被覆盖', () => {
+  const i = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-ziwei.json'), 'utf8'));
+  const z = castZiwei({ year: 2000, month: 8, day: 16, hour: 0, gender: 'female' });
+  assert.equal(z.palaces.length, 12);
+  const brightSeen = new Set();
+  for (const p of z.palaces) {
+    assert.ok(i.palaces[p.name], `宫职表缺 ${p.name}`);
+    for (const s of p.majorStars) {
+      assert.ok(i.starNature[s.name], `${p.name}的主星 ${s.name} 缺星性释义`);
+      if (s.brightness) {
+        brightSeen.add(s.brightness);
+        assert.ok(i.brightness[s.brightness], `亮度档 ${s.brightness} 缺判词`);
+      }
+    }
+  }
+  assert.ok(brightSeen.size >= 3, `基准盘应出现至少三种亮度档（实得 ${[...brightSeen].join('/')}）`);
+});
