@@ -419,17 +419,27 @@ export function dailyFortune(dateUTC, fw) {
       }
       if (sum < min) for (const d of fw.dimensions) raw[d] = 4; // 理论不可达的兜底
     }
-    // 保留 1 位小数；舍入漂移用 0.1 步进回补，确保总和仍落在纪律区间
+    // 保留 1 位小数；舍入漂移用 0.1 步进回补，确保总和仍落在纪律区间。
+    // 回补候选只在合法值域内挑选（P-QA1：原实现取全维最大者，恰为 4.0 时会加出 4.1 越界）：
+    // 加分只在值 < 4 的维度、减分只在值 > 0 的维度——候选恒存在（总和越界 ⇔ 必有未饱和/非零维），确定性不变。
     const dimensions = Object.fromEntries(fw.dimensions.map((d) => [d, round1(raw[d])]));
     let rsum = round1(fw.dimensions.reduce((a, d) => a + dimensions[d], 0));
     let guard = 0;
     while (rsum < min && guard++ < 20) {
-      const d = fw.dimensions.reduce((best, x) => (dimensions[x] > dimensions[best] ? x : best), fw.dimensions[0]);
+      const d = fw.dimensions.reduce((best, x) => {
+        if (dimensions[x] >= 4) return best;                 // 已达上限，不作为加分候选
+        return best === null || dimensions[x] > dimensions[best] ? x : best;
+      }, null);
+      if (d === null) break; // 防御：全维饱和而总和仍越界（纪律区间与值域矛盾时应视为数据错误，不静默产出越界值）
       dimensions[d] = round1(dimensions[d] + 0.1);
       rsum = round1(rsum + 0.1);
     }
     while (rsum > max && guard++ < 40) {
-      const d = fw.dimensions.reduce((best, x) => (dimensions[x] < dimensions[best] ? x : best), fw.dimensions[0]);
+      const d = fw.dimensions.reduce((best, x) => {
+        if (dimensions[x] <= 0) return best;                 // 已达下限，不作为减分候选
+        return best === null || dimensions[x] < dimensions[best] ? x : best;
+      }, null);
+      if (d === null) break; // 防御：全维归零而总和仍越界
       dimensions[d] = round1(dimensions[d] - 0.1);
       rsum = round1(rsum - 0.1);
     }
