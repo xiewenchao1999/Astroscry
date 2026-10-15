@@ -105,3 +105,19 @@ test('名人案例：25 条且含出生信息与城市', () => {
     assert.ok(x.note && x.note.length > 10);
   }
 });
+
+test('塔罗问事主题：六主题齐备、字段闭合、general 排首位', () => {
+  const t = D('interpret-tarot.json');
+  const keys = Object.keys(t.topicLens ?? {});
+  assert.deepEqual(keys, ['general', 'love', 'career', 'money', 'health', 'spirit'], '主题键与顺序应稳定（首个为综合，作为选择器默认值）');
+  for (const k of keys) {
+    const lens = t.topicLens[k];
+    assert.ok(typeof lens.label === 'string' && lens.label.length >= 2, `主题 ${k} 的 label 缺失或过短`);
+    for (const f of ['askHint', 'focus', 'exit']) {
+      assert.ok(typeof lens[f] === 'string' && lens[f].length >= 6, `主题 ${k} 的 ${f} 缺失或过短`);
+    }
+  }
+  assert.ok(t.topicNote && t.topicNote.length > 10, '缺 topicNote 说明');
+  // 健康主题必须自带现实就医提示（高风险话题不可只留在总免责里）
+  assert.ok(t.topicLens.health.focus.includes('就医'), '健康主题的聚焦句必须提示现实就医');
+});

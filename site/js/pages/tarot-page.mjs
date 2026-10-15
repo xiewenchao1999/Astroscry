@@ -7,7 +7,7 @@ import { setAISource } from '../ui/ai-panel.mjs';
 
 renderLayout();
 
-const els = { spread: document.getElementById('spread'), question: document.getElementById('question'), draw: document.getElementById('draw'), stage: document.getElementById('stage') };
+const els = { spread: document.getElementById('spread'), question: document.getElementById('question'), topic: document.getElementById('topic'), draw: document.getElementById('draw'), stage: document.getElementById('stage') };
 let deck, spreads, interp, reading = null;
 let pending = null; // { spread, deck }：crypto 真随机洗出的牌序，等待用户自抽
 let picks = [];     // 用户抽中的牌：{ deckIdx, reversed }——正逆在抽取落位那一刻掷币确定
@@ -23,6 +23,18 @@ try {
 const spreadByKey = new Map(spreads.map((s) => [s.key, s]));
 els.spread.innerHTML = spreads.map((s) => `<option value="${s.key}">${s.cn}（${s.positions.length} 张）</option>`).join('');
 els.spread.value = 'three';
+
+// 问事主题：选项由语料驱动（语料是唯一事实来源），切换时同步改写输入框提示
+const topicKeys = Object.keys(interp.topicLens ?? {});
+els.topic.innerHTML = topicKeys.map((k) => `<option value="${k}">${esc(interp.topicLens[k].label)}</option>`).join('');
+els.topic.value = 'general';
+const currentLens = () => interp.topicLens?.[els.topic.value] ?? null;
+const syncTopicHint = () => {
+  const lens = currentLens();
+  if (lens?.askHint) els.question.placeholder = lens.askHint;
+};
+els.topic.addEventListener('change', syncTopicHint);
+syncTopicHint();
 
 els.draw.addEventListener('click', () => {
   withBusy(els.draw, '洗牌中…', () => {
@@ -98,9 +110,11 @@ function finishPick() {
 
 function render() {
   const q = els.question.value.trim();
+  const lens = currentLens();
+  const topicCn = lens && els.topic.value !== 'general' ? ` · 主题：${lens.label}` : '';
   els.stage.innerHTML = `
     ${q ? `<p style="text-align:center;color:var(--muted)">你的问题：${esc(q)}</p>` : ''}
-    <p class="hint" style="text-align:center;">${interp.seedNote} · 牌阵：${reading.spreadCn}</p>
+    <p class="hint" style="text-align:center;">${interp.seedNote} · 牌阵：${reading.spreadCn}${topicCn}</p>
     <div class="tarot-stage">${reading.cards.map((c, i) => `
       <div>
         <div class="tarot-pos" title="${c.positionDuty}">${c.positionCn}</div>
@@ -144,9 +158,11 @@ function renderStructure() {
   const box = els.stage.querySelector('#structure');
   const analysis = analyzeReading(reading.cards);
   const syn = synthesizeReading(reading.cards, analysis, els.question.value.trim());
-  // AI 数据源：只传牌面结构（位置/牌名/正逆），规则层结论不传，牌义交由 AI 现场解读
+  const lens = currentLens();
+  // AI 数据源：只传牌面结构（位置/牌名/正逆）+ 主题，规则层结论不传，牌义交由 AI 现场解读
   setAISource('tarot', {
     spread: reading.spreadCn,
+    topic: lens?.label ?? null,
     question: els.question.value.trim(),
     cards: reading.cards.map((c) => ({ pos: c.positionCn, duty: c.positionDuty, name: c.card.cn, reversed: c.reversed })),
   }, reading.spreadCn);
@@ -168,12 +184,15 @@ function renderStructure() {
     </div>
     <div class="card"><h3>${interp.synthesis.title} <span class="src-tag">释义</span></h3>
       <p>${(syn.question ? interp.synthesis.questionEcho.replace('{q}', esc(syn.question)) : interp.synthesis.noQuestion)}</p>
+      ${lens ? `<p><b>${esc(lens.label)}视角：</b>${esc(lens.focus)}</p>` : ''}
       <p>${interp.synthesis.opening.replace('{pos}', syn.opening.position).replace('{card}', syn.opening.card).replace('{rev}', rev(syn.opening)).replaceAll('{cardShort}', syn.opening.card)}</p>
       <p>${interp.synthesis.tension.replace('{card}', syn.tension.card).replace('{rev}', rev(syn.tension)).replace('{pos}', syn.tension.position)}</p>
       <p>${interp.synthesis.turn.replace('{card}', syn.turn.card).replace('{rev}', rev(syn.turn)).replace('{pos}', syn.turn.position)}</p>
       <p><b>${interp.synthesis.exitTitle}</b></p>
-      <p>▸ ${interp.synthesis.exit[exitKey]}</p>
+      <p>▸ <span title="按主导花色的能量属性给出">${interp.synthesis.exit[exitKey]}</span></p>
+      ${lens ? `<p>▸ <span title="按你选定的问事主题给出">${esc(lens.exit)}</span></p>` : ''}
       <p>${interp.synthesis.echo}</p>
+      <p class="note">${interp.topicNote}</p>
       <p class="note">${interp.seedNote}</p>
       <p class="note">${interp.disclaimer}</p>
     </div>`;
