@@ -1,6 +1,6 @@
 // tarot-page.mjs — 塔罗页胶水：洗牌动画 + 用户自抽牌 + 翻牌 + 结构化解读
 import { renderLayout, loadData, showError, esc, SITE_ROOT } from '../ui/layout.mjs';
-import { cryptoRng, shuffle } from '../core/tarot.mjs';
+import { cryptoRng, shuffle, drawCards, validateDeck } from '../core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../core/tarot-reading.mjs';
 import { stagger, revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
@@ -79,7 +79,7 @@ function renderFan() {
     el.remove(); // 从牌堆移除（同时防重复抽取），留下自然缺口
     const slot = els.stage.querySelector('.tarot-slot .box:not(.filled)');
     if (slot) { slot.classList.add('filled'); slot.innerHTML = '<span>✦</span>'; }
-    picks.push({ deckIdx: i, reversed: cryptoRng() < 0.5 }); // 落位瞬间定正逆
+    picks.push({ deckIdx: i, ...drawCards([pending.deck[i]], 1, cryptoRng)[0] }); // O05：正逆掷币收敛进 core（用户指牌、落位瞬间定正逆）
     els.stage.querySelector('[data-pick-count]').textContent = interp.picked.replace('{picked}', picks.length).replace('{total}', total);
     if (picks.length === total) setTimeout(finishPick, 350); // 稍作停顿让最后一张落位可见
   };
@@ -98,7 +98,7 @@ function finishPick() {
     spread: spread.key,
     spreadCn: spread.cn,
     cards: picks.map((p, i) => ({
-      card: pending.deck[p.deckIdx],
+      card: p.card,
       position: spread.positions[i].key,
       positionCn: spread.positions[i].cn,
       positionDuty: spread.positions[i].duty,
@@ -244,11 +244,21 @@ function appendMeaning(i) {
   const box = els.stage.querySelector('#meanings');
   const c = reading.cards[i];
   const meaning = c.reversed ? c.card.rev : c.card.up;
+  // O05：Waite 1911 原文折叠行（rws 有则显示）+ 宫廷牌 persona 行
+  const rws = c.reversed ? c.card.rws?.rev : c.card.rws?.up;
+  const rwsBlock = rws?.en ? `
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);">原文（Waite 1911）</summary>
+        <p style="color:var(--muted);font-style:italic;">${esc(rws.en)}</p>
+        ${rws.cn ? `<p class="hint">中译对照：${esc(rws.cn)}</p>` : ''}
+      </details>` : '';
+  const personaBlock = c.card.persona ? `<p class="hint" title="宫廷牌人物侧写（问「某人」时尤其适用）">▸ 人物侧写：${esc(c.card.persona)}</p>` : '';
   box.insertAdjacentHTML('beforeend', `
     <div class="card"><h3>${c.positionCn} · ${c.card.cn}（${c.reversed ? '逆位' : '正位'}）</h3>
       <p class="hint" title="位置职责">${c.positionDuty}</p>
       <p>${meaning}</p>
+      ${personaBlock}
       ${cardDomainLine(c.card)}
+      ${rwsBlock}
       <div>${(c.reversed ? c.card.kwRev : c.card.kwUp).map((k) => `<span class="pill">${k}</span>`).join('')}</div>
     </div>`);
   const el = box.lastElementChild;

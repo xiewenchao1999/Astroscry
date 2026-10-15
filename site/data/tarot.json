@@ -5,83 +5,2438 @@
     "count": 78
   },
   "cards": [
-    { "id": "ar00", "arcana": "major", "suit": null, "num": 0, "name": "The Fool", "cn": "愚者", "kwUp": ["开始", "自由", "纯真", "冒险"], "kwRev": ["鲁莽", "犹豫", "轻率"], "up": "新的起点已然展开，带着信任迈出第一步，旅途本身就是答案。", "rev": "行事欠考虑或迟迟不敢出发，先看清脚下的路再前行。" },
-    { "id": "ar01", "arcana": "major", "suit": null, "num": 1, "name": "The Magician", "cn": "魔术师", "kwUp": ["行动力", "创造", "资源整合", "意志"], "kwRev": ["空想", "操控", "才能未用"], "up": "万事俱备，把意念转化为行动，你手中的资源足以成事。", "rev": "有想法却缺落地，或被花言巧语所惑，警惕自欺与欺人。" },
-    { "id": "ar02", "arcana": "major", "suit": null, "num": 2, "name": "The High Priestess", "cn": "女祭司", "kwUp": ["直觉", "内在智慧", "静观", "奥秘"], "kwRev": ["忽视直觉", "秘密浮出", "心绪紊乱"], "up": "答案不在喧嚣处，静下来倾听内心的声音与未曾言明的讯息。", "rev": "你忽略的直觉正在提醒些什么，某些隐情即将明朗。" },
-    { "id": "ar03", "arcana": "major", "suit": null, "num": 3, "name": "The Empress", "cn": "女皇", "kwUp": ["丰盛", "滋养", "感官之美", "创造"], "kwRev": ["过度付出", "停滞", "忽视自我"], "up": "生命进入丰盈滋长的阶段，照顾好自己与所爱，万物自然生长。", "rev": "付出过度或滋养匮乏，先把自己养好再去灌溉他人。" },
-    { "id": "ar04", "arcana": "major", "suit": null, "num": 4, "name": "The Emperor", "cn": "皇帝", "kwUp": ["秩序", "权威", "掌控", "责任"], "kwRev": ["僵化", "专断", "失控"], "up": "以纪律与结构稳固局面，承担起主导责任，规则在此刻是助力。", "rev": "过度控制反成束缚，或权柄旁落，刚柔并济才是长久之道。" },
-    { "id": "ar05", "arcana": "major", "suit": null, "num": 5, "name": "The Hierophant", "cn": "教皇", "kwUp": ["传统", "学习", "指引", "信念"], "kwRev": ["教条", "叛逆", "质疑权威"], "up": "向经验与体系求教，遵循已被验证的路径，师者或良师益友将至。", "rev": "既有框架不再适用，允许自己走出教条，建立自己的信念。" },
-    { "id": "ar06", "arcana": "major", "suit": null, "num": 6, "name": "The Lovers", "cn": "恋人", "kwUp": ["结合", "选择", "价值观契合", "爱"], "kwRev": ["失衡", "分歧", "逃避选择"], "up": "一段深刻的联结或一个关乎价值观的选择摆在面前，忠于内心。", "rev": "关系或选择中出现失衡与拉扯，先对齐彼此的价值排序。" },
-    { "id": "ar07", "arcana": "major", "suit": null, "num": 7, "name": "The Chariot", "cn": "战车", "kwUp": ["胜利", "意志", "前进", "自律"], "kwRev": ["失控", "原地打转", "方向不明"], "up": "矛盾的力量被意志驾驭，目标明确地全速前进，胜利属于自律者。", "rev": "缰绳松了，多股力量互相拉扯，先定方向再踩油门。" },
-    { "id": "ar08", "arcana": "major", "suit": null, "num": 8, "name": "Strength", "cn": "力量", "kwUp": ["柔韧", "勇气", "驯服本能", "耐心"], "kwRev": ["自我怀疑", "内耗", "被欲望牵着走"], "up": "真正的力量是温柔而坚定的，以耐心驯服内心的猛兽。", "rev": "自信动摇或情绪压过理智，别硬撑，学会与自己的冲动和解。" },
-    { "id": "ar09", "arcana": "major", "suit": null, "num": 9, "name": "The Hermit", "cn": "隐士", "kwUp": ["内省", "独处", "求索", "智慧"], "kwRev": ["孤立", "逃避", "过度封闭"], "up": "暂别人群，向内求索，属于你的答案需要一段独处的时光。", "rev": "独处变成孤岛，或拒绝他人的灯光，适度敞开会带来转机。" },
-    { "id": "ar10", "arcana": "major", "suit": null, "num": 10, "name": "Wheel of Fortune", "cn": "命运之轮", "kwUp": ["转机", "周期", "顺势而为", "好运"], "kwRev": ["时运不济", "抗拒变化", "固守惯性"], "up": "轮盘转动，周期更替带来新契机，顺势而上事半功倍。", "rev": "逆势而行格外费力，接受波动，等待下一轮上行。" },
-    { "id": "ar11", "arcana": "major", "suit": null, "num": 11, "name": "Justice", "cn": "正义", "kwUp": ["公正", "因果", "抉择", "真相"], "kwRev": ["偏颇", "逃避责任", "失衡"], "up": "因果分明，以诚实与理性权衡利弊，公正的选择带来清明。", "rev": "立场蒙蔽了判断或责任被推诿，重新审视天平的两端。" },
-    { "id": "ar12", "arcana": "major", "suit": null, "num": 12, "name": "The Hanged Man", "cn": "倒吊人", "kwUp": ["换位", "暂停", "臣服", "新视角"], "kwRev": ["徒然牺牲", "僵持", "抗拒暂停"], "up": "主动按下暂停键，换个角度看世界，停滞中酝酿着顿悟。", "rev": "无谓的消耗或迟迟不肯停下，停顿本就是前进的一部分。" },
-    { "id": "ar13", "arcana": "major", "suit": null, "num": 13, "name": "Death", "cn": "死神", "kwUp": ["终结与新生", "蜕变", "放下", "转化"], "kwRev": ["抗拒结束", "拖泥带水", "旧局未清"], "up": "一个阶段正在落幕，彻底告别过去，新生的空间正在打开。", "rev": "明知该结束却迟迟不放手，清理旧的，才能腾出新的。" },
-    { "id": "ar14", "arcana": "major", "suit": null, "num": 14, "name": "Temperance", "cn": "节制", "kwUp": ["调和", "中道", "耐心", "疗愈"], "kwRev": ["失衡", "极端", "急躁"], "up": "如调酒师般调和两端，不急不缓，平衡本身就是解法。", "rev": "某处用力过猛或节奏紊乱，把配比调回来再出发。" },
-    { "id": "ar15", "arcana": "major", "suit": null, "num": 15, "name": "The Devil", "cn": "恶魔", "kwUp": ["执念", "诱惑", "束缚", "直面欲望"], "kwRev": ["挣脱", "解除捆绑", "觉察成瘾"], "up": "看清捆绑你的是什么——欲望、习惯或关系，觉察即是松绑的开始。", "rev": "枷锁原是自己戴上又可自己取下，出口已现，勇敢抽身。" },
-    { "id": "ar16", "arcana": "major", "suit": null, "num": 16, "name": "The Tower", "cn": "高塔", "kwUp": ["突变", "崩塌", "真相大白", "重构"], "kwRev": ["余震", "拖延崩塌", "惊魂未定"], "up": "骤然的崩塌动摇了旧地基，虽痛却剥离了虚假，重建从真实开始。", "rev": "震动后的余波未平，或危机被勉强按住，与其硬撑不如顺势重建。" },
-    { "id": "ar17", "arcana": "major", "suit": null, "num": 17, "name": "The Star", "cn": "星星", "kwUp": ["希望", "疗愈", "信念", "指引"], "kwRev": ["信心动摇", "期望落空", "迷失方向"], "up": "风暴过后星空澄澈，希望重新点亮，疗愈正在悄悄发生。", "rev": "星光暂被云遮，信心需要重建，别让一时的黯淡否定整个夜空。" },
-    { "id": "ar18", "arcana": "major", "suit": null, "num": 18, "name": "The Moon", "cn": "月亮", "kwUp": ["潜意识", "不安", "幻象", "梦境"], "kwRev": ["迷雾散去", "真相浮现", "情绪缓解"], "up": "月夜多幻影，眼前的迷雾与焦虑未必是事实，慢慢走，天会亮。", "rev": "雾正在散，困惑与不安开始消退，接受尚未完全清晰的状态。" },
-    { "id": "ar19", "arcana": "major", "suit": null, "num": 19, "name": "The Sun", "cn": "太阳", "kwUp": ["喜悦", "成功", "活力", "明朗"], "kwRev": ["暂时阴霾", "过度乐观", "活力下降"], "up": "阳光普照，事情向着明亮处生长，尽情享受当下的成功与欢愉。", "rev": "阳光偶被云挡，热度略减，但底色依旧明亮，调整节奏即可。" },
-    { "id": "ar20", "arcana": "major", "suit": null, "num": 20, "name": "Judgement", "cn": "审判", "kwUp": ["觉醒", "召唤", "复盘", "重生"], "kwRev": ["自我苛责", "逃避召唤", "停滞不前"], "up": "号角响起，过往的一切被重新审视，回应内心更高的召唤。", "rev": "被旧账与自责缠住，或听而不闻那份召唤，完成该完成的告别。" },
-    { "id": "ar21", "arcana": "major", "suit": null, "num": 21, "name": "The World", "cn": "世界", "kwUp": ["圆满", "完成", "整合", "里程碑"], "kwRev": ["未竟", "差临门一脚", "草率收尾"], "up": "一个 cycle 完整闭环，成果落定，带着完整的经验开启下一程。", "rev": "临近终点仍欠收尾，把最后一步走踏实，圆满才作数。" },
-    { "id": "wa01", "arcana": "minor", "suit": "wands", "num": 1, "name": "Ace of Wands", "cn": "权杖王牌", "kwUp": ["灵感", "行动", "新机遇", "热情"], "kwRev": ["热情推迟", "方案未熟", "动力受阻"], "up": "一团火种落入手中，新计划与行动力同时点亮，放手去做。", "rev": "火候未到或方向存疑，让想法再酝酿一下，别硬点火。" },
-    { "id": "wa02", "arcana": "minor", "suit": "wands", "num": 2, "name": "Two of Wands", "cn": "权杖二", "kwUp": ["规划", "抉择", "眺望", "布局"], "kwRev": ["畏缩", "计划落空", "惧怕未知"], "up": "手握世界站在高处，下一步的版图由你规划，大胆设想。", "rev": "计划停在纸上，对未知的不安盖过了野心，先迈一小步。" },
-    { "id": "wa03", "arcana": "minor", "suit": "wands", "num": 3, "name": "Three of Wands", "cn": "权杖三", "kwUp": ["扩展", "远见", "等待回报", "合作"], "kwRev": ["延误", "视野受限", "孤军奋战"], "up": "船只已出港，先前布局开始显效，把眼光放远等风来。", "rev": "进展比预期慢或协作掉链子，检视链条，必要时亲自补位。" },
-    { "id": "wa04", "arcana": "minor", "suit": "wands", "num": 4, "name": "Four of Wands", "cn": "权杖四", "kwUp": ["庆祝", "安稳", "归属", "里程碑"], "kwRev": ["过渡期", "根基未稳", "聚少离多"], "up": "花门之下值得举杯，阶段性成果落定，享受当下的安稳与欢聚。", "rev": "处在搬家式过渡带，稳定感稍后才有，先安顿好内心。" },
-    { "id": "wa05", "arcana": "minor", "suit": "wands", "num": 5, "name": "Five of Wands", "cn": "权杖五", "kwUp": ["竞争", "摩擦", "碰撞", "切磋"], "kwRev": ["回避冲突", "内耗", "恶性竞争"], "up": "多方观点激烈碰撞，良性竞争磨出锋芒，别怕噪音。", "rev": "冲突被压到桌面下发酵，或你在无谓的内耗，该摊牌就摊牌。" },
-    { "id": "wa06", "arcana": "minor", "suit": "wands", "num": 6, "name": "Six of Wands", "cn": "权杖六", "kwUp": ["凯旋", "认可", "捷报", "信心"], "kwRev": ["虚名", "未获认可", "自我怀疑"], "up": "骑马凯旋，努力被看见，收获掌声与实至名归的进展。", "rev": "掌声迟到或名不副实，别让外界评价左右你的节奏。" },
-    { "id": "wa07", "arcana": "minor", "suit": "wands", "num": 7, "name": "Seven of Wands", "cn": "权杖七", "kwUp": ["坚守", "防御", "捍卫立场", "韧性"], "kwRev": ["寡不敌众", "放弃阵地", "疲于应对"], "up": "以一敌六仍占高地，你站在对的位置，守住立场就是赢。", "rev": "四面楚歌式疲惫，收缩战线，保住最重要的那块高地。" },
-    { "id": "wa08", "arcana": "minor", "suit": "wands", "num": 8, "name": "Eight of Wands", "cn": "权杖八", "kwUp": ["加速", "讯息", "顺流", "进展"], "kwRev": ["延误", "消息滞后", "心急"], "up": "八支飞杖破空而来，事情突然提速，消息与进展接连抵达。", "rev": "快递堵在路上，节奏被迫放缓，等待期里做好该做的准备。" },
-    { "id": "wa09", "arcana": "minor", "suit": "wands", "num": 9, "name": "Nine of Wands", "cn": "权杖九", "kwUp": ["坚持", "警惕", "最后防线", "经验"], "kwRev": ["力竭", "过度防备", "疑神疑鬼"], "up": "伤痕累累仍站着，胜利在最后一程，靠经验与韧性撑过去。", "rev": "紧绷过头反而消耗，评估真实威胁，别为幻影站岗。" },
-    { "id": "wa10", "arcana": "minor", "suit": "wands", "num": 10, "name": "Ten of Wands", "cn": "权杖十", "kwUp": ["负重", "责任过载", "硬扛", "收尾"], "kwRev": ["放下", "委派", "卸载负担"], "up": "抱着一摞火杖前行，责任压身但终将送达，注意分配体力。", "rev": "该卸货了——把不属于你的放回去，学会委派与求助。" },
-    { "id": "wa11", "arcana": "minor", "suit": "wands", "num": "page", "name": "Page of Wands", "cn": "权杖侍从", "kwUp": ["好奇", "试探", "消息", "热忱"], "kwRev": ["三分钟热度", "方向游移", "幼稚冲动"], "up": "举杖远眺的新手，热情与好奇为你打开新领域，允许自己试错。", "rev": "兴趣来得快去得也快，先小的承诺，再谈大的投入。" },
-    { "id": "wa12", "arcana": "minor", "suit": "wands", "num": "knight", "name": "Knight of Wands", "cn": "权杖骑士", "kwUp": ["冲劲", "冒险", "魅力", "快速推进"], "kwRev": ["莽撞", "虎头蛇尾", "焦躁"], "up": "跃马扬鞭的行动派， momentum 正盛，适合快攻与开疆拓土。", "rev": "油门踩到底却常忘刹车，欲速不达，补个计划再冲锋。" },
-    { "id": "wa13", "arcana": "minor", "suit": "wands", "num": "queen", "name": "Queen of Wands", "cn": "权杖王后", "kwUp": ["自信", "感染力", "独立", "热情"], "kwRev": ["自我怀疑", "掌控欲", "情绪化"], "up": "向日葵与黑猫在侧，自信与温度并存，你自带照亮他人的能量。", "rev": "光被质疑遮住了一角，收回外投的比较，回到自己的火源。" },
-    { "id": "wa14", "arcana": "minor", "suit": "wands", "num": "king", "name": "King of Wands", "cn": "权杖国王", "kwUp": ["领导力", "远见", "魄力", "创业"], "kwRev": ["独断", "好大喜功", "压制他人"], "up": "愿景与执行力兼备的领袖能量，适合牵头定调、拍板推进。", "rev": "强 assertive 变成强压制，多听一圈再下令，领导力在于点燃他人。" },
-    { "id": "cu01", "arcana": "minor", "suit": "cups", "num": 1, "name": "Ace of Cups", "cn": "圣杯王牌", "kwUp": ["新感情", "情感萌动", "丰盈", "接纳"], "kwRev": ["情感封闭", "心门未开", "压抑感受"], "up": "心泉满溢，新感情、新连接或深层的满足正在注入生命。", "rev": "杯子倾而未满，感受被压住，先允许自己被触动。" },
-    { "id": "cu02", "arcana": "minor", "suit": "cups", "num": 2, "name": "Two of Cups", "cn": "圣杯二", "kwUp": ["联结", "双向奔赴", "契约", "吸引"], "kwRev": ["失衡的关系", "误会", "渐行渐远"], "up": "两杯相映，一段彼此看见的关系或合作正在缔结。", "rev": "天平倾向一边，或隔阂悄然生长，重新对表彼此的心意。" },
-    { "id": "cu03", "arcana": "minor", "suit": "cups", "num": 3, "name": "Three of Cups", "cn": "圣杯三", "kwUp": ["欢聚", "友谊", "庆祝", "社群"], "kwRev": ["圈子纷扰", "流言", "热闹后的空"], "up": "三杯共举，友情与庆祝填满日程，社群是此刻的养分。", "rev": "热闹之外有杂音，圈子里的是非值得保持距离。" },
-    { "id": "cu04", "arcana": "minor", "suit": "cups", "num": 4, "name": "Four of Cups", "cn": "圣杯四", "kwUp": ["倦怠", "审视", "错过的邀请", "静观"], "kwRev": ["重新开放", "接受机会", "走出低潮"], "up": "树下沉思，对眼前的一切提不起劲，但被忽略的杯子仍在。", "rev": "从麻木中抬头，重新愿意伸手接住递来的机会。" },
-    { "id": "cu05", "arcana": "minor", "suit": "cups", "num": 5, "name": "Five of Cups", "cn": "圣杯五", "kwUp": ["失落", "遗憾", "哀悼", "侧重所失"], "kwRev": ["接受", "走出哀伤", "转身"], "up": "三杯倾覆两杯犹立，为失去悲伤是应该的，但别背对仍站立的部分。", "rev": "转过身来，哀悼期进入尾声，剩下的资源足以重新开始。" },
-    { "id": "cu06", "arcana": "minor", "suit": "cups", "num": 6, "name": "Six of Cups", "cn": "圣杯六", "kwUp": ["怀旧", "童真", "旧识", "纯善"], "kwRev": ["困于过去", "理想化旧时光", "成长停滞"], "up": "旧花园里的馈赠，温情与回忆滋养当下，旧人或旧好再续。", "rev": "滤镜过厚的过去正在拖住现在，怀念可以，别搬回去住。" },
-    { "id": "cu07", "arcana": "minor", "suit": "cups", "num": 7, "name": "Seven of Cups", "cn": "圣杯七", "kwUp": ["幻象", "多选项", "白日梦", "甄别"], "kwRev": ["看清现实", "做出取舍", "迷雾散尽"], "up": "七只杯中皆幻影，选项多到失焦，分辨真金与镀金。", "rev": "迷雾开始散去，能落地的那一个选项渐渐清晰，选它。" },
-    { "id": "cu08", "arcana": "minor", "suit": "cups", "num": 8, "name": "Eight of Cups", "cn": "圣杯八", "kwUp": ["离开", "追寻意义", "告别", "转身向内"], "kwRev": ["徘徊", "难以割舍", "恐惧未知"], "up": "月下离开八只杯子，不是失败而是奔赴更深的意义。", "rev": "脚步在门口打转，告别拖延久了会变成内耗，尊重自己的选择。" },
-    { "id": "cu09", "arcana": "minor", "suit": "cups", "num": 9, "name": "Nine of Cups", "cn": "圣杯九", "kwUp": ["愿望成真", "满足", "享受", "身心安顿"], "kwRev": ["口惠而实不至", "浮华满足", "差口气"], "up": "抱臂而坐的许愿者身后杯盏齐列，愿望正在兑现，好好享受。", "rev": "表面风光内里欠满足，诚实面对自己真正想要什么。" },
-    { "id": "cu10", "arcana": "minor", "suit": "cups", "num": 10, "name": "Ten of Cups", "cn": "圣杯十", "kwUp": ["圆满", "家庭", "归属", "幸福"], "kwRev": ["理想与现实落差", "家庭摩擦", "期许过高"], "up": "彩虹下的十杯，情感世界的大团圆，珍惜眼前人。", "rev": "童话图景与真实生活有落差，把完美期待换成经营真心。" },
-    { "id": "cu11", "arcana": "minor", "suit": "cups", "num": "page", "name": "Page of Cups", "cn": "圣杯侍从", "kwUp": ["灵感", "感性", "创意萌发", "讯息"], "kwRev": ["情绪化", "不成熟", "灵感受阻"], "up": "杯中跃出鱼儿，一条带着情感色彩的讯息或灵感不期而至。", "rev": "情绪盖过表达，或创意卡壳，先照顾感受再谈产出。" },
-    { "id": "cu12", "arcana": "minor", "suit": "cups", "num": "knight", "name": "Knight of Cups", "cn": "圣杯骑士", "kwUp": ["浪漫", "邀约", "追随心意", "优雅行动"], "kwRev": ["空头承诺", "不切实际", "情绪化行动"], "up": "捧杯缓行的骑士，浪漫的邀约或跟随心意的行动正在路上。", "rev": "承诺大于行动，或以感动自己代替真实付出，落地为王。" },
-    { "id": "cu13", "arcana": "minor", "suit": "cups", "num": "queen", "name": "Queen of Cups", "cn": "圣杯王后", "kwUp": ["共情", "温柔", "情绪智慧", "倾听"], "kwRev": ["情绪泛滥", "边界模糊", "过度代入"], "up": "海边的杯座王后，以共情与直觉滋养他人，也请为自己留一杯。", "rev": "潮水漫过堤岸，分清哪些情绪是你的、哪些是别人的。" },
-    { "id": "cu14", "arcana": "minor", "suit": "cups", "num": "king", "name": "King of Cups", "cn": "圣杯国王", "kwUp": ["情绪稳定", "包容", "成熟", "以情驭事"], "kwRev": ["压抑情绪", "外冷内潮", "被动攻击"], "up": "波澜不惊的海上王者，情绪成熟而包容，是动荡中的锚。", "rev": "平静海面下暗流涌动，允许情绪表达，别让冷静变成隔离。" },
-    { "id": "sw01", "arcana": "minor", "suit": "swords", "num": 1, "name": "Ace of Swords", "cn": "宝剑王牌", "kwUp": ["清明", "突破", "真相", "决断"], "kwRev": ["思路混乱", "武力压制", "时机未到"], "up": "一剑破云，清晰的思维斩开迷雾，此刻适合做决断。", "rev": "想得太多反而缠住剑刃，先理清事实再落剑。" },
-    { "id": "sw02", "arcana": "minor", "suit": "swords", "num": 2, "name": "Two of Swords", "cn": "宝剑二", "kwUp": ["僵局", "两难", "蒙眼权衡", "暂缓"], "kwRev": ["打破僵局", "信息到位", "被迫抉择"], "up": "蒙眼持双剑而坐，两难之下暂时搁置，但决定终将到来。", "rev": "眼罩松了，更多信息浮出水面，是时候放下回避做出选择。" },
-    { "id": "sw03", "arcana": "minor", "suit": "swords", "num": 3, "name": "Three of Swords", "cn": "宝剑三", "kwUp": ["心碎", "刺痛", "悲伤", "直言伤人"], "kwRev": ["疗愈开始", "释怀", "原谅"], "up": "三剑穿心，言语或真相带来真实的痛，允许自己完整地难过。", "rev": "乌云让位，疗愈悄然启动，痛苦开始转化为理解。" },
-    { "id": "sw04", "arcana": "minor", "suit": "swords", "num": 4, "name": "Four of Swords", "cn": "宝剑四", "kwUp": ["休整", "静养", "暂停", "恢复"], "kwRev": ["疲惫累积", "被迫重新开工", " restless"], "up": "石棺上的小憩，战斗间隙的休整是战略的一部分，安心休息。", "rev": "该休不休，透支的状态提醒你：停机维护不是懈怠。" },
-    { "id": "sw05", "arcana": "minor", "suit": "swords", "num": 5, "name": "Five of Swords", "cn": "宝剑五", "kwUp": ["惨胜", "冲突", "代价", "得不偿失"], "kwRev": ["和解", "放下争执", "反思"], "up": "拾剑而笑者赢了战斗输了关系，问问自己这场胜利值不值。", "rev": "放下输赢，握手言和或体面退场，都是止损。" },
-    { "id": "sw06", "arcana": "minor", "suit": "swords", "num": 6, "name": "Six of Swords", "cn": "宝剑六", "kwUp": ["过渡", "摆渡", "渐离困境", "移居"], "kwRev": ["拉扯", "带不走行李", "旧事重提"], "up": "小船载客驶向平静水域，困难正被留在身后，过渡期请安静前行。", "rev": "船行仍带回望，未处理的心事随行李同行，别怕回头看一眼。" },
-    { "id": "sw07", "arcana": "minor", "suit": "swords", "num": 7, "name": "Seven of Swords", "cn": "宝剑七", "kwUp": ["策略", "暗中进行", "回避", "隐瞒"], "kwRev": ["坦白", "自欺暴露", "归还"], "up": "抱剑溜走的身影，策略性迂回可行，但小心自欺与信誉成本。", "rev": "藏不住的事浮出水面，主动坦白比被抓包代价小得多。" },
-    { "id": "sw08", "arcana": "minor", "suit": "swords", "num": 8, "name": "Eight of Swords", "cn": "宝剑八", "kwUp": ["受困", "自我设限", "无路可走的错觉"], "kwRev": ["松绑", "看见出路", "自救"], "up": "八剑围身，束缚多是认知画出的，脚下的路并未真被锁死。", "rev": "眼罩滑落，原来转个身就有出口，第一步由自己迈出。" },
-    { "id": "sw09", "arcana": "minor", "suit": "swords", "num": 9, "name": "Nine of Swords", "cn": "宝剑九", "kwUp": ["焦虑", "失眠", "忧思", "放大恐惧"], "kwRev": ["天亮了", "恐惧缓解", "求助有效"], "up": "深夜坐起的惊惧，担忧多为放大，恐惧在黑暗里最擅长夸张。", "rev": "熬过长夜，现实比想象温和，开口倾诉会让剑更快落地。" },
-    { "id": "sw10", "arcana": "minor", "suit": "swords", "num": 10, "name": "Ten of Swords", "cn": "宝剑十", "kwUp": ["谷底", "终结", "背刺", "绝处"], "kwRev": ["复苏", "最坏已过", "缓慢回升"], "up": "十剑加身伏地，最坏的已发生，天际微光是明天的预告。", "rev": "谷底反弹，伤痛结痂，重整旗鼓的时机近了。" },
-    { "id": "sw11", "arcana": "minor", "suit": "swords", "num": "page", "name": "Page of Swords", "cn": "宝剑侍从", "kwUp": ["好奇", "观察", "学习", "警觉"], "kwRev": ["多疑", "口舌", "思虑过载"], "up": "持剑瞭望的新手，信息收集与快速学习的最佳时机。", "rev": "好奇心变成背后议论或过度猜疑，把能量放回明处。" },
-    { "id": "sw12", "arcana": "minor", "suit": "swords", "num": "knight", "name": "Knight of Swords", "cn": "宝剑骑士", "kwUp": ["疾进", "直击", "雷厉风行", "果敢"], "kwRev": ["横冲直撞", "言语伤人", "欲速不达"], "up": "逆风疾驰的骑士，思路与行动都快，适合速战速决。", "rev": "快到没有刹车，误解与摩擦随之而来，稍缓三秒再出手。" },
-    { "id": "sw13", "arcana": "minor", "suit": "swords", "num": "queen", "name": "Queen of Swords", "cn": "宝剑王后", "kwUp": ["清醒", "边界", "独立判断", "直言"], "kwRev": ["刻薄", "防备过度", "情感隔离"], "up": "高举长剑的王后，以清醒与边界赢得尊重，真话可以说得温柔。", "rev": "伤过之后剑握太紧，允许信任重新进来，锋利留给原则而非人心。" },
-    { "id": "sw14", "arcana": "minor", "suit": "swords", "num": "king", "name": "King of Swords", "cn": "宝剑国王", "kwUp": ["理性权威", "原则", "专业", "公正"], "kwRev": ["冷硬", "教条", "强词夺理"], "up": "持剑端坐的裁决者，以逻辑与原则定夺，适合咨询权威意见。", "rev": "理性变成冰冷教条，留意人心不在方程式里。" },
-    { "id": "pe01", "arcana": "minor", "suit": "pentacles", "num": 1, "name": "Ace of Pentacles", "cn": "星币王牌", "kwUp": ["新财机", "落地", "种子", "实物回报"], "kwRev": ["错失机会", "根基未牢", "回报延迟"], "up": "花园里递来金币，一份可落地的新机会（工作/收入/资源）出现。", "rev": "种子暂时没有土壤，或时机未到，先培土别急着收成。" },
-    { "id": "pe02", "arcana": "minor", "suit": "pentacles", "num": 2, "name": "Two of Pentacles", "cn": "星币二", "kwUp": ["平衡", "多线并行", "灵活", "时间管理"], "kwRev": ["顾此失彼", "超载", "失衡"], "up": "杂耍两枚钱币，多线并行虽忙但可舞，动态平衡即是能力。", "rev": "球开始往下掉，做减法，先保住主线。" },
-    { "id": "pe03", "arcana": "minor", "suit": "pentacles", "num": 3, "name": "Three of Pentacles", "cn": "星币三", "kwUp": ["协作", "工艺", "认可", "打磨"], "kwRev": ["配合不畅", "标准不一", "单打独斗"], "up": "教堂工地上各展所长，专业协作让作品升华，你的手艺被认可。", "rev": "沟通错位拖累工程，对齐标准与分工再动工。" },
-    { "id": "pe04", "arcana": "minor", "suit": "pentacles", "num": 4, "name": "Four of Pentacles", "cn": "星币四", "kwUp": ["守成", "积蓄", "掌控", "安全感"], "kwRev": ["过度紧握", "守财", "僵化"], "up": "紧抱钱币的城主，守住成果与现金流，稳字当头。", "rev": "握得太紧反而限制生长，适度开放投资自己。" },
-    { "id": "pe05", "arcana": "minor", "suit": "pentacles", "num": 5, "name": "Five of Pentacles", "cn": "星币五", "kwUp": ["匮乏", "寒夜", "被排除在外", "窘迫"], "kwRev": ["援助在侧", "走出低谷", "接纳帮助"], "up": "雪夜走过亮灯的教堂，困顿中容易看不见近在咫尺的援手。", "rev": "推门进去，救助与机会一直都在，接受帮助不丢人。" },
-    { "id": "pe06", "arcana": "minor", "suit": "pentacles", "num": 6, "name": "Six of Pentacles", "cn": "星币六", "kwUp": ["给予与接受", "资源流动", "慷慨", "回馈"], "kwRev": ["不对等", "施舍心态", "账目不清"], "up": "天平在给予者手中，资源流动起来，或施或受皆合宜。", "rev": "关系或交易中的天平倾斜，重新谈清楚规则与期待。" },
-    { "id": "pe07", "arcana": "minor", "suit": "pentacles", "num": 7, "name": "Seven of Pentacles", "cn": "星币七", "kwUp": ["耐心", "评估", "长期主义", "待收"], "kwRev": ["急功近利", "投入无果", "怀疑方向"], "up": "倚锄静观果实将熟，长期投入临近回报点，再等等。", "rev": "复盘投入产出比，该调整方向就果断调整，沉默成本不是枷锁。" },
-    { "id": "pe08", "arcana": "minor", "suit": "pentacles", "num": 8, "name": "Eight of Pentacles", "cn": "星币八", "kwUp": ["精进", "专注", "匠人", "重复练习"], "kwRev": ["完美主义", "机械重复", "动力不足"], "up": "一凿一锤的匠人时光，专注打磨技能，量变正在积累质变。", "rev": "重复失去意义感，回到为什么出发，给练习加入挑战。" },
-    { "id": "pe09", "arcana": "minor", "suit": "pentacles", "num": 9, "name": "Nine of Pentacles", "cn": "星币九", "kwUp": ["自足", "优雅", "成果", "独立"], "kwRev": ["孤单的丰收", "依赖", "消费冲动"], "up": "葡萄园中的优雅贵妇，凭自己挣来的丰盛与从容，享受它。", "rev": "果实旁有空洞，检视生活方式是否透支了内在满足。" },
-    { "id": "pe10", "arcana": "minor", "suit": "pentacles", "num": 10, "name": "Ten of Pentacles", "cn": "星币十", "kwUp": ["家业", "传承", "长期稳固", "家族"], "kwRev": ["遗产纷争", "结构老化", "传统负担"], "up": "三代同堂的拱门之下，财富与根基绵长，着眼长期价值。", "rev": "旧的体系需要更新，或利益分配需要重谈。" },
-    { "id": "pe11", "arcana": "minor", "suit": "pentacles", "num": "page", "name": "Page of Pentacles", "cn": "星币侍从", "kwUp": ["学习", "务实起步", "计划", "专注目标"], "kwRev": ["好高骛远", "拖延", "学而不专"], "up": "凝视金币的学子，以务实心态开启新技能或新项目，稳步起步。", "rev": "愿景大于行动，把大目标切成今天能完成的第一块。" },
-    { "id": "pe12", "arcana": "minor", "suit": "pentacles", "num": "knight", "name": "Knight of Pentacles", "cn": "星币骑士", "kwUp": ["稳健", "可靠", "按部就班", "坚持"], "kwRev": ["迟缓", "固执", "无聊"], "up": "不紧不慢的黑马骑士，慢而稳是此刻最快的路径。", "rev": "过于保守错失窗口，或单调耗尽热情，给计划加个小台阶。" },
-    { "id": "pe13", "arcana": "minor", "suit": "pentacles", "num": "queen", "name": "Queen of Pentacles", "cn": "星币王后", "kwUp": ["务实关怀", "丰饶", "照顾", "理财"], "kwRev": ["过度操劳", "牺牲自我", "物质焦虑"], "up": "花园里的庇护者，把生活打理得井井有条，也善于照顾他人。", "rev": "照顾所有人除了自己，留一份资源与温柔给内在家园。" },
-    { "id": "pe14", "arcana": "minor", "suit": "pentacles", "num": "king", "name": "King of Pentacles", "cn": "星币国王", "kwUp": ["富足", "可靠权威", "商业头脑", "稳中求进"], "kwRev": ["守旧", "利益至上", "固执"], "up": "藤王座上的实业家，资源与人脉兼备，是值得依靠的稳定力量。", "rev": "安全感的执念压过机遇，或把关系当账本，钱是工具不是答案。" }
+    {
+      "id": "ar00",
+      "arcana": "major",
+      "suit": null,
+      "num": 0,
+      "name": "The Fool",
+      "cn": "愚者",
+      "kwUp": [
+        "开始",
+        "自由",
+        "纯真",
+        "冒险"
+      ],
+      "kwRev": [
+        "鲁莽",
+        "犹豫",
+        "轻率"
+      ],
+      "up": "新的起点已然展开，带着信任迈出第一步，旅途本身就是答案。",
+      "rev": "行事欠考虑或迟迟不敢出发，先看清脚下的路再前行。",
+      "rws": {
+        "up": {
+          "en": "Folly, mania, extravagance, intoxication, delirium, frenzy, bewrayment.",
+          "cn": "忘乎所以的狂喜、不计后果的开端、痴迷与放纵。"
+        },
+        "rev": {
+          "en": "Negligence, absence, distribution, carelessness, apathy, nullity, vanity.",
+          "cn": "疏忽、心不在焉、冷漠、虚无、徒劳。"
+        }
+      }
+    },
+    {
+      "id": "ar01",
+      "arcana": "major",
+      "suit": null,
+      "num": 1,
+      "name": "The Magician",
+      "cn": "魔术师",
+      "kwUp": [
+        "行动力",
+        "创造",
+        "资源整合",
+        "意志"
+      ],
+      "kwRev": [
+        "空想",
+        "操控",
+        "才能未用"
+      ],
+      "up": "万事俱备，把意念转化为行动，你手中的资源足以成事。",
+      "rev": "有想法却缺落地，或被花言巧语所惑，警惕自欺与欺人。",
+      "rws": {
+        "up": {
+          "en": "Skill, diplomacy, address, subtlety; sickness, pain, loss, disaster, snares of enemies; self-confidence, will; the Querent, if male.",
+          "cn": "技艺与手腕、自信与意志、以智取胜；亦含病痛与敌暗算的双面义。"
+        },
+        "rev": {
+          "en": "Physician, Magus, mental disease, disgrace, disquiet.",
+          "cn": "医师／智者的身份义；心疾、失态、不安。"
+        }
+      }
+    },
+    {
+      "id": "ar02",
+      "arcana": "major",
+      "suit": null,
+      "num": 2,
+      "name": "The High Priestess",
+      "cn": "女祭司",
+      "kwUp": [
+        "直觉",
+        "内在智慧",
+        "静观",
+        "奥秘"
+      ],
+      "kwRev": [
+        "忽视直觉",
+        "秘密浮出",
+        "心绪紊乱"
+      ],
+      "up": "答案不在喧嚣处，静下来倾听内心的声音与未曾言明的讯息。",
+      "rev": "你忽略的直觉正在提醒些什么，某些隐情即将明朗。",
+      "rws": {
+        "up": {
+          "en": "Secrets, mystery, the future as yet unrevealed; the woman who interests the Querent; silence, tenacity; mystery, wisdom, science.",
+          "cn": "秘密与未知、沉默与坚韧、秘传的智慧与学问。"
+        },
+        "rev": {
+          "en": "Passion, moral or physical ardour, conceit, surface knowledge.",
+          "cn": "炽情、自负、一知半解的表层知识。"
+        }
+      }
+    },
+    {
+      "id": "ar03",
+      "arcana": "major",
+      "suit": null,
+      "num": 3,
+      "name": "The Empress",
+      "cn": "女皇",
+      "kwUp": [
+        "丰盛",
+        "滋养",
+        "感官之美",
+        "创造"
+      ],
+      "kwRev": [
+        "过度付出",
+        "停滞",
+        "忽视自我"
+      ],
+      "up": "生命进入丰盈滋长的阶段，照顾好自己与所爱，万物自然生长。",
+      "rev": "付出过度或滋养匮乏，先把自己养好再去灌溉他人。",
+      "rws": {
+        "up": {
+          "en": "Fruitfulness, action, initiative, length of days; the unknown, clandestine; also difficulty, doubt, ignorance.",
+          "cn": "丰饶与多产、主动作为、绵长福泽；亦含隐秘与疑难。"
+        },
+        "rev": {
+          "en": "Light, truth, the unravelling of involved matters, public rejoicings; according to another reading, vacillation.",
+          "cn": "真相大白、难题解开、公开的喜事；另一解：犹豫不决。"
+        }
+      }
+    },
+    {
+      "id": "ar04",
+      "arcana": "major",
+      "suit": null,
+      "num": 4,
+      "name": "The Emperor",
+      "cn": "皇帝",
+      "kwUp": [
+        "秩序",
+        "权威",
+        "掌控",
+        "责任"
+      ],
+      "kwRev": [
+        "僵化",
+        "专断",
+        "失控"
+      ],
+      "up": "以纪律与结构稳固局面，承担起主导责任，规则在此刻是助力。",
+      "rev": "过度控制反成束缚，或权柄旁落，刚柔并济才是长久之道。",
+      "rws": {
+        "up": {
+          "en": "Stability, power, protection, realization; a great person; aid, reason, conviction; also authority and will.",
+          "cn": "稳固、权力与庇护、理性与信念、权威与意志。"
+        },
+        "rev": {
+          "en": "Benevolence, compassion, credit; also confusion to enemies, obstruction, immaturity.",
+          "cn": "仁慈与宽恕、信誉；亦含阻碍与不成熟。"
+        }
+      }
+    },
+    {
+      "id": "ar05",
+      "arcana": "major",
+      "suit": null,
+      "num": 5,
+      "name": "The Hierophant",
+      "cn": "教皇",
+      "kwUp": [
+        "传统",
+        "学习",
+        "指引",
+        "信念"
+      ],
+      "kwRev": [
+        "教条",
+        "叛逆",
+        "质疑权威"
+      ],
+      "up": "向经验与体系求教，遵循已被验证的路径，师者或良师益友将至。",
+      "rev": "既有框架不再适用，允许自己走出教条，建立自己的信念。",
+      "rws": {
+        "up": {
+          "en": "Marriage, alliance, captivity, servitude; by another account, mercy and goodness; inspiration; the man to whom the Querent has recourse.",
+          "cn": "婚约与同盟、受制与束缚、良师与依靠、灵感。"
+        },
+        "rev": {
+          "en": "Society, good understanding, concord, overkindness, weakness.",
+          "cn": "社交与谅解、和睦；过度的善意即软弱。"
+        }
+      }
+    },
+    {
+      "id": "ar06",
+      "arcana": "major",
+      "suit": null,
+      "num": 6,
+      "name": "The Lovers",
+      "cn": "恋人",
+      "kwUp": [
+        "结合",
+        "选择",
+        "价值观契合",
+        "爱"
+      ],
+      "kwRev": [
+        "失衡",
+        "分歧",
+        "逃避选择"
+      ],
+      "up": "一段深刻的联结或一个关乎价值观的选择摆在面前，忠于内心。",
+      "rev": "关系或选择中出现失衡与拉扯，先对齐彼此的价值排序。",
+      "rws": {
+        "up": {
+          "en": "Attraction, love, beauty, trials overcome.",
+          "cn": "吸引与爱、美、渡过试炼。"
+        },
+        "rev": {
+          "en": "Failure, foolish designs. Another account speaks of marriage frustrated and contrarieties of all kinds.",
+          "cn": "失算与愚蠢的计划、婚事受挫、诸事相违。"
+        }
+      }
+    },
+    {
+      "id": "ar07",
+      "arcana": "major",
+      "suit": null,
+      "num": 7,
+      "name": "The Chariot",
+      "cn": "战车",
+      "kwUp": [
+        "胜利",
+        "意志",
+        "前进",
+        "自律"
+      ],
+      "kwRev": [
+        "失控",
+        "原地打转",
+        "方向不明"
+      ],
+      "up": "矛盾的力量被意志驾驭，目标明确地全速前进，胜利属于自律者。",
+      "rev": "缰绳松了，多股力量互相拉扯，先定方向再踩油门。",
+      "rws": {
+        "up": {
+          "en": "Succour, providence also war, triumph, presumption, vengeance, trouble.",
+          "cn": "驰援与护佑、战争与凯旋；亦含僭越与祸患。"
+        },
+        "rev": {
+          "en": "Riot, quarrel, dispute, litigation, defeat.",
+          "cn": "骚乱、口角、争端、诉讼、败北。"
+        }
+      }
+    },
+    {
+      "id": "ar08",
+      "arcana": "major",
+      "suit": null,
+      "num": 8,
+      "name": "Strength",
+      "cn": "力量",
+      "kwUp": [
+        "柔韧",
+        "勇气",
+        "驯服本能",
+        "耐心"
+      ],
+      "kwRev": [
+        "自我怀疑",
+        "内耗",
+        "被欲望牵着走"
+      ],
+      "up": "真正的力量是温柔而坚定的，以耐心驯服内心的猛兽。",
+      "rev": "自信动摇或情绪压过理智，别硬撑，学会与自己的冲动和解。",
+      "rws": {
+        "up": {
+          "en": "Power, energy, action, courage, magnanimity; also complete success and honours.",
+          "cn": "力量与行动、勇气与宽宏、圆满成功与荣誉。"
+        },
+        "rev": {
+          "en": "Despotism, abuse of power, weakness, discord, sometimes even disgrace.",
+          "cn": "专横与滥权、软弱与失和，甚或蒙羞。"
+        }
+      }
+    },
+    {
+      "id": "ar09",
+      "arcana": "major",
+      "suit": null,
+      "num": 9,
+      "name": "The Hermit",
+      "cn": "隐士",
+      "kwUp": [
+        "内省",
+        "独处",
+        "求索",
+        "智慧"
+      ],
+      "kwRev": [
+        "孤立",
+        "逃避",
+        "过度封闭"
+      ],
+      "up": "暂别人群，向内求索，属于你的答案需要一段独处的时光。",
+      "rev": "独处变成孤岛，或拒绝他人的灯光，适度敞开会带来转机。",
+      "rws": {
+        "up": {
+          "en": "Prudence, circumspection; also and especially treason, dissimulation, roguery, corruption.",
+          "cn": "审慎与周虑；亦含背叛、伪装与堕落的警示义。"
+        },
+        "rev": {
+          "en": "Concealment, disguise, policy, fear, unreasoned caution.",
+          "cn": "藏匿与掩饰、权谋、恐惧、无谓的过度谨慎。"
+        }
+      }
+    },
+    {
+      "id": "ar10",
+      "arcana": "major",
+      "suit": null,
+      "num": 10,
+      "name": "Wheel of Fortune",
+      "cn": "命运之轮",
+      "kwUp": [
+        "转机",
+        "周期",
+        "顺势而为",
+        "好运"
+      ],
+      "kwRev": [
+        "时运不济",
+        "抗拒变化",
+        "固守惯性"
+      ],
+      "up": "轮盘转动，周期更替带来新契机，顺势而上事半功倍。",
+      "rev": "逆势而行格外费力，接受波动，等待下一轮上行。",
+      "rws": {
+        "up": {
+          "en": "Destiny, fortune, success, elevation, luck, felicity.",
+          "cn": "命运与机运、成功与跃升、福气。"
+        },
+        "rev": {
+          "en": "Increase, abundance, superfluity.",
+          "cn": "增益与丰盛，过犹不及的『多』。"
+        }
+      }
+    },
+    {
+      "id": "ar11",
+      "arcana": "major",
+      "suit": null,
+      "num": 11,
+      "name": "Justice",
+      "cn": "正义",
+      "kwUp": [
+        "公正",
+        "因果",
+        "抉择",
+        "真相"
+      ],
+      "kwRev": [
+        "偏颇",
+        "逃避责任",
+        "失衡"
+      ],
+      "up": "因果分明，以诚实与理性权衡利弊，公正的选择带来清明。",
+      "rev": "立场蒙蔽了判断或责任被推诿，重新审视天平的两端。",
+      "rws": {
+        "up": {
+          "en": "Equity, rightness, probity, executive; triumph of the deserving side in law.",
+          "cn": "公平与正直、执行力、有理者胜诉。"
+        },
+        "rev": {
+          "en": "Law in all its departments, legal complications, bigotry, bias, excessive severity.",
+          "cn": "法律纠纷、偏执与偏袒、执法过苛。"
+        }
+      }
+    },
+    {
+      "id": "ar12",
+      "arcana": "major",
+      "suit": null,
+      "num": 12,
+      "name": "The Hanged Man",
+      "cn": "倒吊人",
+      "kwUp": [
+        "换位",
+        "暂停",
+        "臣服",
+        "新视角"
+      ],
+      "kwRev": [
+        "徒然牺牲",
+        "僵持",
+        "抗拒暂停"
+      ],
+      "up": "主动按下暂停键，换个角度看世界，停滞中酝酿着顿悟。",
+      "rev": "无谓的消耗或迟迟不肯停下，停顿本就是前进的一部分。",
+      "rws": {
+        "up": {
+          "en": "Wisdom, circumspection, discernment, trials, sacrifice, intuition, divination, prophecy.",
+          "cn": "智慧与明辨、试炼与牺牲、直觉与预言。"
+        },
+        "rev": {
+          "en": "Selfishness, the crowd, body politic.",
+          "cn": "自私自利、随波逐流的群体性。"
+        }
+      }
+    },
+    {
+      "id": "ar13",
+      "arcana": "major",
+      "suit": null,
+      "num": 13,
+      "name": "Death",
+      "cn": "死神",
+      "kwUp": [
+        "终结与新生",
+        "蜕变",
+        "放下",
+        "转化"
+      ],
+      "kwRev": [
+        "抗拒结束",
+        "拖泥带水",
+        "旧局未清"
+      ],
+      "up": "一个阶段正在落幕，彻底告别过去，新生的空间正在打开。",
+      "rev": "明知该结束却迟迟不放手，清理旧的，才能腾出新的。",
+      "rws": {
+        "up": {
+          "en": "End, mortality, destruction, corruption; also, for a man, the loss of a benefactor; for a woman, many contrarieties; for a maid, failure of marriage projects.",
+          "cn": "终结与死生、毁坏与朽坏；亦指恩主之失、诸事乖违。"
+        },
+        "rev": {
+          "en": "Inertia, sleep, lethargy, petrifaction, somnambulism; hope destroyed.",
+          "cn": "僵滞与昏睡、木然麻木、希望破灭。"
+        }
+      }
+    },
+    {
+      "id": "ar14",
+      "arcana": "major",
+      "suit": null,
+      "num": 14,
+      "name": "Temperance",
+      "cn": "节制",
+      "kwUp": [
+        "调和",
+        "中道",
+        "耐心",
+        "疗愈"
+      ],
+      "kwRev": [
+        "失衡",
+        "极端",
+        "急躁"
+      ],
+      "up": "如调酒师般调和两端，不急不缓，平衡本身就是解法。",
+      "rev": "某处用力过猛或节奏紊乱，把配比调回来再出发。",
+      "rws": {
+        "up": {
+          "en": "Economy, moderation, frugality, management, accommodation.",
+          "cn": "节制与俭省、经营与协调、从容调度。"
+        },
+        "rev": {
+          "en": "Things connected with churches, religions, sects, the priesthood; also disunion, unfortunate combinations, competing interests.",
+          "cn": "教派与神职相关之事；失和、组合失当、利益相争。"
+        }
+      }
+    },
+    {
+      "id": "ar15",
+      "arcana": "major",
+      "suit": null,
+      "num": 15,
+      "name": "The Devil",
+      "cn": "恶魔",
+      "kwUp": [
+        "执念",
+        "诱惑",
+        "束缚",
+        "直面欲望"
+      ],
+      "kwRev": [
+        "挣脱",
+        "解除捆绑",
+        "觉察成瘾"
+      ],
+      "up": "看清捆绑你的是什么——欲望、习惯或关系，觉察即是松绑的开始。",
+      "rev": "枷锁原是自己戴上又可自己取下，出口已现，勇敢抽身。",
+      "rws": {
+        "up": {
+          "en": "Ravage, violence, vehemence, extraordinary efforts, force, fatality; that which is predestined but is not for this reason evil.",
+          "cn": "狂暴与强力、殊死的努力、宿命之力（宿命未必为恶）。"
+        },
+        "rev": {
+          "en": "Evil fatality, weakness, pettiness, blindness.",
+          "cn": "恶性的宿命、孱弱、琐碎、蒙蔽。"
+        }
+      }
+    },
+    {
+      "id": "ar16",
+      "arcana": "major",
+      "suit": null,
+      "num": 16,
+      "name": "The Tower",
+      "cn": "高塔",
+      "kwUp": [
+        "突变",
+        "崩塌",
+        "真相大白",
+        "重构"
+      ],
+      "kwRev": [
+        "余震",
+        "拖延崩塌",
+        "惊魂未定"
+      ],
+      "up": "骤然的崩塌动摇了旧地基，虽痛却剥离了虚假，重建从真实开始。",
+      "rev": "震动后的余波未平，或危机被勉强按住，与其硬撑不如顺势重建。",
+      "rws": {
+        "up": {
+          "en": "Misery, distress, indigence, adversity, calamity, disgrace, deception, ruin. It is a card in particular of unforeseen catastrophe.",
+          "cn": "困苦与灾厄、耻辱与欺瞒、倾覆——尤指飞来横祸。"
+        },
+        "rev": {
+          "en": "According to one account, the same in a lesser degree; also oppression, imprisonment, tyranny.",
+          "cn": "同类灾祸较轻的一档；亦指压迫、禁锢、暴虐。"
+        }
+      }
+    },
+    {
+      "id": "ar17",
+      "arcana": "major",
+      "suit": null,
+      "num": 17,
+      "name": "The Star",
+      "cn": "星星",
+      "kwUp": [
+        "希望",
+        "疗愈",
+        "信念",
+        "指引"
+      ],
+      "kwRev": [
+        "信心动摇",
+        "期望落空",
+        "迷失方向"
+      ],
+      "up": "风暴过后星空澄澈，希望重新点亮，疗愈正在悄悄发生。",
+      "rev": "星光暂被云遮，信心需要重建，别让一时的黯淡否定整个夜空。",
+      "rws": {
+        "up": {
+          "en": "Loss, theft, privation, abandonment; another reading says—hope and bright prospects.",
+          "cn": "失窃与匮乏、被弃；另一解：希望与光明前景。"
+        },
+        "rev": {
+          "en": "Arrogance, haughtiness, impotence.",
+          "cn": "傲慢与倨傲、力不从心。"
+        }
+      }
+    },
+    {
+      "id": "ar18",
+      "arcana": "major",
+      "suit": null,
+      "num": 18,
+      "name": "The Moon",
+      "cn": "月亮",
+      "kwUp": [
+        "潜意识",
+        "不安",
+        "幻象",
+        "梦境"
+      ],
+      "kwRev": [
+        "迷雾散去",
+        "真相浮现",
+        "情绪缓解"
+      ],
+      "up": "月夜多幻影，眼前的迷雾与焦虑未必是事实，慢慢走，天会亮。",
+      "rev": "雾正在散，困惑与不安开始消退，接受尚未完全清晰的状态。",
+      "rws": {
+        "up": {
+          "en": "Hidden enemies, danger, calumny, darkness, terror, deception, occult forces, error.",
+          "cn": "暗敌与危险、中伤与黑暗、欺诈与迷误、隐秘之力。"
+        },
+        "rev": {
+          "en": "Instability, inconstancy, silence, lesser degrees of deception and error.",
+          "cn": "动摇与反复、沉默、程度较轻的欺瞒与谬误。"
+        }
+      }
+    },
+    {
+      "id": "ar19",
+      "arcana": "major",
+      "suit": null,
+      "num": 19,
+      "name": "The Sun",
+      "cn": "太阳",
+      "kwUp": [
+        "喜悦",
+        "成功",
+        "活力",
+        "明朗"
+      ],
+      "kwRev": [
+        "暂时阴霾",
+        "过度乐观",
+        "活力下降"
+      ],
+      "up": "阳光普照，事情向着明亮处生长，尽情享受当下的成功与欢愉。",
+      "rev": "阳光偶被云挡，热度略减，但底色依旧明亮，调整节奏即可。",
+      "rws": {
+        "up": {
+          "en": "Material happiness, fortunate marriage, contentment.",
+          "cn": "现世的幸福、美满姻缘、心满意足。"
+        },
+        "rev": {
+          "en": "The same in a lesser sense.",
+          "cn": "同义但程度较轻，喜中略有折损。"
+        }
+      }
+    },
+    {
+      "id": "ar20",
+      "arcana": "major",
+      "suit": null,
+      "num": 20,
+      "name": "Judgement",
+      "cn": "审判",
+      "kwUp": [
+        "觉醒",
+        "召唤",
+        "复盘",
+        "重生"
+      ],
+      "kwRev": [
+        "自我苛责",
+        "逃避召唤",
+        "停滞不前"
+      ],
+      "up": "号角响起，过往的一切被重新审视，回应内心更高的召唤。",
+      "rev": "被旧账与自责缠住，或听而不闻那份召唤，完成该完成的告别。",
+      "rws": {
+        "up": {
+          "en": "Change of position, renewal, outcome. Another account specifies total loss though lawsuit.",
+          "cn": "地位变更、更新与结局；另一解：因讼大损。"
+        },
+        "rev": {
+          "en": "Weakness, pusillanimity, simplicity; also deliberation, decision, sentence.",
+          "cn": "怯懦与天真；亦指深思、裁决与判词。"
+        }
+      }
+    },
+    {
+      "id": "ar21",
+      "arcana": "major",
+      "suit": null,
+      "num": 21,
+      "name": "The World",
+      "cn": "世界",
+      "kwUp": [
+        "圆满",
+        "完成",
+        "整合",
+        "里程碑"
+      ],
+      "kwRev": [
+        "未竟",
+        "差临门一脚",
+        "草率收尾"
+      ],
+      "up": "一个 cycle 完整闭环，成果落定，带着完整的经验开启下一程。",
+      "rev": "临近终点仍欠收尾，把最后一步走踏实，圆满才作数。",
+      "rws": {
+        "up": {
+          "en": "Assured success, recompense, voyage, route, emigration, flight, change of place.",
+          "cn": "稳操的成功与回报、远行与迁居、换环境。"
+        },
+        "rev": {
+          "en": "Inertia, fixity, stagnation, permanence.",
+          "cn": "惰性与凝滞、原地不动、局面的固化。"
+        }
+      }
+    },
+    {
+      "id": "wa01",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 1,
+      "name": "Ace of Wands",
+      "cn": "权杖王牌",
+      "kwUp": [
+        "灵感",
+        "行动",
+        "新机遇",
+        "热情"
+      ],
+      "kwRev": [
+        "热情推迟",
+        "方案未熟",
+        "动力受阻"
+      ],
+      "up": "一团火种落入手中，新计划与行动力同时点亮，放手去做。",
+      "rev": "火候未到或方向存疑，让想法再酝酿一下，别硬点火。",
+      "rws": {
+        "up": {
+          "en": "Creation, invention, enterprise, the powers which result in these; principle, beginning, source; birth, family, origin; the starting point of enterprises; according to another account, money, fortune, inheritance.",
+          "cn": "创造与发明、开创事业之力、起源与开端；另一解：钱财与遗产。"
+        },
+        "rev": {
+          "en": "Fall, decadence, ruin, perdition, to perish; also a certain clouded joy.",
+          "cn": "衰落与倾颓、毁灭；亦指蒙尘的喜悦。"
+        }
+      }
+    },
+    {
+      "id": "wa02",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 2,
+      "name": "Two of Wands",
+      "cn": "权杖二",
+      "kwUp": [
+        "规划",
+        "抉择",
+        "眺望",
+        "布局"
+      ],
+      "kwRev": [
+        "畏缩",
+        "计划落空",
+        "惧怕未知"
+      ],
+      "up": "手握世界站在高处，下一步的版图由你规划，大胆设想。",
+      "rev": "计划停在纸上，对未知的不安盖过了野心，先迈一小步。",
+      "rws": {
+        "up": {
+          "en": "Riches, fortune, magnificence; on the other hand, physical suffering, disease, chagrin, sadness, mortification. A lord overlooking his dominion and alternately contemplating a globe.",
+          "cn": "财富与鸿图；亦含病痛、失意与悲苦的双面义。"
+        },
+        "rev": {
+          "en": "Surprise, wonder, enchantment, emotion, trouble, fear.",
+          "cn": "惊讶与奇遇、迷醉、忧惧与纷扰。"
+        }
+      }
+    },
+    {
+      "id": "wa03",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 3,
+      "name": "Three of Wands",
+      "cn": "权杖三",
+      "kwUp": [
+        "扩展",
+        "远见",
+        "等待回报",
+        "合作"
+      ],
+      "kwRev": [
+        "延误",
+        "视野受限",
+        "孤军奋战"
+      ],
+      "up": "船只已出港，先前布局开始显效，把眼光放远等风来。",
+      "rev": "进展比预期慢或协作掉链子，检视链条，必要时亲自补位。",
+      "rws": {
+        "up": {
+          "en": "Established strength, enterprise, effort, trade, commerce, discovery; able co-operation in business.",
+          "cn": "已立之势、实业与商贾、探索、得力的协作。"
+        },
+        "rev": {
+          "en": "The end of troubles, suspension or cessation of adversity, toil and disappointment.",
+          "cn": "烦难将尽、逆境与辛劳告一段落。"
+        }
+      }
+    },
+    {
+      "id": "wa04",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 4,
+      "name": "Four of Wands",
+      "cn": "权杖四",
+      "kwUp": [
+        "庆祝",
+        "安稳",
+        "归属",
+        "里程碑"
+      ],
+      "kwRev": [
+        "过渡期",
+        "根基未稳",
+        "聚少离多"
+      ],
+      "up": "花门之下值得举杯，阶段性成果落定，享受当下的安稳与欢聚。",
+      "rev": "处在搬家式过渡带，稳定感稍后才有，先安顿好内心。",
+      "rws": {
+        "up": {
+          "en": "Country life, haven of refuge, a species of domestic harvest-home, repose, concord, harmony, prosperity, peace, and the perfected work of these.",
+          "cn": "田园安居、休憩与和睦、家宅丰登、功成之作。"
+        },
+        "rev": {
+          "en": "The meaning remains unaltered; it is prosperity, increase, felicity, beauty, embellishment.",
+          "cn": "义不变：兴盛、增益、福乐与添彩。"
+        }
+      }
+    },
+    {
+      "id": "wa05",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 5,
+      "name": "Five of Wands",
+      "cn": "权杖五",
+      "kwUp": [
+        "竞争",
+        "摩擦",
+        "碰撞",
+        "切磋"
+      ],
+      "kwRev": [
+        "回避冲突",
+        "内耗",
+        "恶性竞争"
+      ],
+      "up": "多方观点激烈碰撞，良性竞争磨出锋芒，别怕噪音。",
+      "rev": "冲突被压到桌面下发酵，或你在无谓的内耗，该摊牌就摊牌。",
+      "rws": {
+        "up": {
+          "en": "Imitation, sham fight, but also the strenuous competition and struggle of the search after riches and fortune; some attributions say gold, gain, opulence.",
+          "cn": "模拟与演练、为求财获利的激烈竞争；另一解：得金与富足。"
+        },
+        "rev": {
+          "en": "Litigation, disputes, trickery, contradiction.",
+          "cn": "诉讼与争端、诡诈、彼此相左。"
+        }
+      }
+    },
+    {
+      "id": "wa06",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 6,
+      "name": "Six of Wands",
+      "cn": "权杖六",
+      "kwUp": [
+        "凯旋",
+        "认可",
+        "捷报",
+        "信心"
+      ],
+      "kwRev": [
+        "虚名",
+        "未获认可",
+        "自我怀疑"
+      ],
+      "up": "骑马凯旋，努力被看见，收获掌声与实至名归的进展。",
+      "rev": "掌声迟到或名不副实，别让外界评价左右你的节奏。",
+      "rws": {
+        "up": {
+          "en": "A victor triumphing; great news carried in state by the King's courier; expectation crowned with its own desire, the crown of hope.",
+          "cn": "凯旋与捷报、所望所求终得加冕。"
+        },
+        "rev": {
+          "en": "Apprehension, fear, as of a victorious enemy at the gate; treachery, disloyalty; also indefinite delay.",
+          "cn": "忧惧如败兵压境、背叛与不忠、遥遥无期的延宕。"
+        }
+      }
+    },
+    {
+      "id": "wa07",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 7,
+      "name": "Seven of Wands",
+      "cn": "权杖七",
+      "kwUp": [
+        "坚守",
+        "防御",
+        "捍卫立场",
+        "韧性"
+      ],
+      "kwRev": [
+        "寡不敌众",
+        "放弃阵地",
+        "疲于应对"
+      ],
+      "up": "以一敌六仍占高地，你站在对的位置，守住立场就是赢。",
+      "rev": "四面楚歌式疲惫，收缩战线，保住最重要的那块高地。",
+      "rws": {
+        "up": {
+          "en": "Valour; six attacking one who has the vantage position; discussion, wordy strife; negotiations, war of trade, competition; a card of success.",
+          "cn": "踞高临下的勇气、论战与谈判、商战与竞争——终属成功之牌。"
+        },
+        "rev": {
+          "en": "Perplexity, embarrassments, anxiety; a caution against indecision.",
+          "cn": "困窘与焦虑；警惕优柔寡断。"
+        }
+      }
+    },
+    {
+      "id": "wa08",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 8,
+      "name": "Eight of Wands",
+      "cn": "权杖八",
+      "kwUp": [
+        "加速",
+        "讯息",
+        "顺流",
+        "进展"
+      ],
+      "kwRev": [
+        "延误",
+        "消息滞后",
+        "心急"
+      ],
+      "up": "八支飞杖破空而来，事情突然提速，消息与进展接连抵达。",
+      "rev": "快递堵在路上，节奏被迫放缓，等待期里做好该做的准备。",
+      "rws": {
+        "up": {
+          "en": "Activity in undertakings, swiftness, great haste, great hope, speed towards an assured felicity; that which is on the move; also the arrows of love.",
+          "cn": "事业骤速、疾行与厚望、奔向可期之福；亦指爱神之箭。"
+        },
+        "rev": {
+          "en": "Arrows of jealousy, internal dispute, stingings of conscience, quarrels; domestic disputes.",
+          "cn": "嫉妒之矢、内讧与良心刺痛、争吵与家内不和。"
+        }
+      }
+    },
+    {
+      "id": "wa09",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 9,
+      "name": "Nine of Wands",
+      "cn": "权杖九",
+      "kwUp": [
+        "坚持",
+        "警惕",
+        "最后防线",
+        "经验"
+      ],
+      "kwRev": [
+        "力竭",
+        "过度防备",
+        "疑神疑鬼"
+      ],
+      "up": "伤痕累累仍站着，胜利在最后一程，靠经验与韧性撑过去。",
+      "rev": "紧绷过头反而消耗，评估真实威胁，别为幻影站岗。",
+      "rws": {
+        "up": {
+          "en": "Strength in opposition; meeting an onslaught boldly; delay, suspension, adjournment.",
+          "cn": "迎击之力、正面硬撼；亦指延期与暂缓。"
+        },
+        "rev": {
+          "en": "Obstacles, adversity, calamity.",
+          "cn": "障碍与逆境、祸患。"
+        }
+      }
+    },
+    {
+      "id": "wa10",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": 10,
+      "name": "Ten of Wands",
+      "cn": "权杖十",
+      "kwUp": [
+        "负重",
+        "责任过载",
+        "硬扛",
+        "收尾"
+      ],
+      "kwRev": [
+        "放下",
+        "委派",
+        "卸载负担"
+      ],
+      "up": "抱着一摞火杖前行，责任压身但终将送达，注意分配体力。",
+      "rev": "该卸货了——把不属于你的放回去，学会委派与求助。",
+      "rws": {
+        "up": {
+          "en": "Oppression simply; also fortune, gain, any kind of success; a card of false-seeming, disguise, perfidy. Success is stultified if the Nine of Swords follows.",
+          "cn": "重压与负荷；亦指财利与成功；兼有虚饰与欺瞒义。"
+        },
+        "rev": {
+          "en": "Contrarieties, difficulties, intrigues, and their analogies.",
+          "cn": "乖违与困难、暗中搅局。"
+        }
+      }
+    },
+    {
+      "id": "wa11",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": "page",
+      "name": "Page of Wands",
+      "cn": "权杖侍从",
+      "kwUp": [
+        "好奇",
+        "试探",
+        "消息",
+        "热忱"
+      ],
+      "kwRev": [
+        "三分钟热度",
+        "方向游移",
+        "幼稚冲动"
+      ],
+      "up": "举杖远眺的新手，热情与好奇为你打开新领域，允许自己试错。",
+      "rev": "兴趣来得快去得也快，先小的承诺，再谈大的投入。",
+      "rws": {
+        "up": {
+          "en": "Dark young man, faithful, a lover, an envoy, a postman; favourable testimony; a dangerous rival if followed by the Page of Cups; has the chief qualities of his suit; may signify family intelligence.",
+          "cn": "忠实的年轻人、传信者与使者；具本花色诸质；亦指家中音讯。"
+        },
+        "rev": {
+          "en": "Anecdotes, announcements, evil news; indecision and the instability which accompanies it.",
+          "cn": "传闻与公告、噩耗；摇摆不定。"
+        }
+      },
+      "persona": "捧杖远眺的信使：热情先于规划，是「想去试试」的化身。"
+    },
+    {
+      "id": "wa12",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": "knight",
+      "name": "Knight of Wands",
+      "cn": "权杖骑士",
+      "kwUp": [
+        "冲劲",
+        "冒险",
+        "魅力",
+        "快速推进"
+      ],
+      "kwRev": [
+        "莽撞",
+        "虎头蛇尾",
+        "焦躁"
+      ],
+      "up": "跃马扬鞭的行动派， momentum 正盛，适合快攻与开疆拓土。",
+      "rev": "油门踩到底却常忘刹车，欲速不达，补个计划再冲锋。",
+      "rws": {
+        "up": {
+          "en": "Departure, absence, flight, emigration; a dark young man, friendly; change of residence.",
+          "cn": "启程与远走、离乡迁居；友善的年轻人。"
+        },
+        "rev": {
+          "en": "Rupture, division, interruption, discord.",
+          "cn": "决裂与分裂、中断、失和。"
+        }
+      },
+      "persona": "纵马前冲的行动派：来势快、去势也快，勇气与冒进一线之隔。"
+    },
+    {
+      "id": "wa13",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": "queen",
+      "name": "Queen of Wands",
+      "cn": "权杖王后",
+      "kwUp": [
+        "自信",
+        "感染力",
+        "独立",
+        "热情"
+      ],
+      "kwRev": [
+        "自我怀疑",
+        "掌控欲",
+        "情绪化"
+      ],
+      "up": "向日葵与黑猫在侧，自信与温度并存，你自带照亮他人的能量。",
+      "rev": "光被质疑遮住了一角，收回外投的比较，回到自己的火源。",
+      "rws": {
+        "up": {
+          "en": "A dark woman, countrywoman, friendly, chaste, loving, honourable; love of money, or a certain success in business.",
+          "cn": "亲切可敬的女性、贞静有爱；亦指爱财、生意小成。"
+        },
+        "rev": {
+          "en": "Good, economical, obliging, serviceable; also opposition, jealousy, even deceit and infidelity, in certain positions.",
+          "cn": "勤俭而乐于助人；特定牌位下亦指敌意、嫉妒、欺瞒与不忠。"
+        }
+      },
+      "persona": "炉火般明亮的主人：热忱、自信，能把人气聚成一团火。"
+    },
+    {
+      "id": "wa14",
+      "arcana": "minor",
+      "suit": "wands",
+      "num": "king",
+      "name": "King of Wands",
+      "cn": "权杖国王",
+      "kwUp": [
+        "领导力",
+        "远见",
+        "魄力",
+        "创业"
+      ],
+      "kwRev": [
+        "独断",
+        "好大喜功",
+        "压制他人"
+      ],
+      "up": "愿景与执行力兼备的领袖能量，适合牵头定调、拍板推进。",
+      "rev": "强 assertive 变成强压制，多听一圈再下令，领导力在于点燃他人。",
+      "rws": {
+        "up": {
+          "en": "Dark man, friendly, countryman, generally married, honest and conscientious; the card always signifies honesty; news concerning an unexpected heritage.",
+          "cn": "诚实有担待的男性、意外遗产的消息；此牌恒指诚信。"
+        },
+        "rev": {
+          "en": "Good, but severe; austere, yet tolerant.",
+          "cn": "良善而严厉、清峻却宽容。"
+        }
+      },
+      "persona": "愿景的领主：以魄力服人，天生带着创业者的远见与火气。"
+    },
+    {
+      "id": "cu01",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 1,
+      "name": "Ace of Cups",
+      "cn": "圣杯王牌",
+      "kwUp": [
+        "新感情",
+        "情感萌动",
+        "丰盈",
+        "接纳"
+      ],
+      "kwRev": [
+        "情感封闭",
+        "心门未开",
+        "压抑感受"
+      ],
+      "up": "心泉满溢，新感情、新连接或深层的满足正在注入生命。",
+      "rev": "杯子倾而未满，感受被压住，先允许自己被触动。",
+      "rws": {
+        "up": {
+          "en": "House of the true heart, joy, content, abode, nourishment, abundance, fertility; Holy Table, felicity hereof.",
+          "cn": "真心之宅、喜乐与满足、滋养与丰饶。"
+        },
+        "rev": {
+          "en": "House of the false heart, mutation, instability, revolution.",
+          "cn": "假意之宅、变故、不稳、颠覆。"
+        }
+      }
+    },
+    {
+      "id": "cu02",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 2,
+      "name": "Two of Cups",
+      "cn": "圣杯二",
+      "kwUp": [
+        "联结",
+        "双向奔赴",
+        "契约",
+        "吸引"
+      ],
+      "kwRev": [
+        "失衡的关系",
+        "误会",
+        "渐行渐远"
+      ],
+      "up": "两杯相映，一段彼此看见的关系或合作正在缔结。",
+      "rev": "天平倾向一边，或隔阂悄然生长，重新对表彼此的心意。",
+      "rws": {
+        "up": {
+          "en": "Love, passion, friendship, affinity, union, concord, sympathy, the interrelation of the sexes.",
+          "cn": "爱与情谊、两情相契、结合与和睦。"
+        },
+        "rev": {
+          "en": "Lust, cupidity, jealousy, wish, desire.",
+          "cn": "贪欲与占有、嫉妒、单方面的欲求。"
+        }
+      }
+    },
+    {
+      "id": "cu03",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 3,
+      "name": "Three of Cups",
+      "cn": "圣杯三",
+      "kwUp": [
+        "欢聚",
+        "友谊",
+        "庆祝",
+        "社群"
+      ],
+      "kwRev": [
+        "圈子纷扰",
+        "流言",
+        "热闹后的空"
+      ],
+      "up": "三杯共举，友情与庆祝填满日程，社群是此刻的养分。",
+      "rev": "热闹之外有杂音，圈子里的是非值得保持距离。",
+      "rws": {
+        "up": {
+          "en": "The conclusion of any matter in plenty, perfection and merriment; happy issue, victory, fulfilment, solace, healing.",
+          "cn": "丰美圆满的收束、喜果与痊愈、慰藉。"
+        },
+        "rev": {
+          "en": "Expedition, dispatch, achievement, end; also the side of excess in physical enjoyment, and the pleasures of the senses.",
+          "cn": "速成与收尾；亦指感官享乐之过度。"
+        }
+      }
+    },
+    {
+      "id": "cu04",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 4,
+      "name": "Four of Cups",
+      "cn": "圣杯四",
+      "kwUp": [
+        "倦怠",
+        "审视",
+        "错过的邀请",
+        "静观"
+      ],
+      "kwRev": [
+        "重新开放",
+        "接受机会",
+        "走出低潮"
+      ],
+      "up": "树下沉思，对眼前的一切提不起劲，但被忽略的杯子仍在。",
+      "rev": "从麻木中抬头，重新愿意伸手接住递来的机会。",
+      "rws": {
+        "up": {
+          "en": "Weariness, disgust, aversion, imaginary vexations, satiety; another wine is offered the wastrel, but he sees no consolation therein; a card of blended pleasure.",
+          "cn": "倦怠与厌腻、想象出来的烦忧、福至而不觉。"
+        },
+        "rev": {
+          "en": "Novelty, presage, new instruction, new relations.",
+          "cn": "新奇与预兆、新的指点、新的关系。"
+        }
+      }
+    },
+    {
+      "id": "cu05",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 5,
+      "name": "Five of Cups",
+      "cn": "圣杯五",
+      "kwUp": [
+        "失落",
+        "遗憾",
+        "哀悼",
+        "侧重所失"
+      ],
+      "kwRev": [
+        "接受",
+        "走出哀伤",
+        "转身"
+      ],
+      "up": "三杯倾覆两杯犹立，为失去悲伤是应该的，但别背对仍站立的部分。",
+      "rev": "转过身来，哀悼期进入尾声，剩下的资源足以重新开始。",
+      "rws": {
+        "up": {
+          "en": "A card of loss, but something remains over; three have been taken, but two are left; a card of inheritance, patrimony, transmission, but not corresponding to expectations; with some interpreters, marriage not without bitterness.",
+          "cn": "有失而未尽失——三倾二立；继承与传承、不如所期。"
+        },
+        "rev": {
+          "en": "News, alliances, affinity, consanguinity, ancestry, return, false projects.",
+          "cn": "音讯与结盟、亲缘与归返、虚妄的计划。"
+        }
+      }
+    },
+    {
+      "id": "cu06",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 6,
+      "name": "Six of Cups",
+      "cn": "圣杯六",
+      "kwUp": [
+        "怀旧",
+        "童真",
+        "旧识",
+        "纯善"
+      ],
+      "kwRev": [
+        "困于过去",
+        "理想化旧时光",
+        "成长停滞"
+      ],
+      "up": "旧花园里的馈赠，温情与回忆滋养当下，旧人或旧好再续。",
+      "rev": "滤镜过厚的过去正在拖住现在，怀念可以，别搬回去住。",
+      "rws": {
+        "up": {
+          "en": "A card of the past and of memories, looking back on childhood; happiness coming rather from the past; another reading gives new relations, new knowledge, new environment.",
+          "cn": "怀旧与童年记忆、来自过去的快乐；另一解：新环境新关系。"
+        },
+        "rev": {
+          "en": "The future, renewal, that which will come to pass presently.",
+          "cn": "未来将至之事、更新与到来。"
+        }
+      }
+    },
+    {
+      "id": "cu07",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 7,
+      "name": "Seven of Cups",
+      "cn": "圣杯七",
+      "kwUp": [
+        "幻象",
+        "多选项",
+        "白日梦",
+        "甄别"
+      ],
+      "kwRev": [
+        "看清现实",
+        "做出取舍",
+        "迷雾散尽"
+      ],
+      "up": "七只杯中皆幻影，选项多到失焦，分辨真金与镀金。",
+      "rev": "迷雾开始散去，能落地的那一个选项渐渐清晰，选它。",
+      "rws": {
+        "up": {
+          "en": "Fairy favours, images of reflection, sentiment, imagination, things seen in the glass of contemplation; some attainment, but nothing permanent or substantial.",
+          "cn": "镜花水月的意象、情思与想象、有小得而无恒产。"
+        },
+        "rev": {
+          "en": "Desire, will, determination, project.",
+          "cn": "欲念与意志、决心与规划。"
+        }
+      }
+    },
+    {
+      "id": "cu08",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 8,
+      "name": "Eight of Cups",
+      "cn": "圣杯八",
+      "kwUp": [
+        "离开",
+        "追寻意义",
+        "告别",
+        "转身向内"
+      ],
+      "kwRev": [
+        "徘徊",
+        "难以割舍",
+        "恐惧未知"
+      ],
+      "up": "月下离开八只杯子，不是失败而是奔赴更深的意义。",
+      "rev": "脚步在门口打转，告别拖延久了会变成内耗，尊重自己的选择。",
+      "rws": {
+        "up": {
+          "en": "The decline of a matter, or that a matter thought important is really of slight consequence; other readings antithetical: joy, mildness, timidity, honour, modesty.",
+          "cn": "事态消退、自以为重者实为轻末；另一解：谦和与体面。"
+        },
+        "rev": {
+          "en": "Great joy, happiness, feasting.",
+          "cn": "大喜与欢宴。"
+        }
+      }
+    },
+    {
+      "id": "cu09",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 9,
+      "name": "Nine of Cups",
+      "cn": "圣杯九",
+      "kwUp": [
+        "愿望成真",
+        "满足",
+        "享受",
+        "身心安顿"
+      ],
+      "kwRev": [
+        "口惠而实不至",
+        "浮华满足",
+        "差口气"
+      ],
+      "up": "抱臂而坐的许愿者身后杯盏齐列，愿望正在兑现，好好享受。",
+      "rev": "表面风光内里欠满足，诚实面对自己真正想要什么。",
+      "rws": {
+        "up": {
+          "en": "Concord, contentment, physical bien-être; also victory, success, advantage; satisfaction for the Querent.",
+          "cn": "和睦与满足、身心安适、胜算与实利。"
+        },
+        "rev": {
+          "en": "Truth, loyalty, liberty; but the readings vary and include mistakes, imperfections.",
+          "cn": "真话与忠诚、自在；另解：差错与不圆满。"
+        }
+      }
+    },
+    {
+      "id": "cu10",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": 10,
+      "name": "Ten of Cups",
+      "cn": "圣杯十",
+      "kwUp": [
+        "圆满",
+        "家庭",
+        "归属",
+        "幸福"
+      ],
+      "kwRev": [
+        "理想与现实落差",
+        "家庭摩擦",
+        "期许过高"
+      ],
+      "up": "彩虹下的十杯，情感世界的大团圆，珍惜眼前人。",
+      "rev": "童话图景与真实生活有落差，把完美期待换成经营真心。",
+      "rws": {
+        "up": {
+          "en": "Contentment, repose of the entire heart; perfection of human love and friendship; the town, village or country inhabited by the Querent.",
+          "cn": "全心安顿、人间爱与友爱的圆满、家宅之邦。"
+        },
+        "rev": {
+          "en": "Repose of the false heart, indignation, violence.",
+          "cn": "假意安顿、愤懑与暴戾。"
+        }
+      }
+    },
+    {
+      "id": "cu11",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": "page",
+      "name": "Page of Cups",
+      "cn": "圣杯侍从",
+      "kwUp": [
+        "灵感",
+        "感性",
+        "创意萌发",
+        "讯息"
+      ],
+      "kwRev": [
+        "情绪化",
+        "不成熟",
+        "灵感受阻"
+      ],
+      "up": "杯中跃出鱼儿，一条带着情感色彩的讯息或灵感不期而至。",
+      "rev": "情绪盖过表达，或创意卡壳，先照顾感受再谈产出。",
+      "rws": {
+        "up": {
+          "en": "Fair young man, impelled to render service; a studious youth; news, message; application, reflection, meditation.",
+          "cn": "乐于效劳的少年、勤思好学；音讯与消息。"
+        },
+        "rev": {
+          "en": "Taste, inclination, attachment, seduction, deception, artifice.",
+          "cn": "嗜好与依恋、诱惑与巧诈。"
+        }
+      },
+      "persona": "捧杯而立的少年：心思柔软，对情感信号格外敏锐。"
+    },
+    {
+      "id": "cu12",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": "knight",
+      "name": "Knight of Cups",
+      "cn": "圣杯骑士",
+      "kwUp": [
+        "浪漫",
+        "邀约",
+        "追随心意",
+        "优雅行动"
+      ],
+      "kwRev": [
+        "空头承诺",
+        "不切实际",
+        "情绪化行动"
+      ],
+      "up": "捧杯缓行的骑士，浪漫的邀约或跟随心意的行动正在路上。",
+      "rev": "承诺大于行动，或以感动自己代替真实付出，落地为王。",
+      "rws": {
+        "up": {
+          "en": "Arrival, approach—sometimes that of a messenger; advances, proposition, invitation, incitement.",
+          "cn": "到来与趋近（常为信使）、提议与邀约、鼓动。"
+        },
+        "rev": {
+          "en": "Trickery, artifice, subtlety, swindling, duplicity, fraud.",
+          "cn": "机巧与手腕、诓骗与两面手法。"
+        }
+      },
+      "persona": "缓缓行来的浪漫骑士：以情动人，承诺温柔但需要兑现。"
+    },
+    {
+      "id": "cu13",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": "queen",
+      "name": "Queen of Cups",
+      "cn": "圣杯王后",
+      "kwUp": [
+        "共情",
+        "温柔",
+        "情绪智慧",
+        "倾听"
+      ],
+      "kwRev": [
+        "情绪泛滥",
+        "边界模糊",
+        "过度代入"
+      ],
+      "up": "海边的杯座王后，以共情与直觉滋养他人，也请为自己留一杯。",
+      "rev": "潮水漫过堤岸，分清哪些情绪是你的、哪些是别人的。",
+      "rws": {
+        "up": {
+          "en": "Good, fair woman; honest, devoted woman who will do service; loving intelligence, the gift of vision; success, happiness, pleasure; wisdom, virtue; a perfect spouse and a good mother.",
+          "cn": "良善的女性、深情的智慧与远见、贤妻良母之象。"
+        },
+        "rev": {
+          "en": "The accounts vary; distinguished woman but one not to be trusted; perverse woman; vice, dishonour, depravity.",
+          "cn": "诸解不一：不可尽信的显贵女子；失德与败坏。"
+        }
+      },
+      "persona": "海一般的倾听者：共情是天赋，也是需要设界的功课。"
+    },
+    {
+      "id": "cu14",
+      "arcana": "minor",
+      "suit": "cups",
+      "num": "king",
+      "name": "King of Cups",
+      "cn": "圣杯国王",
+      "kwUp": [
+        "情绪稳定",
+        "包容",
+        "成熟",
+        "以情驭事"
+      ],
+      "kwRev": [
+        "压抑情绪",
+        "外冷内潮",
+        "被动攻击"
+      ],
+      "up": "波澜不惊的海上王者，情绪成熟而包容，是动荡中的锚。",
+      "rev": "平静海面下暗流涌动，允许情绪表达，别让冷静变成隔离。",
+      "rws": {
+        "up": {
+          "en": "Fair man, man of business, law, or divinity; responsible, disposed to oblige; equity, art and science; creative intelligence.",
+          "cn": "务实公正的男性（商/法/神职）、创造力、乐于成人之美。"
+        },
+        "rev": {
+          "en": "Dishonest, double-dealing man; roguery, exaction, injustice, vice, scandal, pillage, considerable loss.",
+          "cn": "两面三刀之人、不义与丑闻、重大损失。"
+        }
+      },
+      "persona": "深水静流的引路人：情绪沉稳，愿意为爱承担与收敛。"
+    },
+    {
+      "id": "sw01",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 1,
+      "name": "Ace of Swords",
+      "cn": "宝剑王牌",
+      "kwUp": [
+        "清明",
+        "突破",
+        "真相",
+        "决断"
+      ],
+      "kwRev": [
+        "思路混乱",
+        "武力压制",
+        "时机未到"
+      ],
+      "up": "一剑破云，清晰的思维斩开迷雾，此刻适合做决断。",
+      "rev": "想得太多反而缠住剑刃，先理清事实再落剑。",
+      "rws": {
+        "up": {
+          "en": "Triumph, the excessive degree in everything, conquest, triumph of force; a card of great force, in love as well as in hatred.",
+          "cn": "彻底的征服、凡事臻于极致、爱与恨皆大力的极端之牌。"
+        },
+        "rev": {
+          "en": "The same, but the results are disastrous; another account says—conception, childbirth, augmentation, multiplicity.",
+          "cn": "同类大力但结果成灾；另一解：受孕、生育、增殖。"
+        }
+      }
+    },
+    {
+      "id": "sw02",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 2,
+      "name": "Two of Swords",
+      "cn": "宝剑二",
+      "kwUp": [
+        "僵局",
+        "两难",
+        "蒙眼权衡",
+        "暂缓"
+      ],
+      "kwRev": [
+        "打破僵局",
+        "信息到位",
+        "被迫抉择"
+      ],
+      "up": "蒙眼持双剑而坐，两难之下暂时搁置，但决定终将到来。",
+      "rev": "眼罩松了，更多信息浮出水面，是时候放下回避做出选择。",
+      "rws": {
+        "up": {
+          "en": "Conformity and the equipoise which it suggests, courage, friendship, concord in a state of arms; another reading: tenderness, affection, intimacy.",
+          "cn": "均衡与相持、武装下的和局；另一解：柔情与亲昵。"
+        },
+        "rev": {
+          "en": "Imposture, falsehood, duplicity, disloyalty.",
+          "cn": "冒名与虚妄、口是心非、不忠。"
+        }
+      }
+    },
+    {
+      "id": "sw03",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 3,
+      "name": "Three of Swords",
+      "cn": "宝剑三",
+      "kwUp": [
+        "心碎",
+        "刺痛",
+        "悲伤",
+        "直言伤人"
+      ],
+      "kwRev": [
+        "疗愈开始",
+        "释怀",
+        "原谅"
+      ],
+      "up": "三剑穿心，言语或真相带来真实的痛，允许自己完整地难过。",
+      "rev": "乌云让位，疗愈悄然启动，痛苦开始转化为理解。",
+      "rws": {
+        "up": {
+          "en": "Removal, absence, delay, division, rupture, dispersion.",
+          "cn": "离去与缺席、延宕与分离、决裂。"
+        },
+        "rev": {
+          "en": "Mental alienation, error, loss, distraction, disorder, confusion.",
+          "cn": "心智迷乱、过错与损失、失序。"
+        }
+      }
+    },
+    {
+      "id": "sw04",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 4,
+      "name": "Four of Swords",
+      "cn": "宝剑四",
+      "kwUp": [
+        "休整",
+        "静养",
+        "暂停",
+        "恢复"
+      ],
+      "kwRev": [
+        "疲惫累积",
+        "被迫重新开工",
+        " restless"
+      ],
+      "up": "石棺上的小憩，战斗间隙的休整是战略的一部分，安心休息。",
+      "rev": "该休不休，透支的状态提醒你：停机维护不是懈怠。",
+      "rws": {
+        "up": {
+          "en": "Vigilance, retreat, solitude, hermit's repose, exile, tomb and coffin.",
+          "cn": "警戒与退守、独处与休憩、放逐；墓与棺的终局意象。"
+        },
+        "rev": {
+          "en": "Wise administration, circumspection, economy, avarice, precaution, testament.",
+          "cn": "稳妥的操持、节俭与戒备、遗嘱。"
+        }
+      }
+    },
+    {
+      "id": "sw05",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 5,
+      "name": "Five of Swords",
+      "cn": "宝剑五",
+      "kwUp": [
+        "惨胜",
+        "冲突",
+        "代价",
+        "得不偿失"
+      ],
+      "kwRev": [
+        "和解",
+        "放下争执",
+        "反思"
+      ],
+      "up": "拾剑而笑者赢了战斗输了关系，问问自己这场胜利值不值。",
+      "rev": "放下输赢，握手言和或体面退场，都是止损。",
+      "rws": {
+        "up": {
+          "en": "Degradation, destruction, revocation, infamy, dishonour, loss.",
+          "cn": "败落与撤销、羞辱与损失。"
+        },
+        "rev": {
+          "en": "The same; burial and obsequies.",
+          "cn": "同前义；葬仪与收场。"
+        }
+      }
+    },
+    {
+      "id": "sw06",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 6,
+      "name": "Six of Swords",
+      "cn": "宝剑六",
+      "kwUp": [
+        "过渡",
+        "摆渡",
+        "渐离困境",
+        "移居"
+      ],
+      "kwRev": [
+        "拉扯",
+        "带不走行李",
+        "旧事重提"
+      ],
+      "up": "小船载客驶向平静水域，困难正被留在身后，过渡期请安静前行。",
+      "rev": "船行仍带回望，未处理的心事随行李同行，别怕回头看一眼。",
+      "rws": {
+        "up": {
+          "en": "Journey by water, route, way, envoy, commissionary, expedient.",
+          "cn": "水路之旅、路线与通道、使者与权宜之计。"
+        },
+        "rev": {
+          "en": "Declaration, confession, publicity; a proposal of love.",
+          "cn": "坦白与公开；亦有爱的告白一解。"
+        }
+      }
+    },
+    {
+      "id": "sw07",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 7,
+      "name": "Seven of Swords",
+      "cn": "宝剑七",
+      "kwUp": [
+        "策略",
+        "暗中进行",
+        "回避",
+        "隐瞒"
+      ],
+      "kwRev": [
+        "坦白",
+        "自欺暴露",
+        "归还"
+      ],
+      "up": "抱剑溜走的身影，策略性迂回可行，但小心自欺与信誉成本。",
+      "rev": "藏不住的事浮出水面，主动坦白比被抓包代价小得多。",
+      "rws": {
+        "up": {
+          "en": "Design, attempt, wish, hope, confidence; also quarrelling, a plan that may fail, annoyance.",
+          "cn": "图谋与尝试、期望与自信；亦指争执与可能落空的计划。"
+        },
+        "rev": {
+          "en": "Good advice, counsel, instruction, slander, babbling.",
+          "cn": "良策与指点；亦指中伤与碎语。"
+        }
+      }
+    },
+    {
+      "id": "sw08",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 8,
+      "name": "Eight of Swords",
+      "cn": "宝剑八",
+      "kwUp": [
+        "受困",
+        "自我设限",
+        "无路可走的错觉"
+      ],
+      "kwRev": [
+        "松绑",
+        "看见出路",
+        "自救"
+      ],
+      "up": "八剑围身，束缚多是认知画出的，脚下的路并未真被锁死。",
+      "rev": "眼罩滑落，原来转个身就有出口，第一步由自己迈出。",
+      "rws": {
+        "up": {
+          "en": "Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness.",
+          "cn": "噩耗与剧怒、危机与责难、受缚之力、疾病。"
+        },
+        "rev": {
+          "en": "Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.",
+          "cn": "惶惑与困难、对抗与意外、背叛与不可抗。"
+        }
+      }
+    },
+    {
+      "id": "sw09",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 9,
+      "name": "Nine of Swords",
+      "cn": "宝剑九",
+      "kwUp": [
+        "焦虑",
+        "失眠",
+        "忧思",
+        "放大恐惧"
+      ],
+      "kwRev": [
+        "天亮了",
+        "恐惧缓解",
+        "求助有效"
+      ],
+      "up": "深夜坐起的惊惧，担忧多为放大，恐惧在黑暗里最擅长夸张。",
+      "rev": "熬过长夜，现实比想象温和，开口倾诉会让剑更快落地。",
+      "rws": {
+        "up": {
+          "en": "Death, failure, miscarriage, delay, deception, disappointment, despair.",
+          "cn": "夭折与挫败、延宕与欺骗、失望与绝望。"
+        },
+        "rev": {
+          "en": "Imprisonment, suspicion, doubt, reasonable fear, shame.",
+          "cn": "困守与猜疑、合理的恐惧、羞愧。"
+        }
+      }
+    },
+    {
+      "id": "sw10",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": 10,
+      "name": "Ten of Swords",
+      "cn": "宝剑十",
+      "kwUp": [
+        "谷底",
+        "终结",
+        "背刺",
+        "绝处"
+      ],
+      "kwRev": [
+        "复苏",
+        "最坏已过",
+        "缓慢回升"
+      ],
+      "up": "十剑加身伏地，最坏的已发生，天际微光是明天的预告。",
+      "rev": "谷底反弹，伤痛结痂，重整旗鼓的时机近了。",
+      "rws": {
+        "up": {
+          "en": "Pain, affliction, tears, sadness, desolation; not especially a card of violent death.",
+          "cn": "剧痛与摧折、泪与凄凉（并非横死之牌）。"
+        },
+        "rev": {
+          "en": "Advantage, profit, success, favour, but none of these are permanent; also power and authority.",
+          "cn": "利益与成功、眷顾与权势——但皆不长久。"
+        }
+      }
+    },
+    {
+      "id": "sw11",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": "page",
+      "name": "Page of Swords",
+      "cn": "宝剑侍从",
+      "kwUp": [
+        "好奇",
+        "观察",
+        "学习",
+        "警觉"
+      ],
+      "kwRev": [
+        "多疑",
+        "口舌",
+        "思虑过载"
+      ],
+      "up": "持剑瞭望的新手，信息收集与快速学习的最佳时机。",
+      "rev": "好奇心变成背后议论或过度猜疑，把能量放回明处。",
+      "rws": {
+        "up": {
+          "en": "Authority, overseeing, secret service, vigilance, spying, examination.",
+          "cn": "监察与督导、耳目与侦讯、警觉。"
+        },
+        "rev": {
+          "en": "The more evil side of these qualities; what is unforeseen, unprepared state; sickness is also intimated.",
+          "cn": "上述诸义的恶面：猝不及防、毫无准备；亦暗示病痛。"
+        }
+      },
+      "persona": "持剑警戒的哨探：机敏多疑，情报就是他的安全感。"
+    },
+    {
+      "id": "sw12",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": "knight",
+      "name": "Knight of Swords",
+      "cn": "宝剑骑士",
+      "kwUp": [
+        "疾进",
+        "直击",
+        "雷厉风行",
+        "果敢"
+      ],
+      "kwRev": [
+        "横冲直撞",
+        "言语伤人",
+        "欲速不达"
+      ],
+      "up": "逆风疾驰的骑士，思路与行动都快，适合速战速决。",
+      "rev": "快到没有刹车，误解与摩擦随之而来，稍缓三秒再出手。",
+      "rws": {
+        "up": {
+          "en": "Skill, bravery, capacity, defence, address, enmity, wrath, war, destruction, opposition, resistance, ruin.",
+          "cn": "骁勇与防御之才；亦含敌意、怒战、毁灭的锋刃面。"
+        },
+        "rev": {
+          "en": "Imprudence, incapacity, extravagance.",
+          "cn": "轻率与无能、挥霍无度。"
+        }
+      },
+      "persona": "冲锋陷阵的急先锋：思维快过言语，言语快过思考。"
+    },
+    {
+      "id": "sw13",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": "queen",
+      "name": "Queen of Swords",
+      "cn": "宝剑王后",
+      "kwUp": [
+        "清醒",
+        "边界",
+        "独立判断",
+        "直言"
+      ],
+      "kwRev": [
+        "刻薄",
+        "防备过度",
+        "情感隔离"
+      ],
+      "up": "高举长剑的王后，以清醒与边界赢得尊重，真话可以说得温柔。",
+      "rev": "伤过之后剑握太紧，允许信任重新进来，锋利留给原则而非人心。",
+      "rws": {
+        "up": {
+          "en": "Widowhood, female sadness and embarrassment, absence, sterility, mourning, privation, separation.",
+          "cn": "孀居与哀伤、缺席与分离、贫瘠与悼亡。"
+        },
+        "rev": {
+          "en": "Malice, bigotry, artifice, prudery, bale, deceit.",
+          "cn": "恶意与偏执、伪饰与欺瞒。"
+        }
+      },
+      "persona": "明察秋毫的裁断者：界限清晰，理性是她的铠甲。"
+    },
+    {
+      "id": "sw14",
+      "arcana": "minor",
+      "suit": "swords",
+      "num": "king",
+      "name": "King of Swords",
+      "cn": "宝剑国王",
+      "kwUp": [
+        "理性权威",
+        "原则",
+        "专业",
+        "公正"
+      ],
+      "kwRev": [
+        "冷硬",
+        "教条",
+        "强词夺理"
+      ],
+      "up": "持剑端坐的裁决者，以逻辑与原则定夺，适合咨询权威意见。",
+      "rev": "理性变成冰冷教条，留意人心不在方程式里。",
+      "rws": {
+        "up": {
+          "en": "Whatsoever arises out of the idea of judgment and all its connexions—power, command, authority, militant intelligence, law, offices of the crown.",
+          "cn": "审判所系的权力与号令、法度、锐智。"
+        },
+        "rev": {
+          "en": "Cruelty, perversity, barbarity, perfidy, evil intention.",
+          "cn": "冷酷与乖张、残暴与背信、不轨之心。"
+        }
+      },
+      "persona": "执法者的原型：公正严明，以逻辑与原则立威。"
+    },
+    {
+      "id": "pe01",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 1,
+      "name": "Ace of Pentacles",
+      "cn": "星币王牌",
+      "kwUp": [
+        "新财机",
+        "落地",
+        "种子",
+        "实物回报"
+      ],
+      "kwRev": [
+        "错失机会",
+        "根基未牢",
+        "回报延迟"
+      ],
+      "up": "花园里递来金币，一份可落地的新机会（工作/收入/资源）出现。",
+      "rev": "种子暂时没有土壤，或时机未到，先培土别急着收成。",
+      "rws": {
+        "up": {
+          "en": "Perfect contentment, felicity, ecstasy; also speedy intelligence; gold.",
+          "cn": "圆满的至乐、灵通的快讯、黄金。"
+        },
+        "rev": {
+          "en": "The evil side of wealth, bad intelligence; also great riches. Prosperity, comfortable material conditions, whether of advantage depending on the card's position.",
+          "cn": "财之恶面与坏消息；亦指巨富——物质丰裕是否为福，视牌位而定。"
+        }
+      }
+    },
+    {
+      "id": "pe02",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 2,
+      "name": "Two of Pentacles",
+      "cn": "星币二",
+      "kwUp": [
+        "平衡",
+        "多线并行",
+        "灵活",
+        "时间管理"
+      ],
+      "kwRev": [
+        "顾此失彼",
+        "超载",
+        "失衡"
+      ],
+      "up": "杂耍两枚钱币，多线并行虽忙但可舞，动态平衡即是能力。",
+      "rev": "球开始往下掉，做减法，先保住主线。",
+      "rws": {
+        "up": {
+          "en": "A card of gaiety, recreation; read also as news and messages in writing, as obstacles, agitation, trouble, embroilment.",
+          "cn": "欢愉与消遣；亦指书面音讯、阻碍与搅扰。"
+        },
+        "rev": {
+          "en": "Enforced gaiety, simulated enjoyment, literal sense, handwriting, composition, letters of exchange.",
+          "cn": "强颜欢笑、佯乐；文书、手迹、票据往来的字面义。"
+        }
+      }
+    },
+    {
+      "id": "pe03",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 3,
+      "name": "Three of Pentacles",
+      "cn": "星币三",
+      "kwUp": [
+        "协作",
+        "工艺",
+        "认可",
+        "打磨"
+      ],
+      "kwRev": [
+        "配合不畅",
+        "标准不一",
+        "单打独斗"
+      ],
+      "up": "教堂工地上各展所长，专业协作让作品升华，你的手艺被认可。",
+      "rev": "沟通错位拖累工程，对齐标准与分工再动工。",
+      "rws": {
+        "up": {
+          "en": "Métier, trade, skilled labour; usually regarded as a card of nobility, aristocracy, renown, glory.",
+          "cn": "行当与手艺、专业劳作；常解为名望与荣光。"
+        },
+        "rev": {
+          "en": "Mediocrity, in work and otherwise, puerility, pettiness, weakness.",
+          "cn": "平庸之作、幼稚与狭隘、乏力。"
+        }
+      }
+    },
+    {
+      "id": "pe04",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 4,
+      "name": "Four of Pentacles",
+      "cn": "星币四",
+      "kwUp": [
+        "守成",
+        "积蓄",
+        "掌控",
+        "安全感"
+      ],
+      "kwRev": [
+        "过度紧握",
+        "守财",
+        "僵化"
+      ],
+      "up": "紧抱钱币的城主，守住成果与现金流，稳字当头。",
+      "rev": "握得太紧反而限制生长，适度开放投资自己。",
+      "rws": {
+        "up": {
+          "en": "The surety of possessions, cleaving to that which one has, gift, legacy, inheritance.",
+          "cn": "守产之固、紧握所有；馈赠与遗产。"
+        },
+        "rev": {
+          "en": "Suspense, delay, opposition.",
+          "cn": "悬而未决、拖延、阻力。"
+        }
+      }
+    },
+    {
+      "id": "pe05",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 5,
+      "name": "Five of Pentacles",
+      "cn": "星币五",
+      "kwUp": [
+        "匮乏",
+        "寒夜",
+        "被排除在外",
+        "窘迫"
+      ],
+      "kwRev": [
+        "援助在侧",
+        "走出低谷",
+        "接纳帮助"
+      ],
+      "up": "雪夜走过亮灯的教堂，困顿中容易看不见近在咫尺的援手。",
+      "rev": "推门进去，救助与机会一直都在，接受帮助不丢人。",
+      "rws": {
+        "up": {
+          "en": "Material trouble above all, destitution; for some cartomancists, a card of love and lovers—wife, husband, friend, mistress; concordance, affinities.",
+          "cn": "首指物质困顿与匮乏；另一派解作爱侣与相契。"
+        },
+        "rev": {
+          "en": "Disorder, chaos, ruin, discord, profligacy.",
+          "cn": "失序与倾覆、失和、挥霍。"
+        }
+      }
+    },
+    {
+      "id": "pe06",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 6,
+      "name": "Six of Pentacles",
+      "cn": "星币六",
+      "kwUp": [
+        "给予与接受",
+        "资源流动",
+        "慷慨",
+        "回馈"
+      ],
+      "kwRev": [
+        "不对等",
+        "施舍心态",
+        "账目不清"
+      ],
+      "up": "天平在给予者手中，资源流动起来，或施或受皆合宜。",
+      "rev": "关系或交易中的天平倾斜，重新谈清楚规则与期待。",
+      "rws": {
+        "up": {
+          "en": "Presents, gifts, gratification; another account: attention, vigilance—now is the accepted time, present prosperity.",
+          "cn": "礼物与馈赠、当下即受施之时、眼前的兴盛。"
+        },
+        "rev": {
+          "en": "Desire, cupidity, envy, jealousy, illusion.",
+          "cn": "欲念与贪婪、妒忌、幻象。"
+        }
+      }
+    },
+    {
+      "id": "pe07",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 7,
+      "name": "Seven of Pentacles",
+      "cn": "星币七",
+      "kwUp": [
+        "耐心",
+        "评估",
+        "长期主义",
+        "待收"
+      ],
+      "kwRev": [
+        "急功近利",
+        "投入无果",
+        "怀疑方向"
+      ],
+      "up": "倚锄静观果实将熟，长期投入临近回报点，再等等。",
+      "rev": "复盘投入产出比，该调整方向就果断调整，沉默成本不是枷锁。",
+      "rws": {
+        "up": {
+          "en": "A card of money, business, barter; but one reading gives altercation, quarrels—and another innocence, ingenuity, purgation.",
+          "cn": "钱财与经营、易货交易；另解：争执、或纯真与涤净。"
+        },
+        "rev": {
+          "en": "Cause for anxiety regarding money which it may be proposed to lend.",
+          "cn": "对拟出借之钱的担忧。"
+        }
+      }
+    },
+    {
+      "id": "pe08",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 8,
+      "name": "Eight of Pentacles",
+      "cn": "星币八",
+      "kwUp": [
+        "精进",
+        "专注",
+        "匠人",
+        "重复练习"
+      ],
+      "kwRev": [
+        "完美主义",
+        "机械重复",
+        "动力不足"
+      ],
+      "up": "一凿一锤的匠人时光，专注打磨技能，量变正在积累质变。",
+      "rev": "重复失去意义感，回到为什么出发，给练习加入挑战。",
+      "rws": {
+        "up": {
+          "en": "Work, employment, commission, craftsmanship, skill in craft and business, perhaps in the preparatory stage.",
+          "cn": "工作与承揽、匠艺与练手、尚在预备阶段。"
+        },
+        "rev": {
+          "en": "Voided ambition, vanity, cupidity, exaction, usury; also ingenious mind turned to cunning and intrigue.",
+          "cn": "壮志落空、虚荣与贪敛；亦指巧智流入狡诈。"
+        }
+      }
+    },
+    {
+      "id": "pe09",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 9,
+      "name": "Nine of Pentacles",
+      "cn": "星币九",
+      "kwUp": [
+        "自足",
+        "优雅",
+        "成果",
+        "独立"
+      ],
+      "kwRev": [
+        "孤单的丰收",
+        "依赖",
+        "消费冲动"
+      ],
+      "up": "葡萄园中的优雅贵妇，凭自己挣来的丰盛与从容，享受它。",
+      "rev": "果实旁有空洞，检视生活方式是否透支了内在满足。",
+      "rws": {
+        "up": {
+          "en": "Prudence, safety, success, accomplishment, certitude, discernment.",
+          "cn": "稳健与自安、成事与确信、明辨。"
+        },
+        "rev": {
+          "en": "Roguery, deception, voided project, bad faith.",
+          "cn": "无赖与欺瞒、计划落空、居心不良。"
+        }
+      }
+    },
+    {
+      "id": "pe10",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": 10,
+      "name": "Ten of Pentacles",
+      "cn": "星币十",
+      "kwUp": [
+        "家业",
+        "传承",
+        "长期稳固",
+        "家族"
+      ],
+      "kwRev": [
+        "遗产纷争",
+        "结构老化",
+        "传统负担"
+      ],
+      "up": "三代同堂的拱门之下，财富与根基绵长，着眼长期价值。",
+      "rev": "旧的体系需要更新，或利益分配需要重谈。",
+      "rws": {
+        "up": {
+          "en": "Gain, riches; family matters, archives, extraction, the abode of a family.",
+          "cn": "财利与家业、门第与谱系、家族宅邸。"
+        },
+        "rev": {
+          "en": "Chance, fatality, loss, robbery, games of hazard; sometimes gift, dowry, pension.",
+          "cn": "偶然与宿命、失窃与赌局；另解：赠礼、嫁资、年金。"
+        }
+      }
+    },
+    {
+      "id": "pe11",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": "page",
+      "name": "Page of Pentacles",
+      "cn": "星币侍从",
+      "kwUp": [
+        "学习",
+        "务实起步",
+        "计划",
+        "专注目标"
+      ],
+      "kwRev": [
+        "好高骛远",
+        "拖延",
+        "学而不专"
+      ],
+      "up": "凝视金币的学子，以务实心态开启新技能或新项目，稳步起步。",
+      "rev": "愿景大于行动，把大目标切成今天能完成的第一块。",
+      "rws": {
+        "up": {
+          "en": "Application, study, scholarship, reflection; another reading: news, messages and the bringer thereof; rule, management.",
+          "cn": "勤学与治学、沉思；另解：带来消息之人、治理之才。"
+        },
+        "rev": {
+          "en": "Prodigality, dissipation, liberality, luxury; unfavourable news.",
+          "cn": "挥霍与放纵、奢华；不利音讯。"
+        }
+      },
+      "persona": "伏案学习的学徒：脚踏实地，相信慢工出细活。"
+    },
+    {
+      "id": "pe12",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": "knight",
+      "name": "Knight of Pentacles",
+      "cn": "星币骑士",
+      "kwUp": [
+        "稳健",
+        "可靠",
+        "按部就班",
+        "坚持"
+      ],
+      "kwRev": [
+        "迟缓",
+        "固执",
+        "无聊"
+      ],
+      "up": "不紧不慢的黑马骑士，慢而稳是此刻最快的路径。",
+      "rev": "过于保守错失窗口，或单调耗尽热情，给计划加个小台阶。",
+      "rws": {
+        "up": {
+          "en": "Utility, serviceableness, interest, responsibility, rectitude—all on the normal and external plane.",
+          "cn": "实用与可靠、责任与正直——皆落在寻常外务层面。"
+        },
+        "rev": {
+          "en": "Inertia, idleness, stagnation; also placidity, discouragement, carelessness.",
+          "cn": "惰性与闲置、停滞；亦指迟钝、气馁、疏忽。"
+        }
+      },
+      "persona": "不换挡的行进者：稳重到近乎固执，认准的路走到底。"
+    },
+    {
+      "id": "pe13",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": "queen",
+      "name": "Queen of Pentacles",
+      "cn": "星币王后",
+      "kwUp": [
+        "务实关怀",
+        "丰饶",
+        "照顾",
+        "理财"
+      ],
+      "kwRev": [
+        "过度操劳",
+        "牺牲自我",
+        "物质焦虑"
+      ],
+      "up": "花园里的庇护者，把生活打理得井井有条，也善于照顾他人。",
+      "rev": "照顾所有人除了自己，留一份资源与温柔给内在家园。",
+      "rws": {
+        "up": {
+          "en": "Opulence, generosity, magnificence, security, liberty.",
+          "cn": "丰裕与慷慨、雍容、安稳与自在。"
+        },
+        "rev": {
+          "en": "Evil, suspicion, suspense, fear, mistrust.",
+          "cn": "凶兆与疑心、悬虑、恐惧与不信任。"
+        }
+      },
+      "persona": "丰饶的持家人：把日子过成花园，慷慨而务实。"
+    },
+    {
+      "id": "pe14",
+      "arcana": "minor",
+      "suit": "pentacles",
+      "num": "king",
+      "name": "King of Pentacles",
+      "cn": "星币国王",
+      "kwUp": [
+        "富足",
+        "可靠权威",
+        "商业头脑",
+        "稳中求进"
+      ],
+      "kwRev": [
+        "守旧",
+        "利益至上",
+        "固执"
+      ],
+      "up": "藤王座上的实业家，资源与人脉兼备，是值得依靠的稳定力量。",
+      "rev": "安全感的执念压过机遇，或把关系当账本，钱是工具不是答案。",
+      "rws": {
+        "up": {
+          "en": "Valour, realizing intelligence, business and normal intellectual aptitude, sometimes mathematical gifts; success in these paths.",
+          "cn": "实干之智与经营之才、数学禀赋，循此路而成。"
+        },
+        "rev": {
+          "en": "Vice, weakness, ugliness, perversity, corruption, peril.",
+          "cn": "恶行与孱弱、乖僻与堕落、凶险。"
+        }
+      },
+      "persona": "资源的掌管者：以稳健与积累立业，是长期主义者的画像。"
+    }
   ]
 }

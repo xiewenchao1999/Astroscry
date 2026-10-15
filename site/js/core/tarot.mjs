@@ -38,6 +38,30 @@ export function shuffle(deck, rng) {
 }
 
 /**
+ * 抽牌（O05 收敛点）：从 deck 抽 n 张（不重复），每张按 reversedRate 掷逆位币。
+ * 与占卜页「用户自抽」流程兼容：对单张牌调用 drawCards([card], 1, rng, rate) 即只消耗一次正逆掷币。
+ * @param {Array} deck 牌库
+ * @param {number} n 抽取张数
+ * @param {() => number} rng 随机源（选择与掷币共用）
+ * @param {number} reversedRate 逆位概率（默认 0.5，与既有行为一致）
+ * @returns {Array<{card: object, reversed: boolean}>}
+ */
+export function drawCards(deck, n, rng, reversedRate = 0.5) {
+  if (!Array.isArray(deck) || !Number.isInteger(n) || n < 0 || n > deck.length) {
+    throw new Error(`drawCards 参数非法：n=${n}, deck=${deck?.length}`);
+  }
+  if (typeof rng !== 'function') throw new Error('drawCards 需要注入 rng');
+  // 选择：部分 Fisher-Yates（n 张不重复；rng 消耗次数与既有「用户指牌」路径解耦）
+  const arr = deck.slice();
+  for (let i = arr.length - 1; i > 0 && i >= arr.length - n; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    [arr[i], arr[j]] = [arr[j], arr[i]];
+  }
+  const picked = arr.slice(arr.length - n);
+  return picked.map((card) => ({ card, reversed: rng() < reversedRate }));
+}
+
+/**
  * 今日一牌（日签）：日期字符串 FNV-1a hash 确定性选牌与正逆。
  * 与占卜抽牌的 crypto 真随机不同——日签语义是「同一天同一张」，属日期映射而非随机。
  */
@@ -61,6 +85,12 @@ export function validateDeck(deck) {
   for (const c of deck) {
     for (const f of ['name', 'cn', 'kwUp', 'up', 'rev']) {
       if (c[f] == null || c[f] === '') throw new Error(`牌 ${c.id} 缺字段 ${f}`);
+    }
+    // O05：rws（Waite 1911 原文层）有则校验、无则跳过（向后兼容旧数据）
+    if (c.rws != null) {
+      for (const side of ['up', 'rev']) {
+        if (!c.rws[side]?.en) throw new Error(`牌 ${c.id} rws.${side} 缺 en 原文`);
+      }
     }
   }
   return true;

@@ -1,6 +1,6 @@
 // 塔罗核心回归测试 — 牌组完整性（78 张）+ 洗牌确定性 + 牌阵结构（数据驱动，六牌阵）+ 真随机源
 import { readFileSync } from 'fs';
-import { cryptoRng, shuffle, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
+import { cryptoRng, shuffle, drawCards, validateDeck, validateSpread } from '../site/js/core/tarot.mjs';
 import { analyzeReading, synthesizeReading } from '../site/js/core/tarot-reading.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
@@ -177,4 +177,43 @@ test('牌间连线兜底：缺 classic 表时其余关系照常；旧式无 num 
   const syn = synthesizeReading(legacy, analyzeReading(legacy), '');
   assert.deepEqual(syn.links, [], '无 num 的夹具不应产出连线');
   assert.deepEqual(syn.patterns.run, null);
+});
+
+// —— O05：drawCards（正逆掷币收敛进 core）——
+test('drawCards：rate=0 全正 / rate=1 全逆 / 默认 0.5 与既有行为一致', () => {
+  const rng = mulberry32(42);
+  const zero = drawCards(deck, 5, mulberry32(7), 0);
+  assert.ok(zero.every((x) => x.reversed === false), 'rate=0 应全正位');
+  const one = drawCards(deck, 5, mulberry32(7), 1);
+  assert.ok(one.every((x) => x.reversed === true), 'rate=1 应全逆位');
+  // 单张抽取仅消耗一次 rng（用户指牌路径的兼容契约）：两次相同输入→相同正逆
+  const a = drawCards([deck[0]], 1, mulberry32(9));
+  const b = drawCards([deck[0]], 1, mulberry32(9));
+  assert.deepEqual(a, b, '同 rng 同结果（确定性）');
+  assert.equal(a[0].card.id, 'ar00');
+});
+
+test('drawCards：不重复抽取、参数校验', () => {
+  const picked = drawCards(deck, 10, mulberry32(3), 0.5);
+  assert.equal(picked.length, 10);
+  assert.equal(new Set(picked.map((x) => x.card.id)).size, 10, 'n 张应互不重复');
+  assert.throws(() => drawCards(deck, 79, mulberry32(1)), /非法/);
+  assert.throws(() => drawCards(deck, 3, undefined), /rng/);
+});
+
+test('O05：rws 原文层与宫廷牌 persona 数据闭合（validateDeck 对 rws 有则校验）', () => {
+  assert.ok(validateDeck(deck), '含 rws 的完整牌库应通过校验');
+  const rwsCount = deck.filter((c) => c.rws?.up?.en && c.rws?.rev?.en).length;
+  assert.equal(rwsCount, 78, 'rws 原文应覆盖 78 张');
+  const personaCount = deck.filter((c) => c.persona).length;
+  assert.equal(personaCount, 16, '宫廷牌 persona 应恰 16 张');
+  for (const c of deck) {
+    if (c.persona) assert.ok(['page', 'knight', 'queen', 'king'].includes(c.num), `persona 只应出现在宫廷牌：${c.id}`);
+  }
+  // 向后兼容：剥掉 rws/persona 的旧数据照常通过
+  const legacy = deck.map(({ rws, persona, ...rest }) => rest);
+  assert.ok(validateDeck(legacy));
+  // rws 残缺应被抓住
+  const broken = deck.map((c) => ({ ...c, rws: { up: { en: 'x' }, rev: {} } }));
+  assert.throws(() => validateDeck(broken), /rws\.rev/);
 });
