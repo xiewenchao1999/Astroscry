@@ -118,7 +118,10 @@ test('本命盘解读：readNatal 结构与内容（基准盘 2000-08-16 北京�
   const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
   const rd = readNatal(n, interp);
   assert.ok(rd.inHouses.length >= 9, '行星落宫主题应覆盖 9+ 颗星');
-  assert.ok(rd.inHouses.every((x) => x.line.includes('主题') && x.line.includes('宫')), '落宫句式完整');
+  // line 的语义（行星落宫判词）不变，但内容已由「主题×领域」模板改为逐条判词：
+  // 断言改为「有内容、无占位符、行外上下文齐备」，句式要求交给专门的消费者契约测试
+  assert.ok(rd.inHouses.every((x) => x.line.length > 5 && !x.line.includes('undefined') && !/\{[a-zA-Z]+\}/.test(x.line)), '落宫判词完整');
+  assert.ok(rd.inHouses.every((x) => x.cn && x.signCn && x.house >= 1 && x.house <= 12), '落宫行外上下文（星名/座/宫位）齐备');
   assert.ok(rd.aspectLines.every((x) => ['merge', 'harmony', 'tension'].includes(x.nature)), '相位 nature 三分类合法');
   const orbs = rd.aspectLines.map((x) => x.orb);
   assert.deepEqual(orbs, [...orbs].sort((a, b) => a - b), '相位按容许度升序');
@@ -211,4 +214,64 @@ test('本命盘解读：patterns 块句式完整且无未替换占位符（基�
     assert.ok(p.line.length > 20, '判词不应过短');
   }
   assert.ok(interp.patterns.kinds && interp.patterns.none, '语料需含图形定义与无图形兜底句');
+});
+
+// —— 消费者侧契约：readNatal 必须真的取用新语料，且缺口时回落不空 ——
+const mkP = (key, cn, signIndex, house) => ({
+  key, cn, signIndex, house, signKey: SIGNS[signIndex].key, signCn: SIGNS[signIndex].cn,
+  degInSign: 10, retrograde: false, lon: signIndex * 30 + 10,
+});
+const KEYS11 = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto', 'northnode'];
+const CN11 = ['太阳', '月亮', '水星', '金星', '火星', '木星', '土星', '天王星', '海王星', '冥王星', '北交点'];
+function fakeNatal() {
+  const planets = {};
+  KEYS11.forEach((k, i) => { planets[k] = mkP(k, CN11[i], i, (i % 12) + 1); });
+  return {
+    input: { cityName: '测试' }, ascSign: '白羊', mcSign: '摩羯', ascSignIndex: 0,
+    planets,
+    houses: Array.from({ length: 12 }, (_, i) => ({ house: i + 1, sign: '白羊', signKey: 'aries', lon: 0 })),
+    aspects: [{ a: 'sun', b: 'saturn', angle: 90, orb: 1.5, aCn: '太阳', bCn: '土星', aspectCn: '刑', color: '' }],
+    elements: { 火: 1, 土: 1, 风: 1, 水: 1 },
+  };
+}
+
+test('消费者契约：readNatal 逐条取用 planetsInHouses 与 aspectPairs', () => {
+  const n = fakeNatal();
+  const interp = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const rd = readNatal(n, interp);
+  const keyOf = (cn) => KEYS11.find((k) => CN11[KEYS11.indexOf(k)] === cn);
+
+  assert.equal(rd.inHouses.length, 11, '十一颗行星都应有落宫判词');
+  for (const x of rd.inHouses) {
+    const k = keyOf(x.cn);
+    assert.equal(x.line, interp.planetsInHouses[k][String(x.house)], `${x.cn} 未取用逐条宫位判词`);
+  }
+  // 个人行星必须同时给出「落座释义」副行（两层都保留，不是二选一）
+  for (const cn of ['太阳', '月亮', '水星', '金星', '火星']) {
+    const x = rd.inHouses.find((y) => y.cn === cn);
+    assert.ok(x.signLine && x.signLine.length > 8, `${cn} 缺落座副行`);
+  }
+
+  assert.equal(rd.aspectLines.length, 1);
+  const al = rd.aspectLines[0];
+  assert.ok(al.line.startsWith(interp.aspectPairs['sun|saturn']), '未取用逐对相位判词');
+  assert.equal(al.orbBand, 'tight', 'orb 1.5 应归入紧密档');
+  assert.ok(al.line.includes(interp.orbNotes.tight), '缺少容许度深浅措辞');
+});
+
+test('消费者契约：新语料缺失时必须回落到旧模板，绝不产出空串或 undefined', () => {
+  const n = fakeNatal();
+  const full = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-natal.json'), 'utf8'));
+  const legacy = { ...full };
+  delete legacy.planetsInHouses;
+  delete legacy.aspectPairs;
+  delete legacy.orbNotes;
+  const rd = readNatal(n, legacy);
+  assert.equal(rd.inHouses.length, 11);
+  for (const x of rd.inHouses) {
+    assert.ok(x.line.length > 5, '回落路径产出空串');
+    assert.ok(!x.line.includes('undefined') && !x.line.includes('{'), `回落路径残留占位符：${x.line}`);
+  }
+  assert.ok(rd.aspectLines[0].line.includes('主题') || rd.aspectLines[0].line.includes('星'), '相位回落路径无文案');
+  assert.ok(!rd.aspectLines[0].line.includes('undefined'));
 });

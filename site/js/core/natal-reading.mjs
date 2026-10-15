@@ -34,48 +34,58 @@ function patternLines(n, interp) {
  * 本命盘解读。
  * @returns {{
  *   summary: string,
- *   inHouses: Array<{ cn: string, signCn: string, house: number, line: string }>,
- *   aspectLines: Array<{ aCn: string, aspectCn: string, bCn: string, orb: number, nature: string, line: string }>,
+ *   inHouses: Array<{ cn: string, signCn: string, house: number, line: string, signLine: string }>,
+ *   aspectLines: Array<{ aCn: string, aspectCn: string, bCn: string, orb: number, nature: string, orbBand: string, line: string }>,
  *   elements: { dominant: string, missing: string[], line: string },
  *   modality: { dominant: string, line: string },
  *   patterns: Array<{ kind: string, label: string, line: string }>
  * }}
  */
 export function readNatal(n, interp) {
-  // 行星落宫：个人行星用逐座释义 + 宫位括注；其余行星用「主题 × 宫位领域」拼装
+  // 行星落宫：三层取用，缺哪层就落到下一层（新键优先，旧模板兜底，保证任何缺口都不会渲染出空串）
+  //   ① planetsInHouses[key][house]：逐条撰写的「行星×宫位」判词（主行）
+  //   ② signsByPlanet[key][signKey]：逐座释义（个人行星的副行）
+  //   ③ planetInHouseTpl：「主题 × 领域」模板拼装（最终兜底）
   const inHouses = Object.values(n.planets)
     .filter((p) => p.house && interp.planetThemes[p.key])
     .map((p) => {
       const theme = interp.planetThemes[p.key];
       const domain = interp.houseDomains[String(p.house)] ?? '未知领域';
       const signEntry = interp.signsByPlanet?.[p.key]?.[p.signKey];
+      const houseEntry = interp.planetsInHouses?.[p.key]?.[String(p.house)];
+      if (houseEntry) {
+        return { cn: p.cn, signCn: p.signCn, house: p.house, line: houseEntry, signLine: signEntry ?? '' };
+      }
       const line = signEntry
         ? `${signEntry}（${theme}主题落于${domain}——第${p.house}宫）`
         : interp.planetInHouseTpl
           .replace('{theme}', theme)
           .replace('{domain}', domain)
           .replace('{houseCn}', p.house);
-      return { cn: p.cn, signCn: p.signCn, house: p.house, line };
+      return { cn: p.cn, signCn: p.signCn, house: p.house, line, signLine: '' };
     });
 
   // 相位判词：按容许度升序，紧的先讲
+  // 逐对判词（aspectPairs，七主星两两）优先；缺则该对回落「性质模板 + 行星主题」
   const aspectLines = n.aspects
     .map((a) => {
       const nature = aspectNature(a.angle);
-      return {
-        aCn: a.aCn,
-        aspectCn: a.aspectCn,
-        bCn: a.bCn,
-        orb: a.orb,
-        nature,
-        line: interp.aspectTpl
-          .replace('{aCn}', a.aCn)
-          .replace('{aTheme}', interp.planetThemes[a.a] ?? a.aCn)
-          .replace('{bCn}', a.bCn)
-          .replace('{bTheme}', interp.planetThemes[a.b] ?? a.bCn)
-          .replace('{natureShort}', interp.natureShort[nature])
-          .replace('{natureText}', interp.aspectNatures[nature]),
-      };
+      const pairText = interp.aspectPairs?.[`${a.a}|${a.b}`];
+      const orbBand = a.orb <= 2 ? 'tight' : a.orb <= 5 ? 'mid' : 'loose';
+      const orbNote = interp.orbNotes?.[orbBand] ?? '';
+      const line = pairText
+        ? [pairText, `（${interp.natureShort[nature]}）`, orbNote].filter(Boolean).join('')
+        : [
+          interp.aspectTpl
+            .replace('{aCn}', a.aCn)
+            .replace('{aTheme}', interp.planetThemes[a.a] ?? a.aCn)
+            .replace('{bCn}', a.bCn)
+            .replace('{bTheme}', interp.planetThemes[a.b] ?? a.bCn)
+            .replace('{natureShort}', interp.natureShort[nature])
+            .replace('{natureText}', interp.aspectNatures[nature]),
+          orbNote,
+        ].filter(Boolean).join(' ');
+      return { aCn: a.aCn, aspectCn: a.aspectCn, bCn: a.bCn, orb: a.orb, nature, orbBand, line };
     })
     .sort((x, y) => x.orb - y.orb);
 

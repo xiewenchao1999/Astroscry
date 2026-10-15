@@ -159,3 +159,40 @@ test('十二星座六域评语：同域文本不得跨星座重复（防模板�
   const kws = Object.values(h.signs).map((s) => s.keywords.join('/'));
   assert.equal(new Set(kws).size, kws.length, '星座关键词出现重复');
 });
+
+test('本命盘语料：行星×宫位逐条判词 11×12 全覆盖且不重复', () => {
+  const n = D('interpret-natal.json');
+  const planets = Object.keys(n.planetThemes);
+  assert.equal(planets.length, 11, '行星主题应为 11 颗');
+  const houses = Array.from({ length: 12 }, (_, i) => String(i + 1));
+  const all = [];
+  for (const p of planets) {
+    const m = n.planetsInHouses?.[p];
+    assert.ok(m, `缺行星 ${p} 的宫位判词`);
+    assert.deepEqual(Object.keys(m), houses, `${p} 的十二宫键不齐或顺序不符`);
+    for (const h of houses) {
+      assert.ok(typeof m[h] === 'string' && m[h].length >= 20, `${p}|${h} 判词缺失或过短`);
+      all.push(m[h]);
+    }
+  }
+  assert.equal(all.length, 132, '行星×宫位应为 11×12=132 条');
+  assert.equal(new Set(all).size, all.length, '行星×宫位判词出现重复文本');
+});
+
+test('本命盘语料：七主星两两逐对判词 21 对，键序与取相位遍历顺序一致', () => {
+  const n = D('interpret-natal.json');
+  // 与 core/astro.mjs 的 PLANETS 顺序一致：/+ 用于校验 pair key 的 a 必须排在 b 之前
+  const ORDER = ['sun', 'moon', 'mercury', 'venus', 'mars', 'jupiter', 'saturn'];
+  const pairs = Object.keys(n.aspectPairs ?? {});
+  assert.equal(pairs.length, (ORDER.length * (ORDER.length - 1)) / 2, '应为 C(7,2)=21 对');
+  const seen = new Set();
+  for (const key of pairs) {
+    const [a, b] = key.split('|');
+    assert.ok(ORDER.includes(a) && ORDER.includes(b), `${key} 含未知行星`);
+    assert.ok(ORDER.indexOf(a) < ORDER.indexOf(b), `${key} 键序与 calcAspects 遍历顺序不一致（会静默失配）`);
+    assert.ok(n.aspectPairs[key].length >= 15, `${key} 判词过短`);
+    seen.add([a, b].sort().join('|'));
+  }
+  assert.equal(seen.size, pairs.length, '出现重复的行星对');
+  assert.deepEqual(Object.keys(n.orbNotes ?? {}), ['tight', 'mid', 'loose'], '容许度深浅措辞应为三档');
+});

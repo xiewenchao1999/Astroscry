@@ -97,7 +97,7 @@ function sunDomainsBlock(signKey) {
 
 /** 深入解读卡：综合判词 + 相位图形 + 元素/模式 + 行星落宫主题 + 关键相位判词（readNatal 规则引擎） */
 function readingCard(rd) {
-  const houseItems = rd.inHouses.map((x) => `<p><b>${x.cn}</b>（${x.signCn}，第 ${x.house} 宫）：${x.line}</p>`).join('');
+  const houseItems = rd.inHouses.map((x) => `<p><b>${x.cn}</b>（${x.signCn}，第 ${x.house} 宫）：${x.line}</p>${x.signLine ? `<p class="hint" style="margin-left:14px">▸ 落座释义：${x.signLine}</p>` : ''}`).join('');
   const aspectItems = rd.aspectLines.slice(0, 6).map((x) =>
     `<p style="color:${x.nature === 'harmony' ? 'var(--good)' : x.nature === 'tension' ? 'var(--bad)' : ''}"><b>${x.aCn} ${x.aspectCn} ${x.bCn}</b>（容许 ${x.orb}°）：${x.line}</p>`).join('');
   const pat = natalInterp.patterns;
