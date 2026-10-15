@@ -328,49 +328,102 @@ function transitScore(aspectKey, planetKey) {
   return +(w * m * 10).toFixed(1);
 }
 
+/** 纬度截断辅助：把维度值约束到每维 0-4 */
+const clampDim = (v) => Math.max(0, Math.min(4, v));
+const round1 = (x) => Math.round(x * 10) / 10;
+
 /**
  * 12 星座每日运势：以各星座守护星当日所受行运相位 + 月亮元素相合 + 水星逆行为因子。
- * @returns {Array<{signKey, score, level, factors: string[]}>}
+ * O04：保留 score/level/factors 骨架，叠加五维 dimensions（总/爱/事业/财/健康，语料
+ * horoscope-writing-patterns.md 口径：每维 0-4、总和约束 [14,19]、越界等比缩放）。
+ * @param {Date} dateUTC
+ * @param {object} fw fortune-weights.json 内容（dimensions/transitWeights/dimensionRules/discipline）
+ * @returns {Array<{signKey, signCn, score, level, factors: string[], dimensions: object}>}
  */
-export function dailyFortune(dateUTC) {
+export function dailyFortune(dateUTC, fw) {
+  if (!fw?.transitWeights || !fw?.dimensionRules || !Array.isArray(fw.dimensions)) {
+    throw new Error('dailyFortune 需要第二参数传入 fortune-weights.json 内容');
+  }
   const sky = computeSky(dateUTC);
   const planets = sky.planets;
   const aspectPairs = calcAspects(planets); // 同盘内行星相位 → 即当日行运彼此相位
   const moonElement = planets.moon.signElement;
+  const { min, max, base, scale } = fw.discipline;
 
   return SIGNS.map((s) => {
     let score = 60;
     const factors = [];
     const rulerKey = RULER_KEY[s.ruler];
-    // 1) 守护星当日所受相位
+    // 五维原始值：从中性基线出发，由行运因子推拉
+    const raw = Object.fromEntries(fw.dimensions.map((d) => [d, base]));
+    // 1) 守护星当日所受相位（同时按对方的维度归属投影到五维）
     for (const asp of aspectPairs) {
       const other = asp.a === rulerKey ? asp.bCn : asp.b === rulerKey ? asp.aCn : null;
       if (!other) continue; // calcAspects 保证 i<j，相位对两侧必不相同（P16：原恒假的 asp.a===asp.b 判断已删）
-      const delta = transitScore(asp.aspect, asp.a === rulerKey ? asp.b : asp.a);
+      const otherKey = asp.a === rulerKey ? asp.b : asp.a;
+      const delta = transitScore(asp.aspect, otherKey);
       if (!delta) continue; // 收录但无权重因子的相位（如 150°/30°）不产出「+0」噪音因子
       score += delta;
       factors.push(`${other}${asp.aspectCn}守护星${s.ruler}（${delta > 0 ? '+' : ''}${delta}）`);
+      // 维度投影：净值归一（±13 满幅）× 行星权重（满格 5）× 缩放常数
+      const contrib = (delta / 13) * ((fw.transitWeights[otherKey] ?? 2) / 5) * scale;
+      for (const dim of fw.dimensionRules[otherKey] ?? []) raw[dim] += contrib;
     }
-    // 2) 月亮元素与星座元素相合
+    // 2) 月亮元素与星座元素相合 → 总分；健康维（情绪身心）随动
     if (moonElement === s.element) {
       score += 5;
+      raw.health += 0.6;
       factors.push(`月亮入${moonElement}象，与${s.cn}同象（+5）`);
     } else if ((moonElement === '火' && s.element === '水') || (moonElement === '水' && s.element === '火') || (moonElement === '风' && s.element === '土') || (moonElement === '土' && s.element === '风')) {
       score -= 4;
+      raw.health -= 0.8;
       factors.push(`月亮入${moonElement}象，与${s.cn}相冲（-4）`);
     }
-    // 3) 水星逆行（沟通/出行减分）
+    // 3) 水星逆行（沟通/出行减分 → 事务维承压）
     if (planets.mercury.retrograde) {
       score -= 3;
+      raw.career -= 0.5;
       factors.push('水星逆行，沟通出行易有反复（-3）');
     }
-    // 4) 守护星自身逆行
+    // 4) 守护星自身逆行（→ 总体维承压）
     if (planets[rulerKey] && planets[rulerKey].retrograde) {
       score -= 4;
+      raw.total -= 0.5;
       factors.push(`守护星${s.ruler}逆行（-4）`);
     }
     score = Math.max(20, Math.min(95, Math.round(score)));
     const level = score >= 75 ? '旺' : score >= 60 ? '顺' : score >= 45 ? '平' : '滞';
-    return { signKey: s.key, signCn: s.cn, score, level, factors };
+
+    // 评分平衡纪律：逐维截断 0-4 后，总和等比缩放回 [min,max]（缩小时单次到位；放大时单调收敛）
+    for (const d of fw.dimensions) raw[d] = clampDim(raw[d]);
+    let sum = fw.dimensions.reduce((a, d) => a + raw[d], 0);
+    if (sum > max) {
+      const k = max / sum;
+      for (const d of fw.dimensions) raw[d] *= k;
+    } else if (sum < min) {
+      let guard = 0;
+      while (sum < min && guard++ < 60) {
+        const k = Math.min(4, min / Math.max(sum, 0.1)); // 放大系数（钳制防除零过冲）
+        for (const d of fw.dimensions) raw[d] = Math.min(4, raw[d] * k);
+        sum = fw.dimensions.reduce((a, d) => a + raw[d], 0);
+      }
+      if (sum < min) for (const d of fw.dimensions) raw[d] = 4; // 理论不可达的兜底
+    }
+    // 保留 1 位小数；舍入漂移用 0.1 步进回补，确保总和仍落在纪律区间
+    const dimensions = Object.fromEntries(fw.dimensions.map((d) => [d, round1(raw[d])]));
+    let rsum = round1(fw.dimensions.reduce((a, d) => a + dimensions[d], 0));
+    let guard = 0;
+    while (rsum < min && guard++ < 20) {
+      const d = fw.dimensions.reduce((best, x) => (dimensions[x] > dimensions[best] ? x : best), fw.dimensions[0]);
+      dimensions[d] = round1(dimensions[d] + 0.1);
+      rsum = round1(rsum + 0.1);
+    }
+    while (rsum > max && guard++ < 40) {
+      const d = fw.dimensions.reduce((best, x) => (dimensions[x] < dimensions[best] ? x : best), fw.dimensions[0]);
+      dimensions[d] = round1(dimensions[d] - 0.1);
+      rsum = round1(rsum - 0.1);
+    }
+
+    return { signKey: s.key, signCn: s.cn, score, level, factors, dimensions };
   });
 }

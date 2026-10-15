@@ -1,0 +1,24 @@
+{
+  "_meta": {
+    "source": "本项目编写；权重与评分平衡纪律取自 docs/research/round2/corpus/western/horoscope-writing-patterns.md（openclaw-master-skills horoscope-daily / bunny-agent 的共识口径）",
+    "note": "五维 = 总/爱/事业/财/健康（语料口径）；每维 0-4 分，总和约束 [14,19]（越界等比缩放）。总体维度由既有因子净值得分归一化，不与 0-95 的 score 重复展示口径混淆",
+    "collected": "2026-10-15"
+  },
+  "dimensions": ["total", "love", "career", "money", "health"],
+  "discipline": { "min": 14, "max": 19, "base": 2.5, "scale": 2.0 },
+  "transitWeights": {
+    "moon": 5, "sun": 4,
+    "mercury": 3, "venus": 3, "mars": 3,
+    "jupiter": 2.5, "saturn": 2.5,
+    "uranus": 2, "neptune": 2, "pluto": 2
+  },
+  "dimensionRules": {
+    "sun": ["total", "love"], "moon": ["total", "love"],
+    "mercury": ["total", "career"],
+    "venus": ["love", "money"],
+    "mars": ["career"],
+    "jupiter": ["money", "total"],
+    "saturn": ["career", "health"],
+    "uranus": ["total"], "neptune": ["total"], "pluto": ["total"]
+  }
+}

@@ -294,3 +294,27 @@ test('O03-S 进站闸门：iching/guanyin 语料 _meta.provenance 存在且含�
   check('iching.json', (meta) => assert.ok(meta.source_url.includes('yijing-qimen'), 'iching source_url 应指向采集仓库'));
   check('guanyin-signs.json', (meta) => assert.ok(meta.source_url.includes('guanyin'), 'guanyin source_url 应指向采集仓库'));
 });
+
+test('O04 五维：fortune-weights.json 结构闭合；adviceDims 档位×维度齐备且 health 自带就医提示', () => {
+  const fw = D('fortune-weights.json');
+  // 维度集合：语料 horoscope-writing-patterns.md 口径（总/爱/事业/财/健康）
+  assert.deepEqual(fw.dimensions, ['total', 'love', 'career', 'money', 'health']);
+  assert.ok(fw.discipline.min < fw.discipline.max && fw.discipline.min === 14 && fw.discipline.max === 19, '纪律区间应为 [14,19]');
+  // 行星权重与维度归属：键一致、权重数值合理
+  const planets = Object.keys(fw.transitWeights);
+  assert.deepEqual(planets.sort(), Object.keys(fw.dimensionRules).sort(), 'transitWeights 与 dimensionRules 键应一致');
+  for (const [p, w] of Object.entries(fw.transitWeights)) {
+    assert.ok(w >= 1 && w <= 5, `${p} 权重越界：${w}`);
+    const dims = fw.dimensionRules[p];
+    assert.ok(Array.isArray(dims) && dims.length >= 1 && dims.every((d) => fw.dimensions.includes(d)), `${p} 维度归属非法`);
+  }
+  // adviceDims：4 档 × 5 维，health 句式必须自带现实就医提示（高风险话题红线）
+  const h = D('interpret-horoscope.json');
+  assert.deepEqual(Object.keys(h.adviceDims), ['旺', '顺', '平', '滞'], 'adviceDims 应为四档');
+  for (const [level, tpl] of Object.entries(h.adviceDims)) {
+    assert.deepEqual(Object.keys(tpl), fw.dimensions, `${level} 档维度键应与 fortune-weights.dimensions 一致`);
+    assert.ok(tpl.health.includes('就医'), `${level} 档 health 句式必须提示就医`);
+    assert.ok(!/一定|必将|注定/.test(tpl[fw.dimensions[0]] + tpl.love), `${level} 档句式含宿命论措辞`);
+  }
+  assert.deepEqual(Object.keys(h.dimsLabels), fw.dimensions, 'dimsLabels 应与维度键一致');
+});

@@ -78,9 +78,10 @@ test('太阳星座日期反查', () => {
 });
 
 test('每日运势：12 星座、分数范围、确定性', () => {
+  const fw = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'fortune-weights.json'), 'utf8'));
   const d = new Date(Date.UTC(2026, 9, 14, 4, 0, 0));
-  const f1 = dailyFortune(d);
-  const f2 = dailyFortune(d);
+  const f1 = dailyFortune(d, fw);
+  const f2 = dailyFortune(d, fw);
   assert.equal(f1.length, 12);
   assert.deepEqual(f1, f2);
   for (const s of f1) {
@@ -88,6 +89,45 @@ test('每日运势：12 星座、分数范围、确定性', () => {
     assert.ok(['旺', '顺', '平', '滞'].includes(s.level));
   }
   assert.ok(f1.find((s) => s.signKey === 'leo'));
+});
+
+// —— O04 五维评分：语料 horoscope-writing-patterns.md 生成纪律（总/爱/事业/财/健康，总和 [14,19]）——
+test('五维：任取 3 个日期 × 12 座，维度值 0-4 且总和落在纪律区间 [14,19]', () => {
+  const fw = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'fortune-weights.json'), 'utf8'));
+  const dates = [
+    new Date(Date.UTC(2026, 9, 14, 4, 0, 0)),
+    new Date(Date.UTC(2026, 3, 2, 4, 0, 0)),
+    new Date(Date.UTC(2027, 0, 20, 4, 0, 0)),
+  ];
+  for (const d of dates) {
+    for (const s of dailyFortune(d, fw)) {
+      const vals = Object.values(s.dimensions);
+      assert.equal(vals.length, 5, `应为五维，实际 ${vals.length}`);
+      for (const v of vals) assert.ok(v >= 0 && v <= 4, `${d.toISOString()} ${s.signKey} 维度越界：${v}`);
+      const sum = Math.round(vals.reduce((a, b) => a + b, 0) * 10) / 10;
+      assert.ok(sum >= fw.discipline.min && sum <= fw.discipline.max, `${d.toISOString()} ${s.signKey} 五维总和 ${sum} 越界`);
+    }
+  }
+});
+
+test('五维：同日 12 座 factors 互斥（守护星因子须回扣本座守护星），且每句可回溯（±分值收尾）', () => {
+  const fw = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'fortune-weights.json'), 'utf8'));
+  const d = new Date(Date.UTC(2026, 9, 14, 4, 0, 0));
+  for (const s of dailyFortune(d, fw)) {
+    const sign = SIGNS.find((x) => x.key === s.signKey);
+    assert.ok(sign, `未知星座 ${s.signKey}`);
+    const aspectFactors = s.factors.filter((x) => x.includes('守护星'));
+    for (const f of aspectFactors) {
+      assert.ok(f.includes(sign.ruler), `${s.signKey} 的守护星因子未回扣本座守护星（${sign.ruler}）：${f}`);
+      assert.ok(/（[+-]\d+(\.\d+)?）$/.test(f), `因子缺 ± 分值收尾：${f}`);
+    }
+    // 全部因子均以（±n）收尾（月亮元素/逆行因子同样可回溯分值）
+    for (const f of s.factors) assert.ok(/（[+-]\d+(\.\d+)?）$/.test(f), `因子缺 ± 分值收尾：${f}`);
+  }
+});
+
+test('五维：缺 fortune-weights 参数应抛错（显式契约）', () => {
+  assert.throws(() => dailyFortune(new Date(Date.UTC(2026, 9, 14, 4, 0, 0))), /fortune-weights/);
 });
 
 test('北交点长期逆行（年漂移 ≈ -19.3°）', () => {

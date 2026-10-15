@@ -8,7 +8,7 @@ import { setAISource } from '../ui/ai-panel.mjs';
 renderLayout();
 
 const els = { sign: document.getElementById('sign'), birth: document.getElementById('birth'), sky: document.getElementById('sky'), detail: document.getElementById('detail'), all: document.getElementById('all'), refresh: document.getElementById('refresh') };
-let interp, fortune, sky;
+let interp, fortune, sky, fw; // fw = fortune-weights.json（O04 五维权重与纪律）
 
 els.sign.innerHTML = SIGNS.map((s) => `<option value="${s.key}">${s.cn}座</option>`).join('');
 els.sign.value = 'leo';
@@ -25,7 +25,10 @@ els.birth.addEventListener('change', () => {
 
 async function boot() {
   try {
-    interp = await loadData('../data/interpret-horoscope.json');
+    [interp, fw] = await Promise.all([
+      loadData('../data/interpret-horoscope.json'),
+      loadData('../data/fortune-weights.json'),
+    ]);
     refresh();
   } catch (e) { showError(els.detail, `加载失败：${e.message}`); }
 }
@@ -35,7 +38,7 @@ function refresh() {
   const now = new Date();
   const utc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 4, 0, 0));
   sky = computeSky(utc);
-  fortune = dailyFortune(utc);
+  fortune = dailyFortune(utc, fw);
   setAISource('horoscope', { sky, fortunes: fortune });
   renderSky();
   renderAll();
@@ -95,14 +98,31 @@ function renderDetail(signKey) {
   const f = fortune.find((x) => x.signKey === signKey);
   const s = interp.signs[signKey];
   if (!f || !s) return;
+  // O04：五维分条（复用 meter 组件）+ 档位×维度句式（health 句式自带就医提示）
+  const dimLabels = interp.dimsLabels ?? {};
+  const tpl = interp.adviceDims?.[f.level] ?? {};
+  const dimRows = (fw.dimensions ?? Object.keys(f.dimensions)).map((d) => {
+    const v = f.dimensions[d] ?? 0;
+    return `
+      <div style="margin:6px 0;"><span style="font-size:13.5px;">${dimLabels[d] ?? d} · ${v}</span>
+      <div class="meter" style="background:rgba(255,255,255,0.06);border-radius:6px;height:6px;margin-top:3px;">
+        <i style="width:0;background:linear-gradient(90deg,var(--accent2),var(--accent))" data-w="${(v / 4 * 100).toFixed(1)}"></i></div></div>`;
+  }).join('');
+  const dimLines = (fw.dimensions ?? Object.keys(f.dimensions)).map((d) =>
+    tpl[d] ? `<p style="font-size:13.5px;"><b>${dimLabels[d] ?? d}：</b>${tpl[d].replace('{cn}', s.cn).replace('{trait}', s.trait)}</p>` : '').join('');
   els.detail.innerHTML = `<h3>${s.cn} · 今日 ${f.level}（${f.score}/95）</h3>
     <p>${interp.levels[f.level]}。${s.advice[f.level]}</p>
     <p style="color:var(--muted);font-size:13.5px;">${s.cn}特质：${s.trait}</p>
+    <h3 style="margin-top:14px">五维速览</h3>
+    ${dimRows}
+    ${dimLines}
+    <p class="hint">${interp.dimsNote ?? ''}</p>
     ${signProfile(s)}
     <h3 style="margin-top:14px">评分因子（透明可查）</h3>
     ${f.factors.length ? f.factors.map((x) => `<span class="pill">${x}</span>`).join('') : '<span class="pill">今日无显著行运相位作用于守护星</span>'}
     <p class="note">${interp.disclaimer}</p>`;
   revealCards(els.detail);
+  animateMeters(els.detail);
 }
 
 els.sign.addEventListener('change', () => renderDetail(els.sign.value));

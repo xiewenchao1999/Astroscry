@@ -46,14 +46,15 @@ document.getElementById('today').innerHTML = `
 const elsDaily = document.getElementById('daily');
 // P18：homeInterp 单独加载——这样 interpret-home.json 成功而其它语料失败时，
 // 失败分支可以取到语料里的 failNote；homeInterp 自身失败时 failNote 同样不可达，用同文兜底
-let homeInterp = null, qimenInterp = null, deck = null;
+let homeInterp = null, qimenInterp = null, deck = null, fw = null;
 try {
   homeInterp = await loadData('data/interpret-home.json');
 } catch { /* interpret-home 缺失：下方失败分支走兜底文案 */ }
 try {
-  [qimenInterp, deck] = await Promise.all([
+  [qimenInterp, deck, fw] = await Promise.all([
     loadData('data/interpret-qimen.json'),
     loadData('data/tarot.json').then((d) => d.cards),
+    loadData('data/fortune-weights.json'), // O04：五维权重与纪律
   ]);
 } catch { /* 语料失败：daily 卡显示失败提示，其余页面功能不受影响 */ }
 
@@ -81,14 +82,14 @@ function renderDaily() {
 
   push('sign', () => {
     const sign = sunSignByDate(p.month, p.day);
-    const f = dailyFortune(noonUtc).find((x) => x.signKey === sign);
+    const f = dailyFortune(noonUtc, fw).find((x) => x.signKey === sign);
     const sky = computeSky(noonUtc);
     const retros = Object.values(sky.planets).filter((x) => x.retrograde).map((x) => x.cn);
     return {
       key: 'sign',
       line: `${f.signCn}座 ${f.level}（${f.score} 分）· ${sky.moonPhase.name}${retros.length ? ` · 逆行：${retros.join('、')}` : ' · 无逆行'}`,
       good: f.level === '旺' || f.level === '顺', bad: f.level === '滞',
-      data: { sign: f.signCn, level: f.level, score: f.score, moonPhase: sky.moonPhase.name, retros },
+      data: { sign: f.signCn, level: f.level, score: f.score, moonPhase: sky.moonPhase.name, retros, dimensions: f.dimensions },
     };
   });
 
