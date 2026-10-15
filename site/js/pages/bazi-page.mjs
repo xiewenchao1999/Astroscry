@@ -1,5 +1,5 @@
 // bazi-page.mjs — 八字页胶水：出生信息卡（共享）→ castBazi + 分析层 → 渲染
-import { renderLayout, loadData, showError } from '../ui/layout.mjs';
+import { renderLayout, loadData, showError, bootPage } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
 import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage, analyzeShensha } from '../core/bazi-analysis.mjs';
@@ -9,16 +9,21 @@ import { setAISource } from '../ui/ai-panel.mjs';
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast'), solar: document.getElementById('solarTime') };
-const [interp, weights, chengguData, celebData] = await Promise.all([
-  loadData('../data/interpret-bazi.json'),
-  loadData('../data/wuxing-weights.json'),
-  loadData('../data/chenggu.json'),
-  loadData('../data/celebrity-cases.json'),
-]);
-const caseLibrary = buildCaseLibrary(celebData.cases, castBazi);
+// O08：数据加载迁入 bootPage——失败显示错误卡并终止模块（不再静默白屏）；数据经模块级变量供下方渲染函数取用
+let interp, weights, chengguData, caseLibrary;
 let lastRendered = false;
+let card;
 
-const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+await bootPage(els.result, async () => {
+  [interp, weights, chengguData] = await Promise.all([
+    loadData('../data/interpret-bazi.json'),
+    loadData('../data/wuxing-weights.json'),
+    loadData('../data/chenggu.json'),
+  ]);
+  const celebData = await loadData('../data/celebrity-cases.json');
+  caseLibrary = buildCaseLibrary(celebData.cases, castBazi);
+  card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+});
 
 function wuxingBar(five) {
   const total = Object.values(five).reduce((a, b) => a + b, 0) || 1;

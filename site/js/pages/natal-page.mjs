@@ -1,5 +1,5 @@
 // natal-page.mjs — 西方本命盘页胶水：出生信息卡（共享）→ castNatal → 渲染
-import { renderLayout, loadData, showError } from '../ui/layout.mjs';
+import { renderLayout, loadData, showError, bootPage } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal, SIGNS, computeSky, ASPECTS } from '../core/astro.mjs';
 import { readNatal } from '../core/natal-reading.mjs';
@@ -13,14 +13,18 @@ renderLayout();
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
 // O06：相位表为单一事实来源（全 7 种），本命页口径仍只取前 5 种（inNatal:true）；合盘/行运卡用全表
 const IN_NATAL = new Set(ASPECTS.filter((a) => a.inNatal).map((a) => a.key));
-const [interp, synInterp, natalInterp] = await Promise.all([
-  loadData('../data/interpret-horoscope.json'),
-  loadData('../data/interpret-synastry.json'),
-  loadData('../data/interpret-natal.json'),
-]);
+// O08：数据加载迁入 bootPage——失败显示错误卡并终止模块（不再静默白屏）
+let interp, synInterp, natalInterp, card;
 let lastRendered = false;
 
-const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+await bootPage(els.result, async () => {
+  [interp, synInterp, natalInterp] = await Promise.all([
+    loadData('../data/interpret-horoscope.json'),
+    loadData('../data/interpret-synastry.json'),
+    loadData('../data/interpret-natal.json'),
+  ]);
+  card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+});
 
 /** 当前行运：今日天象 × 本命行星的跨盘相位 */
 function transitsCard(n) {

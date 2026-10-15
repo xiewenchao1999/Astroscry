@@ -1,5 +1,5 @@
 // ziwei-page.mjs — 紫微页胶水：出生信息卡（共享）→ castZiwei → 渲染 12 宫盘
-import { renderLayout, loadData, showError } from '../ui/layout.mjs';
+import { renderLayout, loadData, showError, bootPage } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castZiwei, ziweiHoroscope } from '../core/ziwei.mjs';
 import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
@@ -8,10 +8,15 @@ import { setAISource } from '../ui/ai-panel.mjs';
 renderLayout();
 
 const els = { form: document.getElementById('form'), result: document.getElementById('result'), btn: document.getElementById('cast') };
-const interp = await loadData('../data/interpret-ziwei.json');
+// O08：数据加载迁入 bootPage——失败显示错误卡并终止模块（不再静默白屏）
+let interp;
 let lastRendered = false;
+let card;
 
-const card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+await bootPage(els.result, async () => {
+  interp = await loadData('../data/interpret-ziwei.json');
+  card = mountBirthCard(els.form, { onChange: () => { if (lastRendered) cast(); } });
+});
 
 // 12 宫按地支布局（4×4，中宫 2×2）
 const GRID = [

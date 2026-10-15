@@ -50,3 +50,19 @@ export async function loadData(path) {
 export function showError(el, msg) {
   el.innerHTML = `<div class="error-box">${esc(msg)}</div>`;
 }
+
+/**
+ * 页面启动统一入口（O08）：数据加载/初始化失败 → 在 el 显示错误卡（对齐 tarot/qimen 页的 showError 模式），
+ * 并重抛异常终止模块——调用方以顶层 `await bootPage(el, async () => {…})` 使用，
+ * 抛出后其后的监听器注册/渲染代码不再执行，避免空引用（与 tarot 页「加载失败即终止」语义一致）。
+ * @param {HTMLElement} el 错误卡渲染目标容器
+ * @param {() => Promise<void>} boot 数据加载与页面初始化（含监听器注册）的异步函数
+ */
+export async function bootPage(el, boot) {
+  try {
+    await boot();
+  } catch (e) {
+    showError(el, `页面数据加载失败：${e.message}`);
+    throw e; // 终止模块：顶层 await 拒绝，后续代码不执行
+  }
+}

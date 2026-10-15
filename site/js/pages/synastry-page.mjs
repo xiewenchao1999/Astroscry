@@ -1,5 +1,5 @@
 // synastry-page.mjs — 合盘页胶水：双人出生信息 → castNatal ×2 → 跨盘相位 → 评分与解读
-import { renderLayout, loadData, showError } from '../ui/layout.mjs';
+import { renderLayout, loadData, showError, bootPage } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castNatal } from '../core/astro.mjs';
 import { interAspects, compatibilityScore, compatibilityDimensions, strengthsAndChallenges, pairKey, houseOverlay } from '../core/astro-synastry.mjs';
@@ -14,11 +14,16 @@ const els = { me: document.getElementById('form-me'), other: document.getElement
 
 const cardMe = mountBirthCard(els.me, {});
 const cardOther = mountBirthCard(els.other, { storageKey: 'astroscry.partner.v1' });
-const [interp, baziInterp, weights] = await Promise.all([
-  loadData('../data/interpret-synastry.json'),
-  loadData('../data/interpret-bazi.json'),
-  loadData('../data/wuxing-weights.json'),
-]);
+// O08：数据加载迁入 bootPage——失败显示错误卡并终止模块（不再静默白屏）
+let interp, baziInterp, weights;
+
+await bootPage(els.result, async () => {
+  [interp, baziInterp, weights] = await Promise.all([
+    loadData('../data/interpret-synastry.json'),
+    loadData('../data/interpret-bazi.json'),
+    loadData('../data/wuxing-weights.json'),
+  ]);
+});
 
 function castOne(card, label) {
   const p = card.get();
