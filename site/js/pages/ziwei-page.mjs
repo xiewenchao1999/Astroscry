@@ -1,7 +1,7 @@
 // ziwei-page.mjs — 紫微页胶水：出生信息卡（共享）→ castZiwei → 渲染 12 宫盘
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
-import { castZiwei } from '../core/ziwei.mjs';
+import { castZiwei, ziweiHoroscope } from '../core/ziwei.mjs';
 import { revealCards, withBusy, announce, reducedMotion } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -32,18 +32,61 @@ function palaceCell(p) {
   </div>`;
 }
 
-function render(z) {
-  // AI 数据源：iztro 完整盘过大，只瘦身传关键字段（主星含四化/亮度、辅星、宫干支）
+// 四化文案：iztro 的 mutagen 是「按 禄/权/科/忌 顺序」的星名数组（个别版本给对象，防御式取值）
+const MUTAGEN_ORDER = ['禄', '权', '科', '忌'];
+const mutagenList = (arr) => (arr || [])
+  .map((m, i) => `${typeof m === 'string' ? m : (m?.name ?? '')}${MUTAGEN_ORDER[i] ?? ''}`)
+  .filter((s) => s.length > 1)
+  .join('、');
+
+/** 运限取数：本地今日日期 + ziweiHoroscope；结构不全或引擎异常时返回 null（页面降级为提示句） */
+function currentHoroscope(profile) {
+  const pad = (n) => String(n).padStart(2, '0');
+  const d = new Date();
+  const todayISO = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+  try {
+    const h = ziweiHoroscope(profile, todayISO);
+    return h?.decadal && h?.yearly ? { h, todayISO } : null;
+  } catch { return null; }
+}
+
+/** 运限卡：当前大限与流年（限内命宫落在本命盘哪一宫 + 各自四化） */
+function horoscopeCard(z, hzInfo) {
+  const hz = interp.horoscope;
+  if (!hzInfo) return `<div class="card"><h3>${hz.title}</h3><p class="hint">${hz.fail}</p></div>`;
+  const { h, todayISO } = hzInfo;
+  const palaceNameAt = (idx) => z.palaces[idx]?.name ?? '未知宫位';
+  const range = z.palaces[h.decadal.index]?.decadal?.range;
+  return `
+    <div class="card"><h3>${hz.title} <span class="src-tag">${todayISO}</span></h3>
+      <p class="hint">${hz.intro}</p>
+      <p><b>${hz.decadal.replace('{stem}', h.decadal.stemBranch).replace('{from}', range?.[0] ?? '—').replace('{to}', range?.[1] ?? '—').replace('{palace}', palaceNameAt(h.decadal.index))}</b></p>
+      <p>${hz.mutagen.replace('{list}', mutagenList(h.decadal.mutagen) || '—')}</p>
+      <p class="hint">${hz.decadalNote}</p>
+      <p><b>${hz.yearly.replace('{stem}', h.yearly.stemBranch).replace('{age}', h.age?.nominalAge ?? '—').replace('{palace}', palaceNameAt(h.yearly.index))}</b></p>
+      <p>${hz.mutagen.replace('{list}', mutagenList(h.yearly.mutagen) || '—')}</p>
+      <p class="hint">${hz.yearlyNote}</p>
+      <p class="note">${hz.note}</p>
+    </div>`;
+}
+
+function render(z, hzInfo) {
+  // AI 数据源：iztro 完整盘过大，只瘦身传关键字段（主星含四化/亮度、辅星、宫干支）+ 当前运限
   setAISource('ziwei', {
     lunarDate: z.lunarDate, chineseDate: z.chineseDate, timeText: z.timeText,
     fiveElementsClass: z.fiveElementsClass, soul: z.soul, body: z.body, sign: z.sign, zodiac: z.zodiac,
+    horoscope: hzInfo ? {
+      date: hzInfo.todayISO,
+      decadal: { stem: hzInfo.h.decadal.stemBranch, palace: z.palaces[hzInfo.h.decadal.index]?.name, mutagen: mutagenList(hzInfo.h.decadal.mutagen) },
+      yearly: { stem: hzInfo.h.yearly.stemBranch, palace: z.palaces[hzInfo.h.yearly.index]?.name, mutagen: mutagenList(hzInfo.h.yearly.mutagen), age: hzInfo.h.age?.nominalAge },
+    } : null,
     palaces: z.palaces.map((p) => ({
       name: p.name, isBodyPalace: !!p.isBodyPalace, stemBranch: p.stemBranch,
       majorStars: p.majorStars.map((s) => `${s.name}${s.mutagen ? `化${s.mutagen}` : ''}${s.brightness ? `(${s.brightness})` : ''}`),
       minorStars: p.minorStars.map((s) => s.name + (s.mutagen || '')),
       adjectiveStars: (p.adjectiveStars || []).slice(0, 6),
     })),
-  }, `命主${z.soul} · ${z.fiveElementsClass}`);
+  }, `命主${z.soul} · ${z.fiveElementsClass}${hzInfo ? ` · 流年${hzInfo.h.yearly.stemBranch}` : ''}`);
   const info = `
     <div class="palace" style="grid-column:2/4;grid-row:2/4;display:flex;flex-direction:column;justify-content:center;text-align:center;">
       <div style="font-size:26px;color:var(--accent);letter-spacing:4px;">星卜 · 紫微命盘</div>
@@ -82,7 +125,8 @@ function render(z) {
       <p style="font-size:13.5px;color:var(--muted)">▸ ${interp.bodyPalaceNote}（身宫在${z.shenGong.name}）</p>
       <p class="note">${interp.fiveElementsNote.replace('{cls}', z.fiveElementsClass)}</p>
       <p class="note">${interp.disclaimer}</p>
-    </div>`;
+    </div>
+    ${horoscopeCard(z, hzInfo)}`;
 }
 
 function cast() {
@@ -91,7 +135,8 @@ function cast() {
   withBusy(els.btn, '起盘中…', () => {
     try {
       const z = castZiwei({ year: p.year, month: p.month, day: p.day, hour: p.hour, minute: p.minute, gender: p.gender });
-      render(z);
+      const hzInfo = currentHoroscope({ year: p.year, month: p.month, day: p.day, hour: p.hour, gender: p.gender });
+      render(z, hzInfo);
       revealCards(els.result);
       announce(els.result, `起盘完成：命主${z.soul}，身主${z.body}，${z.fiveElementsClass}`);
       lastRendered = true;

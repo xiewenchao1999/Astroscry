@@ -1,5 +1,7 @@
 // 紫微核心回归测试 — 基准：iztro 官方示例盘 2000-8-16 0:00 女（MIT）
 import { createRequire } from 'module';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 const require = createRequire(import.meta.url);
 globalThis.self = globalThis;
 globalThis.iztro = require('../site/vendor/iztro.min.js');
@@ -50,4 +52,36 @@ test('运限：2026-10-14 大限/流年结构', () => {
   assert.ok(h.decadal.stemBranch.length >= 2);
   assert.ok(Array.isArray(h.decadal.mutagen));
   assert.ok(h.yearly, '有流年');
+});
+
+test('运限：index 可回查本命盘宫位，四化顺序为 禄/权/科/忌', () => {
+  const z = castZiwei({ year: 2000, month: 8, day: 16, hour: 0, gender: 'female' });
+  const h = ziweiHoroscope(z.input, '2026-10-14');
+  // 页面用 palaces[index] 反查「限内命宫落在本命盘哪一宫」，index 必须落在 12 宫范围内
+  for (const step of [h.decadal, h.yearly]) {
+    assert.ok(Number.isInteger(step.index) && step.index >= 0 && step.index < 12, `index ${step.index} 越界`);
+    assert.ok(z.palaces[step.index]?.name, 'index 必须能回查到具名宫位');
+    // 限内命宫即 index 所指宫位，故该宫的 palaceNames[index] 应为「命宫」
+    assert.equal(step.palaceNames[step.index], '命宫', '限内命宫应与 index 自洽');
+    assert.equal(step.mutagen.length, 4, '四化应恰为 4 颗（禄/权/科/忌）');
+  }
+  // 大限范围应覆盖当年虚岁
+  const range = z.palaces[h.decadal.index].decadal.range;
+  assert.ok(h.age.nominalAge >= range[0] && h.age.nominalAge <= range[1], '虚岁应落在大限区间内');
+});
+
+test('紫微语料：运限段落齐备且模板占位符可闭合', () => {
+  const i = JSON.parse(readFileSync(join(import.meta.dirname, '..', 'site', 'data', 'interpret-ziwei.json'), 'utf8'));
+  const hz = i.horoscope;
+  assert.ok(hz, '缺 horoscope 段落');
+  for (const k of ['title', 'intro', 'decadal', 'yearly', 'mutagen', 'decadalNote', 'yearlyNote', 'fail', 'note']) {
+    assert.ok(typeof hz[k] === 'string' && hz[k].length > 4, `运限缺 ${k}`);
+  }
+  for (const tpl of [hz.decadal, hz.yearly, hz.mutagen]) {
+    for (const m of tpl.matchAll(/\{(\w+)\}/g)) {
+      assert.ok(['stem', 'from', 'to', 'palace', 'age', 'list'].includes(m[1]), `未知占位符 {${m[1]}}`);
+    }
+  }
+  assert.ok(hz.decadal.includes('{from}') && hz.decadal.includes('{to}'), '大限句需含虚岁区间');
+  assert.ok(hz.yearly.includes('{age}'), '流年句需含虚岁');
 });
