@@ -4,7 +4,7 @@ const require = createRequire(import.meta.url);
 globalThis.self = globalThis;
 globalThis.Astronomy = require('../site/vendor/astronomy.min.js');
 
-import { computeSky, castNatal, ascendantMc, meanObliquity, meanNodeLon, sunSignByDate, dailyFortune, calcAspects, detectPatterns, SIGNS } from '../site/js/core/astro.mjs';
+import { computeSky, castNatal, ascendantMc, meanObliquity, meanNodeLon, sunSignByDate, dailyFortune, calcAspects, detectPatterns, SIGNS, localNoonUtc } from '../site/js/core/astro.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -353,4 +353,14 @@ test('消费者契约：新语料缺失时必须回落到旧模板，绝不产�
   }
   assert.ok(rd.aspectLines[0].line.includes('主题') || rd.aspectLines[0].line.includes('星'), '相位回落路径无文案');
   assert.ok(!rd.aspectLines[0].line.includes('undefined'));
+});
+
+// —— O09：localNoonUtc 时区口径统一（替代页面各自硬编码 UTC 4:00）——
+test('localNoonUtc：默认东八区/零时区/西五区的正午换算与跨日回卷', () => {
+  const d = new Date(2026, 9, 15); // 本地日历日 2026-10-15
+  assert.equal(localNoonUtc(d).toISOString(), '2026-10-15T04:00:00.000Z', '东八区正午 = UTC 04:00（与旧口径逐位一致）');
+  assert.equal(localNoonUtc(d, 0).toISOString(), '2026-10-15T12:00:00.000Z', '零时区正午 = UTC 12:00');
+  assert.equal(localNoonUtc(d, -5).toISOString(), '2026-10-15T17:00:00.000Z', '西五区正午 = UTC 17:00');
+  // 东 13 区正午落在前一日 UTC（Date.UTC 算术自然回卷）
+  assert.equal(localNoonUtc(d, 13).toISOString(), '2026-10-14T23:00:00.000Z');
 });

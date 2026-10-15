@@ -1,7 +1,7 @@
 // horoscope-page.mjs — 每日星象页胶水
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { loadProfile } from '../ui/birth-profile.mjs';
-import { SIGNS, dailyFortune, computeSky, sunSignByDate } from '../core/astro.mjs';
+import { SIGNS, dailyFortune, computeSky, sunSignByDate, castNatal, localNoonUtc } from '../core/astro.mjs';
 import { revealCards, animateMeters, stagger } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -12,9 +12,12 @@ let interp, fortune, sky, fw; // fw = fortune-weights.json（O04 五维权重与
 
 els.sign.innerHTML = SIGNS.map((s) => `<option value="${s.key}">${s.cn}座</option>`).join('');
 els.sign.value = 'leo';
-// 已保存出生信息时自动选中太阳星座
+// 已保存出生信息时自动选中太阳星座（O09：有城市经纬度时用 castNatal 精确太阳星座；
+// 仅有生日时 sunSignByDate 日期表兜底——消除双口径：两路径下生日与城市信息一致时结果一致）
 const savedProfile = loadProfile();
-if (savedProfile) els.sign.value = sunSignByDate(savedProfile.month, savedProfile.day);
+if (savedProfile) els.sign.value = savedProfile.lat != null
+  ? castNatal({ year: savedProfile.year, month: savedProfile.month, day: savedProfile.day, hour: savedProfile.hour ?? 12, minute: savedProfile.minute ?? 0, lat: savedProfile.lat, lon: savedProfile.lon, tzOffsetHours: savedProfile.tz ?? 8 }).planets.sun.signKey
+  : sunSignByDate(savedProfile.month, savedProfile.day);
 // P15：按生日推断太阳星座（原 window.__infer 全局 + inline onchange 已移除，改模块内监听）
 els.birth.addEventListener('change', () => {
   const d = els.birth.value;
@@ -34,9 +37,9 @@ async function boot() {
 }
 
 function refresh() {
-  // 今日 12:00 本地（东八区）
+  // 今日 12:00 本地（O09：时区按已保存出生信息的 tz，缺省东八区）
   const now = new Date();
-  const utc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 4, 0, 0));
+  const utc = localNoonUtc(now, loadProfile()?.tz ?? 8);
   sky = computeSky(utc);
   fortune = dailyFortune(utc, fw);
   setAISource('horoscope', { sky, fortunes: fortune });

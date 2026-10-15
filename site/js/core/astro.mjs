@@ -301,6 +301,16 @@ export function detectPatterns(planets, aspects) {
   return out.sort((x, y) => order[x.kind] - order[y.kind]);
 }
 
+/**
+ * 某个本地日历日的正午 UTC 时刻（O09：消除页面各自硬编码 UTC 4:00 的双口径）。
+ * @param {Date} date 本地时间（取其年月日）
+ * @param {number} tzOffsetHours 标准时区偏移（东正），默认 8（北京时间）
+ * @returns {Date} 该地正午对应的 UTC 时刻
+ */
+export function localNoonUtc(date, tzOffsetHours = 8) {
+  return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate(), 12, 0, 0) - tzOffsetHours * 3600000);
+}
+
 /** 星座日期粗推（用于仅知道生日时反查太阳星座） */
 export function sunSignByDate(month, day) {
   // 边界取 c 期通表：每月 21 日前后切换，摩羯跨年

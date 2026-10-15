@@ -1,7 +1,7 @@
 // home-page.mjs — 首页：出生信息卡 + 今日干支/月相摘要 + 今日综合运势（星座/八字/紫微/奇门/塔罗 五域规则汇总）
 import { renderLayout, loadData } from '../ui/layout.mjs';
 import { mountBirthCard, loadProfile } from '../ui/birth-profile.mjs';
-import { dailyFortune, computeSky, sunSignByDate, moonPhaseName } from '../core/astro.mjs';
+import { dailyFortune, computeSky, sunSignByDate, moonPhaseName, localNoonUtc } from '../core/astro.mjs';
 import { castZiwei, ziweiHoroscope } from '../core/ziwei.mjs';
 import { castQimen } from '../core/qimen.mjs';
 import { readQimen } from '../core/qimen-reading.mjs';
@@ -58,8 +58,8 @@ try {
   ]);
 } catch { /* 语料失败：daily 卡显示失败提示，其余页面功能不受影响 */ }
 
-// 今日 12:00 本地（东八区）—— 与每日星象页同一口径
-const noonUtc = new Date(Date.UTC(now.getFullYear(), now.getMonth(), now.getDate(), 4, 0, 0));
+// 今日 12:00 本地（O09：时区按已保存出生信息的 tz，缺省东八区）—— 与每日星象页同一口径
+const noonUtc = localNoonUtc(now, loadProfile()?.tz ?? 8);
 
 function renderDaily() {
   // 加载失败分支（P18）：文案取语料 failNote；homeInterp 自身缺失时该键同样不可达，用同文兜底

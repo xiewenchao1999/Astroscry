@@ -36,11 +36,11 @@ function jiaziIdx(gz) {
   throw new Error(`非法干支 ${gz}`);
 }
 
-/** 太阳视黄经（true equinox of date）→ 节气序号：0=冬至，每 15° 一气；北京时区按 UTC+8 换算时刻 */
-function termIndexAt(year, month, day, hour, minute) {
+/** 太阳视黄经（true equinox of date）→ 节气序号：0=冬至，每 15° 一气；节气时刻按时区换算 */
+function termIndexAt(year, month, day, hour, minute, tzOffsetHours) {
   const A = globalThis.Astronomy;
   if (!A) throw new Error('vendor astronomy.min.js not loaded');
-  const instant = new Date(Date.UTC(year, month - 1, day, hour, minute) - 8 * 3600e3);
+  const instant = new Date(Date.UTC(year, month - 1, day, hour, minute) - tzOffsetHours * 3600e3);
   return Math.floor(((A.SunPosition(instant).elon - 270 + 360) % 360) / 15) % 24;
 }
 
@@ -62,9 +62,12 @@ function palaceOf(earth, gan) {
 
 /**
  * 时家奇门排盘（转盘法·拆补）。
- * @param {object} input {year,month,day,hour,minute} 问局时刻（本地钟表时，按北京时间处理）
+ * @param {object} input {year,month,day,hour,minute} 问局时刻（本地钟表时）
+ * @param {number} [tzOffsetHours=8] 标准时区偏移（东正）。
+ *   ponytail: 奇门口径（干支四柱/符头/局数口诀）当前仅按北京时间（UTC+8）设计验证，
+ *   其余时区未核验流派差异，升级路径=跨时区命例基准补齐后再开放页面入口。
  */
-export function castQimen(input) {
+export function castQimen(input, tzOffsetHours = 8) {
   const { Lunar, Solar } = globalThis;
   if (!Lunar || !Solar) throw new Error('vendor lunar.js not loaded');
   const { year, month, day, hour = 0, minute = 0 } = input;
@@ -72,7 +75,7 @@ export function castQimen(input) {
   const ec = solar.getLunar().getEightChar();
   const pillars = { year: ec.getYear(), month: ec.getMonth(), day: ec.getDay(), time: ec.getTime() };
 
-  const tIdx = termIndexAt(year, month, day, hour, minute);
+  const tIdx = termIndexAt(year, month, day, hour, minute, tzOffsetHours);
   const term = TERMS[tIdx];
   const yang = tIdx < 12; // 冬至~芒种阳遁，夏至~大雪阴遁
   const { fuTou, yuan } = findFuTou(pillars.day);
