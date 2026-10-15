@@ -157,17 +157,44 @@ function render() {
 function renderStructure() {
   const box = els.stage.querySelector('#structure');
   const analysis = analyzeReading(reading.cards);
-  const syn = synthesizeReading(reading.cards, analysis, els.question.value.trim());
+  const syn = synthesizeReading(reading.cards, analysis, els.question.value.trim(), interp.links);
   const lens = currentLens();
-  // AI 数据源：只传牌面结构（位置/牌名/正逆）+ 主题，规则层结论不传，牌义交由 AI 现场解读
+  // AI 数据源：牌面结构（位置/牌名/正逆）+ 主题 + 牌间连线与图案（规则层结论不传，牌义交由 AI 现场解读）
   setAISource('tarot', {
     spread: reading.spreadCn,
     topic: lens?.label ?? null,
     question: els.question.value.trim(),
     cards: reading.cards.map((c) => ({ pos: c.positionCn, duty: c.positionDuty, name: c.card.cn, reversed: c.reversed })),
+    links: syn.links.map((l) => ({ pair: `${l.aCn}→${l.bCn}`, key: l.key })),
+    patterns: { aces: syn.patterns.aces, courts: syn.patterns.courts, run: syn.patterns.run },
   }, reading.spreadCn);
   const rev = (c) => (c.reversed ? '（逆位）' : '');
   const exitKey = syn.exit.dominant ?? 'none';
+
+  // 牌间连线 + 牌面图案（语料缺 links 节时整块跳过，不影响主流程）
+  const L = interp.links;
+  let linkBlock = '';
+  if (L) {
+    const lines = syn.links.map((l) => {
+      const text = l.classic ? L.classic?.[l.key] : L[l.key];
+      if (!text) return '';
+      let t = text.replace('{aCn}', l.aCn).replace('{bCn}', l.bCn);
+      for (const [k, v] of Object.entries(l.vars ?? {})) t = t.replaceAll(`{${k}}`, v);
+      const color = l.tone === 'good' ? ' style="color:var(--good)"' : l.tone === 'bad' ? ' style="color:var(--bad)"' : '';
+      return `<p${color}><b>${l.aCn} → ${l.bCn}</b>：${t}</p>`;
+    }).filter(Boolean).join('');
+    const p = syn.patterns;
+    linkBlock = lines ? `
+      <details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);font-weight:600;">${L.title}</summary>
+        <p class="hint">${L.note}</p>
+        ${lines}
+        <p style="margin-top:8px;"><b>${L.patternsTitle}</b></p>
+        <p class="hint">${L.patternsNote}</p>
+        <p>${L[p.acesKey].replace('{n}', p.aces)}</p>
+        <p>${L[p.courtsKey].replace('{n}', p.courts)}</p>
+        ${p.run ? `<p><b>${L.runTpl.replace('{nums}', p.run.join('、'))}</b></p>` : ''}
+      </details>` : '';
+  }
 
   box.innerHTML = `
     <div class="card"><h3>${interp.structureTitle}</h3>
@@ -181,13 +208,14 @@ function renderStructure() {
       <p>${interp.majorBands[analysis.majorBand]}</p>
       <p><b>正逆位：</b>正 ${analysis.total - analysis.reversed} / 逆 ${analysis.reversed}</p>
       <p>${interp.reversalBands[analysis.reversalBand]}</p>
+      ${linkBlock}
     </div>
     <div class="card"><h3>${interp.synthesis.title} <span class="src-tag">释义</span></h3>
       <p>${(syn.question ? interp.synthesis.questionEcho.replace('{q}', esc(syn.question)) : interp.synthesis.noQuestion)}</p>
       ${lens ? `<p><b>${esc(lens.label)}视角：</b>${esc(lens.focus)}</p>` : ''}
-      <p>${interp.synthesis.opening.replace('{pos}', syn.opening.position).replace('{card}', syn.opening.card).replace('{rev}', rev(syn.opening)).replaceAll('{cardShort}', syn.opening.card)}</p>
-      <p>${interp.synthesis.tension.replace('{card}', syn.tension.card).replace('{rev}', rev(syn.tension)).replace('{pos}', syn.tension.position)}</p>
-      <p>${interp.synthesis.turn.replace('{card}', syn.turn.card).replace('{rev}', rev(syn.turn)).replace('{pos}', syn.turn.position)}</p>
+      <p>${interp.synthesis.opening.replace('{pos}', syn.opening.position).replace('{card}', syn.opening.card).replace('{rev}', rev(syn.opening)).replace('{kw}', syn.opening.kw).replaceAll('{cardShort}', syn.opening.card)}</p>
+      <p>${interp.synthesis.tension.replace('{card}', syn.tension.card).replace('{rev}', rev(syn.tension)).replace('{pos}', syn.tension.position).replace('{kw}', syn.tension.kw)}</p>
+      <p>${interp.synthesis.turn.replace('{card}', syn.turn.card).replace('{rev}', rev(syn.turn)).replace('{pos}', syn.turn.position).replace('{kw}', syn.turn.kw)}</p>
       <p><b>${interp.synthesis.exitTitle}</b></p>
       <p>▸ <span title="按主导花色的能量属性给出">${interp.synthesis.exit[exitKey]}</span></p>
       ${lens ? `<p>▸ <span title="按你选定的问事主题给出">${esc(lens.exit)}</span></p>` : ''}

@@ -237,3 +237,44 @@ test('塔罗逐牌分域释义：大阿卡纳 22 张 × 5 域全覆盖、花色�
     for (const tp of topics) assert.ok(src[tp], `牌 ${c.id} 的 ${tp} 域缺失`);
   }
 });
+
+test('塔罗牌间连线语料：经典组合键合法、全部模板占位符可闭合', () => {
+  const t = D('interpret-tarot.json');
+  const L = t.links;
+  assert.ok(L, '缺 links 节');
+  assert.ok(L.title && L.title.length >= 4, '缺 links.title');
+  for (const k of ['note', 'patternsTitle', 'patternsNote', 'runTpl']) assert.ok(L[k] && L[k].length >= 6, `缺 links.${k}`);
+
+  // 经典组合：键必须为「两个真实牌 id 升序排序后 + 连接」，且每键有文案
+  const deckIds = new Set(D('tarot.json').cards.map((c) => c.id));
+  const classicKeys = Object.keys(L.classic ?? {});
+  assert.ok(classicKeys.length >= 10, '经典组合应不少于 10 组');
+  for (const key of classicKeys) {
+    const [a, b] = key.split('+');
+    assert.equal(2, key.split('+').length, `经典组合键 ${key} 应恰含两张牌`);
+    assert.ok(deckIds.has(a) && deckIds.has(b), `经典组合 ${key} 引用了不存在的牌`);
+    assert.equal(key, [a, b].sort().join('+'), `经典组合键 ${key} 未按 id 升序（引擎用 sort 后查表，乱序会静默失配）`);
+    assert.ok(L.classic[key].length >= 10, `经典组合 ${key} 文案过短`);
+  }
+
+  // 模板占位符
+  const need = (key, ph) => {
+    assert.ok(L[key], `缺 links.${key}`);
+    for (const p of ph) assert.ok(L[key].includes(`{${p}}`), `links.${key} 缺占位符 {${p}}`);
+  };
+  need('echo', ['aCn', 'bCn', 'num']);
+  need('courtRole', ['court', 'event']);
+  need('acesMany', ['n']);
+  need('courtsFew', ['n']);
+  need('courtsMany', ['n']);
+  need('runTpl', ['nums']);
+  for (const k of ['mirror', 'majorUp', 'majorDown', 'majorUpCross', 'majorDownCross', 'suitUp', 'suitDown', 'suitFive', 'courtPair', 'majorMinor', 'fireAir', 'waterEarth', 'fireWater', 'airEarth', 'fireEarth', 'waterAir']) {
+    need(k, ['aCn', 'bCn']);
+  }
+  for (const k of ['acesNone', 'acesOne', 'courtsNone']) assert.ok(L[k] && L[k].length >= 10, `缺 links.${k}`);
+
+  // 五段式三句必须含 {kw}（本轮的核心升级点）
+  for (const k of ['opening', 'tension', 'turn']) {
+    assert.ok(t.synthesis[k].includes('{kw}'), `synthesis.${k} 缺 {kw}（关键词织入）`);
+  }
+});

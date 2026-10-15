@@ -100,3 +100,81 @@ test('dailyDraw：同日确定性（同日同牌），跨日分布多张', () =>
   assert.ok(seen.size > 20, '60 天应覆盖较多不同牌，实际 ' + seen.size);
   assert.ok(big.includes(a.card) === false || true);
 });
+
+// —— 牌间连线（消费真实牌库 + interpret-tarot.json 的 classic 表）——
+const T = JSON.parse(readFileSync(new URL('../site/data/interpret-tarot.json', import.meta.url), 'utf8'));
+const byId = new Map(deck.map((c) => [c.id, c]));
+const rc = (id, pos, reversed = false) => ({ card: byId.get(id), position: pos, positionCn: pos, positionDuty: 'd', reversed });
+const linkKeys = (cards) => synthesizeReading(cards, analyzeReading(cards), '', T.links).links.map((l) => `${l.key}${l.vars ? JSON.stringify(l.vars) : ''}`);
+
+test('牌间连线：经典组合 / 镜像 / 愚人之旅（含跨幕）/ 数字旅程（含危机位）', () => {
+  // 经典组合：死神+星星，且读牌顺序反转后仍命中同一键
+  assert.equal(linkKeys([rc('ar13', 'a'), rc('ar17', 'b')])[0], 'ar13+ar17');
+  assert.equal(linkKeys([rc('ar17', 'a'), rc('ar13', 'b')])[0], 'ar13+ar17');
+  // 镜像张力：4 + 17 = 21
+  assert.equal(linkKeys([rc('ar04', 'a'), rc('ar17', 'b')])[0], 'mirror');
+  // 愚人之旅：女皇(3)→皇帝(4) 同幕推进（夹具避开经典组合表里的魔术师+女祭司）；跨幕与倒序
+  assert.equal(linkKeys([rc('ar03', 'a'), rc('ar04', 'b')])[0], 'majorUp');
+  assert.equal(linkKeys([rc('ar02', 'a'), rc('ar08', 'b')])[0], 'majorUpCross');
+  assert.equal(linkKeys([rc('ar08', 'a'), rc('ar02', 'b')])[0], 'majorDownCross');
+  // 数字旅程：同花色 1→2 推进；4→5 命中危机位；3→2 回落（夹具避开「5」与同号牌）
+  assert.equal(linkKeys([rc('wa01', 'a'), rc('wa02', 'b')])[0], 'suitUp');
+  assert.equal(linkKeys([rc('wa04', 'a'), rc('wa05', 'b')])[0], 'suitFive');
+  assert.equal(linkKeys([rc('wa03', 'a'), rc('wa02', 'b')])[0], 'suitDown');
+});
+
+test('牌间连线：宫廷牌角色 / 双角色 / 主题×细节 / 元素牌性（互助绿、相克红）', () => {
+  // 宫廷牌 + 数字牌：court = 宫廷牌、event = 另一张，与读牌顺序无关
+  const role = synthesizeReading([rc('wa13', 'a'), rc('cu01', 'b')], analyzeReading([rc('wa13', 'a'), rc('cu01', 'b')]), '', T.links).links[0];
+  assert.equal(role.key, 'courtRole');
+  assert.equal(role.vars.court, '权杖王后');
+  assert.equal(role.vars.event, '圣杯王牌');
+  // 双宫廷
+  assert.equal(linkKeys([rc('wa13', 'a'), rc('cu13', 'b')])[0], 'courtPair');
+  // 大牌 + 数字小牌 → 主题×细节（大牌+宫廷已被 courtRole 优先接管，单独断言）
+  assert.equal(linkKeys([rc('ar06', 'a'), rc('wa02', 'b')])[0], 'majorMinor');
+  // 牌性：火风互助(good)、水火相激(bad)、火土中性（夹具避开同号——四张王牌同为 1 号，会先命中「阶段共振」）
+  const mk2 = (a, b) => synthesizeReading([rc(a, 'a'), rc(b, 'b')], analyzeReading([rc(a, 'a'), rc(b, 'b')]), '', T.links).links[0];
+  assert.equal(mk2('wa02', 'sw01').key, 'fireAir');
+  assert.equal(mk2('wa02', 'sw01').tone, 'good');
+  assert.equal(mk2('wa02', 'cu01').key, 'fireWater');
+  assert.equal(mk2('wa02', 'cu01').tone, 'bad');
+  assert.equal(mk2('wa02', 'pe01').key, 'fireEarth');
+  assert.equal(mk2('wa02', 'pe01').tone, undefined);
+  // 大牌 + 宫廷牌 → courtRole 优先于 majorMinor（linkKeys 会把 vars 拼进字符串，这里只看键名）
+  assert.ok(linkKeys([rc('ar06', 'a'), rc('wa13', 'b')])[0].startsWith('courtRole'));
+});
+
+test('牌面图案：王牌计数、宫廷牌计数、跨花色数字连跑', () => {
+  const p = (cards) => synthesizeReading(cards, analyzeReading(cards), '', T.links).patterns;
+  // 王牌×1 + 2,3 跨花色 → 连跑 [1,2,3]
+  const p1 = p([rc('cu01', 'a'), rc('wa02', 'b'), rc('sw03', 'c')]);
+  assert.deepEqual(p1.run, [1, 2, 3]);
+  assert.equal(p1.aces, 1);
+  assert.equal(p1.acesKey, 'acesOne');
+  assert.equal(p1.courts, 0);
+  assert.equal(p1.courtsKey, 'courtsNone');
+  // 2,3,4,5 连跑跨四花色；宫廷牌计数 2 → few
+  const p2 = p([rc('cu02', 'a'), rc('wa03', 'b'), rc('sw04', 'c'), rc('pe05', 'd'), rc('wa13', 'e'), rc('cu13', 'f')]);
+  assert.deepEqual(p2.run, [2, 3, 4, 5]);
+  assert.equal(p2.aces, 0);
+  assert.equal(p2.acesKey, 'acesNone');
+  assert.equal(p2.courts, 2);
+  assert.equal(p2.courtsKey, 'courtsFew');
+  // 无连跑
+  const p3 = p([rc('cu01', 'a'), rc('wa03', 'b')]);
+  assert.equal(p3.run, null);
+});
+
+test('牌间连线兜底：缺 classic 表时其余关系照常；旧式无 num 夹具不得崩溃或产出空键', () => {
+  // 不传 linksCfg：经典组合被跳过，愚人之旅照常
+  const noCfg = synthesizeReading([rc('ar13', 'a'), rc('ar17', 'b')], analyzeReading([rc('ar13', 'a'), rc('ar17', 'b')]), '');
+  assert.equal(noCfg.links.length, 1);
+  assert.equal(noCfg.links[0].key, 'majorUpCross'); // 13→17 跨幕推进（镜像不成立：13+17=30）
+  // 旧式夹具（无 num 字段，如既有测试的 mk）：连线为空但不崩溃
+  const legacy = [{ card: { id: 'x', arcana: 'major', suit: null, cn: 'x', kwUp: ['k'], kwRev: ['r'], up: 'u', rev: 'v' }, positionCn: 'p', positionDuty: 'd', reversed: false },
+                  { card: { id: 'y', arcana: 'major', suit: null, cn: 'y', kwUp: ['k'], kwRev: ['r'], up: 'u', rev: 'v' }, positionCn: 'q', positionDuty: 'd', reversed: true }];
+  const syn = synthesizeReading(legacy, analyzeReading(legacy), '');
+  assert.deepEqual(syn.links, [], '无 num 的夹具不应产出连线');
+  assert.deepEqual(syn.patterns.run, null);
+});
