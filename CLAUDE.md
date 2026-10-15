@@ -24,15 +24,15 @@ Astroscry/
 │   └── design/            # 产品设计、ADR
 ├── site/                  # 静态站点根（整目录可部署）
 │   ├── index.html         # 首页
-│   ├── pages/             # bazi.html / ziwei.html / natal.html / horoscope.html / tarot.html / about.html
+│   ├── pages/             # bazi.html / ziwei.html / natal.html / horoscope.html / tarot.html / iching.html / folk.html / about.html
 │   ├── assets/css/        # base.css（全站主题）；命名 kebab-case
 │   ├── js/
-│   │   ├── core/          # 纯计算模块（无 DOM、无网络）：bazi.mjs ziwei.mjs astro.mjs tarot.mjs calendar.mjs（农历↔公历）
+│   │   ├── core/          # 纯计算模块（无 DOM、无网络）：bazi.mjs ziwei.mjs astro.mjs tarot.mjs calendar.mjs（农历↔公历）iching.mjs guanyin.mjs jiaobei.mjs（周易/灵签/掷筊问事类）
 │   │   ├── ui/            # 可复用组件：layout.mjs birth-profile.mjs（共享出生信息，localStorage）wheel.mjs（星盘 SVG 自绘）motion.mjs（动效/忙碌态/无障碍播报）ai-reading.mjs（AI 边界模块：opt-in 流式解读 + 零网络提示词出口，core 禁止依赖）ai-settings.mjs（设置卡片）ai-panel.mjs（全站常驻悬浮栏，layout 挂载）
 │   │   └── pages/         # 页面胶水层：监听表单 → 调 core → 渲染（*-page.mjs）
 │   ├── vendor/            # lunar.js iztro.min.js astronomy.min.js（不改动，注明版本）
-│   └── data/              # interpret-*.json（解读语料）、cities.json、tarot.json
-├── tests/                 # node --test 断言自检：bazi/ziwei/astro/tarot 回归 + no-network（隐私默认零外部请求 + AI 关闭态零请求 + core 不 import ai-reading）+ ai-prompt（提示词出口完整性与零网络）
+│   └── data/              # interpret-*.json（解读语料）、cities.json、tarot.json、iching.json、guanyin-signs.json、fortune-weights.json
+├── tests/                 # node --test 断言自检：bazi/ziwei/astro/tarot/iching/folk 回归 + no-network（隐私默认零外部请求 + AI 关闭态零请求 + core 不 import ai-reading）+ ai-prompt（提示词出口完整性与零网络）
 └── tools/                 # 一次性脚本（vendor 下载、语料转换），用完即删，不进部署
 ```
 
