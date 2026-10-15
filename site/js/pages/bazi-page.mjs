@@ -2,7 +2,7 @@
 import { renderLayout, loadData, showError } from '../ui/layout.mjs';
 import { mountBirthCard } from '../ui/birth-profile.mjs';
 import { castBazi } from '../core/bazi.mjs';
-import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage } from '../core/bazi-analysis.mjs';
+import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage, analyzeShensha } from '../core/bazi-analysis.mjs';
 import { revealCards, withBusy, animateMeters, announce, reducedMotion } from '../ui/motion.mjs';
 import { setAISource } from '../ui/ai-panel.mjs';
 
@@ -102,6 +102,23 @@ function relationCard(b) {
     </div>`;
 }
 
+/** 神煞卡：只报「见 / 未见」与落柱（判定在 core/analyzeShensha，口径在语料 shensha.rulesNote） */
+function shenshaCard(items) {
+  const cfg = interp.shensha;
+  const found = items.filter((x) => x.hits.length);
+  const none = items.filter((x) => !x.hits.length);
+  return `
+    <div class="card"><h3>${cfg.title} <span class="src-tag">标记</span></h3>
+      <p>${found.length ? found.map((x) => `<span class="pill gold">${x.name}</span>`).join('') : '<span class="pill">四柱未见本站收录的常用神煞</span>'}</p>
+      ${found.map((x) => `<p><b>${x.name}</b>（${x.value} · ${cfg.hitLabel}${x.hits.join('、')}）：${x.text}</p>`).join('')}
+      ${none.length ? `<details style="margin-top:8px;"><summary style="cursor:pointer;color:var(--accent2);">未见的神煞（${none.length}）</summary>
+        <p class="hint">${none.map((x) => x.name).join('、')}——「未见」只表示本命四柱中未落位，不代表不存在或不好。</p></details>` : ''}
+      <p class="hint">${cfg.scopeNote}</p>
+      <p class="note">${cfg.rulesNote}</p>
+      <p class="note">${cfg.note}</p>
+    </div>`;
+}
+
 function chengguCard(b) {
   let cg;
   try { cg = castChenggu(b, weights, chengguData); } catch (e) { return `<div class="card"><h3>称骨</h3><p class="note">${e.message}</p></div>`; }
@@ -149,7 +166,11 @@ function caseLibraryCard() {
 }
 
 function render(b) {
-  setAISource('bazi', b, `日主${b.pillars.day?.[0] ?? ''}`);
+  const shensha = analyzeShensha(b, interp);
+  setAISource('bazi', {
+    ...b,
+    shensha: shensha.filter((x) => x.hits.length).map((x) => ({ name: x.name, value: x.value, hit: x.hits })),
+  }, `日主${b.pillars.day?.[0] ?? ''}`);
   const fiveEntries = Object.entries(b.fiveElements);
   const strongest = fiveEntries.reduce((a, x) => (x[1] > a[1] ? x : a));
   const weakest = fiveEntries.reduce((a, x) => (x[1] < a[1] ? x : a));
@@ -191,6 +212,7 @@ function render(b) {
       </div>
     </div>
     ${chengguCard(b)}
+    ${shenshaCard(shensha)}
     <div class="card"><h3>规则式解读 <span class="src-tag">释义</span></h3>
       <p><b>日主${b.dayGan}</b>：${interp.gan[b.dayGan]}</p>
       <p>${interp.wuXingStrong.replace('{wx}', strongest[0]).replace('{trait}', interp.wuXing[strongest[0]])}${strongest[0] !== weakest[0] ? '<br>' + interp.wuXingWeak.replace('{wx}', weakest[0]).replace('{trait}', interp.wuXing[weakest[0]]) : ''}</p>

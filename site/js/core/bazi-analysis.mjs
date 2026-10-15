@@ -247,3 +247,90 @@ export function readMarriage(bazi, interp, relations) {
 
   return { palaceLine, starLine: starFull, tips: uniqTips };
 }
+
+// —— 神煞（标记层，只判「见 / 未见」与落柱，不做吉凶总评）——
+// 口径只取一套主流口诀（见语料 shensha.rulesNote），不混派；各派取法不同，改表前先改语料。
+const SHENSHA_GAN = {
+  tianyi: { 甲: '丑未', 戊: '丑未', 庚: '丑未', 乙: '子申', 己: '子申', 丙: '亥酉', 丁: '亥酉', 壬: '卯巳', 癸: '卯巳', 辛: '午寅' },
+  wenchang: { 甲: '巳', 乙: '午', 丙: '申', 戊: '申', 丁: '酉', 己: '酉', 庚: '亥', 辛: '子', 壬: '寅', 癸: '卯' },
+  lushen: { 甲: '寅', 乙: '卯', 丙: '巳', 戊: '巳', 丁: '午', 己: '午', 庚: '申', 辛: '酉', 壬: '亥', 癸: '子' },
+  yangren: { 甲: '卯', 乙: '辰', 丙: '午', 丁: '未', 戊: '午', 己: '未', 庚: '酉', 辛: '戌', 壬: '子', 癸: '丑' },
+};
+// 三合局：驿马 / 桃花 / 华盖 / 将星
+const SANHE = [
+  { zhis: '申子辰', ma: '寅', tao: '酉', hua: '辰', jiang: '子' },
+  { zhis: '寅午戌', ma: '申', tao: '卯', hua: '戌', jiang: '午' },
+  { zhis: '巳酉丑', ma: '亥', tao: '午', hua: '丑', jiang: '酉' },
+  { zhis: '亥卯未', ma: '巳', tao: '子', hua: '未', jiang: '卯' },
+];
+const GU_GUA = [
+  { zhis: '亥子丑', gu: '寅', gua: '戌' },
+  { zhis: '寅卯辰', gu: '巳', gua: '丑' },
+  { zhis: '巳午未', gu: '申', gua: '辰' },
+  { zhis: '申酉戌', gu: '亥', gua: '未' },
+];
+const YUEDE = { 寅午戌: '丙', 申子辰: '壬', 亥卯未: '甲', 巳酉丑: '庚' };
+const KUIGANG = ['庚辰', '庚戌', '壬辰', '戊戌'];
+const POS_CN_MAP = { year: '年柱', month: '月柱', day: '日柱', time: '时柱' };
+
+/**
+ * 神煞标记（确定性规则，无 AI）。
+ * 返回固定顺序的 11 项，每项 `hits` 为空数组表示本命四柱未见——调用方据此区分「见 / 未见」。
+ * @param {object} bazi castBazi 输出
+ * @param {object} interp interpret-bazi.json 语料（含 shensha.items）
+ * @returns {Array<{ key: string, name: string, text: string, value: string, hits: string[] }>}
+ */
+export function analyzeShensha(bazi, interp) {
+  const cfg = interp?.shensha;
+  if (!cfg?.items) throw new Error('语料缺少 shensha.items 节');
+  const cols = Object.entries(bazi.pillars).map(([k, p]) => ({ key: k, label: POS_CN_MAP[k], gan: p.gan, zhi: p.zhi, ganZhi: p.ganZhi }));
+  const dayGan = bazi.pillars.day.gan;
+  const groupOf = (zhi) => SANHE.find((g) => g.zhis.includes(zhi)) ?? null;
+  const hitZhi = (set) => cols.filter((c) => set.includes(c.zhi)).map((c) => c.label);
+  const hitGan = (set) => cols.filter((c) => set.includes(c.gan)).map((c) => c.label);
+  const seen = (labels) => [...new Set(labels)];
+
+  const out = [];
+  const push = (key, value, hits) => {
+    const item = cfg.items[key];
+    if (!item) return; // 语料未定义则该神煞不上行（避免产出无名条目）
+    out.push({ key, name: item.name, text: item.text, value, hits: seen(hits) });
+  };
+
+  // 日干起的四类
+  for (const key of ['tianyi', 'wenchang', 'lushen', 'yangren']) {
+    const set = SHENSHA_GAN[key][dayGan] ?? '';
+    push(key, `${dayGan}日干见${set}`, hitZhi(set));
+  }
+
+  // 三合局四类：以年支为主、兼看日支（两组命中合并）
+  const yimaHits = [], taoHits = [], huaHits = [], jiangHits = [];
+  for (const zhi of [bazi.pillars.year.zhi, bazi.pillars.day.zhi]) {
+    const g = groupOf(zhi);
+    if (!g) continue;
+    yimaHits.push(...hitZhi(g.ma));
+    taoHits.push(...hitZhi(g.tao));
+    huaHits.push(...hitZhi(g.hua));
+    jiangHits.push(...hitZhi(g.jiang));
+  }
+  const baseZhis = `${bazi.pillars.year.zhi}（年支）/${bazi.pillars.day.zhi}（日支）`;
+  push('yima', `驿马（${baseZhis} 起）`, yimaHits);
+  push('taohua', `桃花（${baseZhis} 起）`, taoHits);
+  push('huagai', `华盖（${baseZhis} 起）`, huaHits);
+  push('jiangxing', `将星（${baseZhis} 起）`, jiangHits);
+
+  // 孤辰寡宿（年支组）
+  const gg = GU_GUA.find((x) => x.zhis.includes(bazi.pillars.year.zhi));
+  if (gg) push('gugua', `孤辰${gg.gu} / 寡宿${gg.gua}（年支组 ${gg.zhis}）`, hitZhi(gg.gu + gg.gua));
+
+  // 月德（月支组 → 天干）
+  const ydKey = Object.keys(YUEDE).find((k) => k.includes(bazi.pillars.month.zhi));
+  if (ydKey) push('yuede', `${ydKey}月见${YUEDE[ydKey]}`, hitGan(YUEDE[ydKey]));
+
+  // 魁罡（日柱干支）
+  push('kuigang', `日柱${bazi.pillars.day.ganZhi}`, KUIGANG.includes(bazi.pillars.day.ganZhi) ? ['日柱'] : []);
+
+  // ponytail: 只覆盖 11 类常用神煞（天乙/文昌/禄/羊刃/驿马/桃花/华盖/将星/孤辰寡宿/月德/魁罡）；
+  // 未做天德、红艳、金舆、天赦等——加神煞 = 先加语料 items 再在此处补规则，别只改一边
+  return out;
+}

@@ -7,7 +7,7 @@ const require = createRequire(import.meta.url);
 Object.assign(globalThis, require('../site/vendor/lunar.js'));
 
 import { castBazi } from '../site/js/core/bazi.mjs';
-import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage } from '../site/js/core/bazi-analysis.mjs';
+import { analyzeStrength, detectGeju, analyzeRelations, castChenggu, buildCaseLibrary, readMarriage, analyzeShensha } from '../site/js/core/bazi-analysis.mjs';
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
@@ -154,5 +154,48 @@ test('姻缘视角：readMarriage 配偶宫/配偶星/日支关系提示', () =>
   assert.ok(mf.starLine.includes('正官'), '女命配偶星应为正官');
   assert.ok(m.tips.some((t) => t.typeCn.includes('冲')), '日支戌辰冲应产出提示');
   assert.ok(m.tips.every((t) => t.tip.length > 5));
+});
+
+// —— 神煞：用两个已知干支基准手算核对（口诀见语料 shensha.rulesNote）——
+const shOf = (items, key) => items.find((x) => x.key === key);
+
+test('神煞：1968-08-08 08:00（戊申 庚申 庚戌 庚辰）→ 禄神/魁罡/华盖/驿马', () => {
+  const b = castBazi({ year: 1968, month: 8, day: 8, hour: 8, minute: 0, gender: 'male' });
+  const items = analyzeShensha(b, I);
+  assert.equal(items.length, 11, '应覆盖 11 类神煞');
+  // 庚日干禄在申：年支与月支皆申 → 年柱 + 月柱
+  assert.deepEqual(shOf(items, 'lushen').hits, ['年柱', '月柱'], '禄神应落年柱与月柱');
+  // 日柱庚戌属魁罡
+  assert.deepEqual(shOf(items, 'kuigang').hits, ['日柱']);
+  // 年支申（申子辰）华盖在辰 → 时柱；日支戌（寅午戌）华盖在戌 → 日柱
+  assert.deepEqual(shOf(items, 'huagai').hits.sort(), ['日柱', '时柱'].sort(), '华盖应落日柱与时柱');
+  // 驿马：年支申组驿马在寅（无）；日支戌组驿马在申 → 年柱 + 月柱
+  assert.deepEqual(shOf(items, 'yima').hits, ['年柱', '月柱'], '驿马应落年柱与月柱');
+  // 庚日干天乙贵人在丑未，四柱无丑未
+  assert.deepEqual(shOf(items, 'tianyi').hits, [], '天乙贵人不应命中');
+  // 每项字段齐备、无 undefined 文本
+  for (const x of items) {
+    assert.ok(x.name && x.text && x.text.length > 10, `${x.key} 缺判词`);
+    assert.ok(Array.isArray(x.hits), `${x.key} hits 应为数组`);
+    assert.ok(!x.text.includes('undefined') && x.value.length > 0);
+  }
+});
+
+test('神煞：2000-01-01 12:00（己卯 丙子 戊午 戊午）→ 羊刃/桃花/将星，且「未见」以空数组表达', () => {
+  const b = castBazi({ year: 2000, month: 1, day: 1, hour: 12, minute: 0, gender: 'male' });
+  const items = analyzeShensha(b, I);
+  // 戊日干羊刃在午 → 日柱与时柱
+  assert.deepEqual(shOf(items, 'yangren').hits.sort(), ['日柱', '时柱'].sort(), '羊刃应落日柱与时柱');
+  // 年支卯（亥卯未）桃花在子 → 月柱；日支午（寅午戌）桃花在卯 → 年柱
+  assert.deepEqual(shOf(items, 'taohua').hits.sort(), ['月柱', '年柱'].sort(), '桃花应落年柱与月柱');
+  // 将星：年支卯组在卯 → 年柱；日支午组在午 → 日柱/时柱
+  assert.deepEqual(shOf(items, 'jiangxing').hits.sort(), ['年柱', '日柱', '时柱'].sort(), '将星应落年柱/日柱/时柱');
+  assert.deepEqual(shOf(items, 'kuigang').hits, [], '戊午日柱不属魁罡');
+  assert.equal(items.filter((x) => x.hits.length).length, 3, '本基准应恰好命中三类神煞');
+});
+
+test('神煞：语料 items 缺失时显式报错，不静默产出空表', () => {
+  const b = castBazi({ year: 2000, month: 1, day: 1, hour: 12, minute: 0, gender: 'male' });
+  assert.throws(() => analyzeShensha(b, {}), /shensha/);
 });
 
