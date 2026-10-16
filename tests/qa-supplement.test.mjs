@@ -321,7 +321,7 @@ test('iching.json ↔ corpus/eastern/iching-64.json：64 卦卦名/bits/卦辞/�
   assert.equal(checked, 384, `爻辞比对数应为 384，实际 ${checked}`);
 });
 
-test('iching.json 润色结构锁：386 条 baiHua（384 爻 + 用九用六）非空且不少于 12 字（防回退）', () => {
+test('iching.json 润色结构锁：386 条爻白话 + 64 卦辞白话 + 64 大象白话非空且不少于下限（防回退）', () => {
   let n = 0;
   for (const h of iching.hexagrams) {
     for (const ln of h.lines) {
@@ -332,8 +332,10 @@ test('iching.json 润色结构锁：386 条 baiHua（384 爻 + 用九用六）�
       assert.ok(typeof h.special.baiHua === 'string' && h.special.baiHua.trim().length >= 12, `卦 ${h.id} ${h.special.pos} 白话过短或为空`);
       n++;
     }
+    assert.ok(typeof h.guaCiBaiHua === 'string' && h.guaCiBaiHua.trim().length >= 20, `卦 ${h.id} 卦辞白话过短或为空`);
+    assert.ok(typeof h.daXiangBaiHua === 'string' && h.daXiangBaiHua.trim().length >= 25, `卦 ${h.id} 大象白话过短或为空`);
   }
-  assert.equal(n, 386, `白话条数应为 386，实际 ${n}`);
+  assert.equal(n, 386, `爻白话条数应为 386，实际 ${n}`);
 });
 
 test('guanyin-signs.json ↔ corpus/eastern/guanyin-signs-100.json：结构字段一致；分项解已整体深润（键集一致 + 1478 条 + 非空下限 + 疾病就医红线）', () => {
@@ -378,7 +380,7 @@ test('guanyin-signs.json ↔ corpus/eastern/guanyin-signs-100.json：结构字�
   function byIchingId(id) { return iching.hexagrams.find((h) => h.id === id); }
 });
 
-test('tarot.json ↔ corpus/western/tarot-meanings-rws.json：78 牌 rws（en+cn × 正逆）逐字一致', () => {
+test('tarot.json ↔ corpus/western/tarot-meanings-rws.json：en 原文逐字一致；cn 已于 2026-10-16 重译润色（156 条非空且 ≥10 字）', () => {
   const src = readJSON('docs/research/round2/corpus/western/tarot-meanings-rws.json').cards;
   assert.equal(tarotDeck.length, 78);
   let checked = 0;
@@ -387,8 +389,10 @@ test('tarot.json ↔ corpus/western/tarot-meanings-rws.json：78 牌 rws（en+cn
     assert.ok(e, `语料缺牌 ${c.id}`);
     assert.equal(c.rws.up.en, e.en.up, `${c.id} rws.up.en 与 Waite 1911 原文不一致`);
     assert.equal(c.rws.rev.en, e.en.rev, `${c.id} rws.rev.en 与 Waite 1911 原文不一致`);
-    assert.equal(c.rws.up.cn, e.cn.up, `${c.id} rws.up.cn 与语料中译不一致`);
-    assert.equal(c.rws.rev.cn, e.cn.rev, `${c.id} rws.rev.cn 与语料中译不一致`);
+    // cn 已逐条重译润色（docs/research/round2/语料润色记录.md）：不再逐字比对源中译，改锁非空与下限
+    for (const d of ['up', 'rev']) {
+      assert.ok(typeof c.rws[d].cn === 'string' && c.rws[d].cn.trim().length >= 10, `${c.id} rws.${d}.cn 译文过短或为空`);
+    }
     checked++;
   }
   assert.equal(checked, 78);

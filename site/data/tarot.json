@@ -1,6 +1,6 @@
 {
   "meta": {
-    "source": "牌义中文化改编自 A. E. Waite《The Pictorial Key to the Tarot》(1911, 公有领域)",
+    "source": "牌义中文化改编自 A. E. Waite《The Pictorial Key to the Tarot》(1911, 公有领域)；中文对照于 2026-10-16 逐条重译润色",
     "deck": "Rider-Waite-Smith",
     "count": 78
   },
@@ -28,11 +28,11 @@
       "rws": {
         "up": {
           "en": "Folly, mania, extravagance, intoxication, delirium, frenzy, bewrayment.",
-          "cn": "忘乎所以的狂喜、不计后果的开端、痴迷与放纵。"
+          "cn": "愚行、狂热、挥霍放纵、沉溺痴迷、谵妄失度、癫狂、自暴自弃。"
         },
         "rev": {
           "en": "Negligence, absence, distribution, carelessness, apathy, nullity, vanity.",
-          "cn": "疏忽、心不在焉、冷漠、虚无、徒劳。"
+          "cn": "疏忽大意、心不在焉、涣散、漫不经心、冷漠、虚无、虚荣。"
         }
       }
     },
@@ -59,11 +59,11 @@
       "rws": {
         "up": {
           "en": "Skill, diplomacy, address, subtlety; sickness, pain, loss, disaster, snares of enemies; self-confidence, will; the Querent, if male.",
-          "cn": "技艺与手腕、自信与意志、以智取胜；亦含病痛与敌暗算的双面义。"
+          "cn": "技艺娴熟、善于外交、机敏得体、精微巧妙；亦含疾病、痛楚、损失、灾祸、敌人的陷阱；自信与意志；若问卜者为男性，即指其本人。"
         },
         "rev": {
           "en": "Physician, Magus, mental disease, disgrace, disquiet.",
-          "cn": "医师／智者的身份义；心疾、失态、不安。"
+          "cn": "医师、术士；精神疾患、耻辱、不安。"
         }
       }
     },
@@ -90,11 +90,11 @@
       "rws": {
         "up": {
           "en": "Secrets, mystery, the future as yet unrevealed; the woman who interests the Querent; silence, tenacity; mystery, wisdom, science.",
-          "cn": "秘密与未知、沉默与坚韧、秘传的智慧与学问。"
+          "cn": "秘密、神秘、尚未揭示的未来；令问卜者倾心的女性；沉默、坚韧；神秘、智慧、学问。"
         },
         "rev": {
           "en": "Passion, moral or physical ardour, conceit, surface knowledge.",
-          "cn": "炽情、自负、一知半解的表层知识。"
+          "cn": "激情、道德上或肉体上的炽热、自负、一知半解。"
         }
       }
     },
@@ -121,11 +121,11 @@
       "rws": {
         "up": {
           "en": "Fruitfulness, action, initiative, length of days; the unknown, clandestine; also difficulty, doubt, ignorance.",
-          "cn": "丰饶与多产、主动作为、绵长福泽；亦含隐秘与疑难。"
+          "cn": "丰饶多产、行动力、开创进取、长寿；未知之事、隐秘之事；亦含困难、疑虑、蒙昧。"
         },
         "rev": {
           "en": "Light, truth, the unravelling of involved matters, public rejoicings; according to another reading, vacillation.",
-          "cn": "真相大白、难题解开、公开的喜事；另一解：犹豫不决。"
+          "cn": "光明、真理、复杂纠葛之事得以解开、公众的欢庆；另解：摇摆不定。"
         }
       }
     },
@@ -152,11 +152,11 @@
       "rws": {
         "up": {
           "en": "Stability, power, protection, realization; a great person; aid, reason, conviction; also authority and will.",
-          "cn": "稳固、权力与庇护、理性与信念、权威与意志。"
+          "cn": "稳固、权力、庇护、实现；一位大人物；援助、理性、信念；亦含权威与意志。"
         },
         "rev": {
           "en": "Benevolence, compassion, credit; also confusion to enemies, obstruction, immaturity.",
-          "cn": "仁慈与宽恕、信誉；亦含阻碍与不成熟。"
+          "cn": "仁善、悲悯、信誉；亦含令敌人陷于混乱、阻碍、未成熟。"
         }
       }
     },
@@ -183,11 +183,11 @@
       "rws": {
         "up": {
           "en": "Marriage, alliance, captivity, servitude; by another account, mercy and goodness; inspiration; the man to whom the Querent has recourse.",
-          "cn": "婚约与同盟、受制与束缚、良师与依靠、灵感。"
+          "cn": "婚姻、结盟、受制、奴役；另一说：仁慈与良善；灵感；问卜者所求助的那位男性。"
         },
         "rev": {
           "en": "Society, good understanding, concord, overkindness, weakness.",
-          "cn": "社交与谅解、和睦；过度的善意即软弱。"
+          "cn": "社交、善解人意、和睦、过度的善意、软弱。"
         }
       }
     },
@@ -214,11 +214,11 @@
       "rws": {
         "up": {
           "en": "Attraction, love, beauty, trials overcome.",
-          "cn": "吸引与爱、美、渡过试炼。"
+          "cn": "吸引、爱情、美、渡过试炼。"
         },
         "rev": {
           "en": "Failure, foolish designs. Another account speaks of marriage frustrated and contrarieties of all kinds.",
-          "cn": "失算与愚蠢的计划、婚事受挫、诸事相违。"
+          "cn": "失败、愚蠢的图谋。另解：婚事受挫，诸般事与愿违。"
         }
       }
     },
@@ -245,11 +245,11 @@
       "rws": {
         "up": {
           "en": "Succour, providence also war, triumph, presumption, vengeance, trouble.",
-          "cn": "驰援与护佑、战争与凯旋；亦含僭越与祸患。"
+          "cn": "援助、上天护佑；亦含战争、凯旋、傲慢擅断、复仇、纷扰。"
         },
         "rev": {
           "en": "Riot, quarrel, dispute, litigation, defeat.",
-          "cn": "骚乱、口角、争端、诉讼、败北。"
+          "cn": "骚乱、争吵、争端、诉讼、败北。"
         }
       }
     },
@@ -276,11 +276,11 @@
       "rws": {
         "up": {
           "en": "Power, energy, action, courage, magnanimity; also complete success and honours.",
-          "cn": "力量与行动、勇气与宽宏、圆满成功与荣誉。"
+          "cn": "力量、活力、行动、勇气、宽宏大量；亦含圆满的成功与荣誉。"
         },
         "rev": {
           "en": "Despotism, abuse of power, weakness, discord, sometimes even disgrace.",
-          "cn": "专横与滥权、软弱与失和，甚或蒙羞。"
+          "cn": "专横、滥用权力、软弱、失和，有时甚至蒙受耻辱。"
         }
       }
     },
@@ -307,11 +307,11 @@
       "rws": {
         "up": {
           "en": "Prudence, circumspection; also and especially treason, dissimulation, roguery, corruption.",
-          "cn": "审慎与周虑；亦含背叛、伪装与堕落的警示义。"
+          "cn": "审慎、周虑；亦含且尤指背叛、虚伪掩饰、奸诈、堕落。"
         },
         "rev": {
           "en": "Concealment, disguise, policy, fear, unreasoned caution.",
-          "cn": "藏匿与掩饰、权谋、恐惧、无谓的过度谨慎。"
+          "cn": "隐藏、伪装、权谋、恐惧、无来由的过分谨慎。"
         }
       }
     },
@@ -338,11 +338,11 @@
       "rws": {
         "up": {
           "en": "Destiny, fortune, success, elevation, luck, felicity.",
-          "cn": "命运与机运、成功与跃升、福气。"
+          "cn": "命运、机运、成功、跃升、好运、幸福。"
         },
         "rev": {
           "en": "Increase, abundance, superfluity.",
-          "cn": "增益与丰盛，过犹不及的『多』。"
+          "cn": "增长、丰盛，以及过剩。"
         }
       }
     },
@@ -369,11 +369,11 @@
       "rws": {
         "up": {
           "en": "Equity, rightness, probity, executive; triumph of the deserving side in law.",
-          "cn": "公平与正直、执行力、有理者胜诉。"
+          "cn": "公平、正当、正直、执行力；在法律上应得的一方获胜。"
         },
         "rev": {
           "en": "Law in all its departments, legal complications, bigotry, bias, excessive severity.",
-          "cn": "法律纠纷、偏执与偏袒、执法过苛。"
+          "cn": "各个层面的法律、法律上的纠葛、偏执、偏见、过分的严苛。"
         }
       }
     },
@@ -400,11 +400,11 @@
       "rws": {
         "up": {
           "en": "Wisdom, circumspection, discernment, trials, sacrifice, intuition, divination, prophecy.",
-          "cn": "智慧与明辨、试炼与牺牲、直觉与预言。"
+          "cn": "智慧、周虑、明辨、试炼、牺牲、直觉、占卜、预言。"
         },
         "rev": {
           "en": "Selfishness, the crowd, body politic.",
-          "cn": "自私自利、随波逐流的群体性。"
+          "cn": "自私自利、人群、国家政体。"
         }
       }
     },
@@ -431,11 +431,11 @@
       "rws": {
         "up": {
           "en": "End, mortality, destruction, corruption; also, for a man, the loss of a benefactor; for a woman, many contrarieties; for a maid, failure of marriage projects.",
-          "cn": "终结与死生、毁坏与朽坏；亦指恩主之失、诸事乖违。"
+          "cn": "终结、死亡、毁灭、腐朽；亦分指：对男子，是失去恩主；对妇人，是诸事乖违；对少女，是婚事落空。"
         },
         "rev": {
           "en": "Inertia, sleep, lethargy, petrifaction, somnambulism; hope destroyed.",
-          "cn": "僵滞与昏睡、木然麻木、希望破灭。"
+          "cn": "迟滞、沉睡、昏倦、僵木、梦游；希望被摧毁。"
         }
       }
     },
@@ -462,11 +462,11 @@
       "rws": {
         "up": {
           "en": "Economy, moderation, frugality, management, accommodation.",
-          "cn": "节制与俭省、经营与协调、从容调度。"
+          "cn": "节约、节制、俭朴、经营管理、妥善调处。"
         },
         "rev": {
           "en": "Things connected with churches, religions, sects, the priesthood; also disunion, unfortunate combinations, competing interests.",
-          "cn": "教派与神职相关之事；失和、组合失当、利益相争。"
+          "cn": "与教会、宗教、教派、神职相关之事；亦含失和、不幸的组合、相互竞争的利益。"
         }
       }
     },
@@ -493,11 +493,11 @@
       "rws": {
         "up": {
           "en": "Ravage, violence, vehemence, extraordinary efforts, force, fatality; that which is predestined but is not for this reason evil.",
-          "cn": "狂暴与强力、殊死的努力、宿命之力（宿命未必为恶）。"
+          "cn": "蹂躏、暴行、狂烈、超乎寻常的努力、强力、宿命；此乃注定之事，但并不因此即为恶。"
         },
         "rev": {
           "en": "Evil fatality, weakness, pettiness, blindness.",
-          "cn": "恶性的宿命、孱弱、琐碎、蒙蔽。"
+          "cn": "恶性的宿命、软弱、琐碎卑小、盲目。"
         }
       }
     },
@@ -524,11 +524,11 @@
       "rws": {
         "up": {
           "en": "Misery, distress, indigence, adversity, calamity, disgrace, deception, ruin. It is a card in particular of unforeseen catastrophe.",
-          "cn": "困苦与灾厄、耻辱与欺瞒、倾覆——尤指飞来横祸。"
+          "cn": "悲惨、痛苦、贫困、逆境、灾祸、耻辱、欺瞒、毁灭。此牌尤指突如其来的横祸。"
         },
         "rev": {
           "en": "According to one account, the same in a lesser degree; also oppression, imprisonment, tyranny.",
-          "cn": "同类灾祸较轻的一档；亦指压迫、禁锢、暴虐。"
+          "cn": "一说为同类灾祸而程度较轻；亦含压迫、监禁、暴政。"
         }
       }
     },
@@ -555,11 +555,11 @@
       "rws": {
         "up": {
           "en": "Loss, theft, privation, abandonment; another reading says—hope and bright prospects.",
-          "cn": "失窃与匮乏、被弃；另一解：希望与光明前景。"
+          "cn": "损失、失窃、匮乏、被弃；另解：希望与光明的前景。"
         },
         "rev": {
           "en": "Arrogance, haughtiness, impotence.",
-          "cn": "傲慢与倨傲、力不从心。"
+          "cn": "傲慢、倨傲、无能为力。"
         }
       }
     },
@@ -586,11 +586,11 @@
       "rws": {
         "up": {
           "en": "Hidden enemies, danger, calumny, darkness, terror, deception, occult forces, error.",
-          "cn": "暗敌与危险、中伤与黑暗、欺诈与迷误、隐秘之力。"
+          "cn": "暗藏的敌人、危险、中伤、黑暗、恐怖、欺瞒、隐秘的力量、迷误。"
         },
         "rev": {
           "en": "Instability, inconstancy, silence, lesser degrees of deception and error.",
-          "cn": "动摇与反复、沉默、程度较轻的欺瞒与谬误。"
+          "cn": "不稳定、反复无常、沉默、程度较轻的欺瞒与谬误。"
         }
       }
     },
@@ -617,11 +617,11 @@
       "rws": {
         "up": {
           "en": "Material happiness, fortunate marriage, contentment.",
-          "cn": "现世的幸福、美满姻缘、心满意足。"
+          "cn": "现世的幸福、美满的婚姻、心满意足。"
         },
         "rev": {
           "en": "The same in a lesser sense.",
-          "cn": "同义但程度较轻，喜中略有折损。"
+          "cn": "同前义，而程度较轻。"
         }
       }
     },
@@ -648,11 +648,11 @@
       "rws": {
         "up": {
           "en": "Change of position, renewal, outcome. Another account specifies total loss though lawsuit.",
-          "cn": "地位变更、更新与结局；另一解：因讼大损。"
+          "cn": "地位的变更、更新、结局。另解：因诉讼而损失殆尽。"
         },
         "rev": {
           "en": "Weakness, pusillanimity, simplicity; also deliberation, decision, sentence.",
-          "cn": "怯懦与天真；亦指深思、裁决与判词。"
+          "cn": "软弱、怯懦、单纯；亦含斟酌、决断、判决。"
         }
       }
     },
@@ -679,11 +679,11 @@
       "rws": {
         "up": {
           "en": "Assured success, recompense, voyage, route, emigration, flight, change of place.",
-          "cn": "稳操的成功与回报、远行与迁居、换环境。"
+          "cn": "确定无疑的成功、回报、远航、路线、移居海外、逃离、换地方。"
         },
         "rev": {
           "en": "Inertia, fixity, stagnation, permanence.",
-          "cn": "惰性与凝滞、原地不动、局面的固化。"
+          "cn": "惰性、固定、停滞、经久不变。"
         }
       }
     },
@@ -710,11 +710,11 @@
       "rws": {
         "up": {
           "en": "Creation, invention, enterprise, the powers which result in these; principle, beginning, source; birth, family, origin; the starting point of enterprises; according to another account, money, fortune, inheritance.",
-          "cn": "创造与发明、开创事业之力、起源与开端；另一解：钱财与遗产。"
+          "cn": "创造、发明、开拓事业，以及成就这些的力量；本原、开端、源头；诞生、家庭、出身；事业的起点；另解：钱财、好运、遗产。"
         },
         "rev": {
           "en": "Fall, decadence, ruin, perdition, to perish; also a certain clouded joy.",
-          "cn": "衰落与倾颓、毁灭；亦指蒙尘的喜悦。"
+          "cn": "跌落、颓败、毁坏、灭亡、消亡；亦含某种蒙上阴翳的喜悦。"
         }
       }
     },
@@ -741,11 +741,11 @@
       "rws": {
         "up": {
           "en": "Riches, fortune, magnificence; on the other hand, physical suffering, disease, chagrin, sadness, mortification. A lord overlooking his dominion and alternately contemplating a globe.",
-          "cn": "财富与鸿图；亦含病痛、失意与悲苦的双面义。"
+          "cn": "财富、好运、壮丽恢弘；另一方面，则是肉体苦楚、疾病、懊恼、悲伤、屈辱。此牌画面：一位领主俯瞰自己的领地，时而凝视手中的地球仪。"
         },
         "rev": {
           "en": "Surprise, wonder, enchantment, emotion, trouble, fear.",
-          "cn": "惊讶与奇遇、迷醉、忧惧与纷扰。"
+          "cn": "惊讶、惊奇、迷醉、激动、纷扰、恐惧。"
         }
       }
     },
@@ -772,11 +772,11 @@
       "rws": {
         "up": {
           "en": "Established strength, enterprise, effort, trade, commerce, discovery; able co-operation in business.",
-          "cn": "已立之势、实业与商贾、探索、得力的协作。"
+          "cn": "已立定的实力、事业、努力、贸易、商业、发现；事业上的得力协作。"
         },
         "rev": {
           "en": "The end of troubles, suspension or cessation of adversity, toil and disappointment.",
-          "cn": "烦难将尽、逆境与辛劳告一段落。"
+          "cn": "烦难终结，逆境、辛劳与失望中止或停歇。"
         }
       }
     },
@@ -803,11 +803,11 @@
       "rws": {
         "up": {
           "en": "Country life, haven of refuge, a species of domestic harvest-home, repose, concord, harmony, prosperity, peace, and the perfected work of these.",
-          "cn": "田园安居、休憩与和睦、家宅丰登、功成之作。"
+          "cn": "乡村生活、庇护之所，一类家宅中的丰收庆典；安歇、和睦、和谐、兴旺、安宁，以及这一切修成的圆满之功。"
         },
         "rev": {
           "en": "The meaning remains unaltered; it is prosperity, increase, felicity, beauty, embellishment.",
-          "cn": "义不变：兴盛、增益、福乐与添彩。"
+          "cn": "牌义不变：兴旺、增益、福乐、美、增饰添彩。"
         }
       }
     },
@@ -834,11 +834,11 @@
       "rws": {
         "up": {
           "en": "Imitation, sham fight, but also the strenuous competition and struggle of the search after riches and fortune; some attributions say gold, gain, opulence.",
-          "cn": "模拟与演练、为求财获利的激烈竞争；另一解：得金与富足。"
+          "cn": "模仿、模拟之战；亦指为追逐财富与机运而进行的激烈竞争与搏斗；有说主黄金、获利、富足。"
         },
         "rev": {
           "en": "Litigation, disputes, trickery, contradiction.",
-          "cn": "诉讼与争端、诡诈、彼此相左。"
+          "cn": "诉讼、争端、诡诈、相互矛盾。"
         }
       }
     },
@@ -865,11 +865,11 @@
       "rws": {
         "up": {
           "en": "A victor triumphing; great news carried in state by the King's courier; expectation crowned with its own desire, the crown of hope.",
-          "cn": "凯旋与捷报、所望所求终得加冕。"
+          "cn": "得胜的凯旋者；王室信使隆重送达的捷报；所期待者如愿以偿，是为希望之冠。"
         },
         "rev": {
           "en": "Apprehension, fear, as of a victorious enemy at the gate; treachery, disloyalty; also indefinite delay.",
-          "cn": "忧惧如败兵压境、背叛与不忠、遥遥无期的延宕。"
+          "cn": "忧惧、害怕，如强敌兵临城下；背叛、不忠；亦含无限期的延误。"
         }
       }
     },
@@ -896,11 +896,11 @@
       "rws": {
         "up": {
           "en": "Valour; six attacking one who has the vantage position; discussion, wordy strife; negotiations, war of trade, competition; a card of success.",
-          "cn": "踞高临下的勇气、论战与谈判、商战与竞争——终属成功之牌。"
+          "cn": "英勇；六人攻击一位占据高地者；讨论、口舌之争；谈判、商战、竞争；终属成功之牌。"
         },
         "rev": {
           "en": "Perplexity, embarrassments, anxiety; a caution against indecision.",
-          "cn": "困窘与焦虑；警惕优柔寡断。"
+          "cn": "困惑、窘迫、焦虑；警示切莫优柔寡断。"
         }
       }
     },
@@ -927,11 +927,11 @@
       "rws": {
         "up": {
           "en": "Activity in undertakings, swiftness, great haste, great hope, speed towards an assured felicity; that which is on the move; also the arrows of love.",
-          "cn": "事业骤速、疾行与厚望、奔向可期之福；亦指爱神之箭。"
+          "cn": "事业活跃推进、迅捷、急速、厚望，向确定无疑的幸福飞驰；正在行进之中的一切；亦指爱之箭。"
         },
         "rev": {
           "en": "Arrows of jealousy, internal dispute, stingings of conscience, quarrels; domestic disputes.",
-          "cn": "嫉妒之矢、内讧与良心刺痛、争吵与家内不和。"
+          "cn": "嫉妒之箭、内部纷争、良心的刺痛、口角；家庭争端。"
         }
       }
     },
@@ -958,11 +958,11 @@
       "rws": {
         "up": {
           "en": "Strength in opposition; meeting an onslaught boldly; delay, suspension, adjournment.",
-          "cn": "迎击之力、正面硬撼；亦指延期与暂缓。"
+          "cn": "抵御中的力量；勇敢迎击强攻；延误、暂停、延期。"
         },
         "rev": {
           "en": "Obstacles, adversity, calamity.",
-          "cn": "障碍与逆境、祸患。"
+          "cn": "障碍、逆境，以及灾祸。"
         }
       }
     },
@@ -989,11 +989,11 @@
       "rws": {
         "up": {
           "en": "Oppression simply; also fortune, gain, any kind of success; a card of false-seeming, disguise, perfidy. Success is stultified if the Nine of Swords follows.",
-          "cn": "重压与负荷；亦指财利与成功；兼有虚饰与欺瞒义。"
+          "cn": "直义为重压；亦指机运、获利、任何一种成功；兼为虚饰、伪装、背信之牌。若其后紧随宝剑九，成功即归枉然。"
         },
         "rev": {
           "en": "Contrarieties, difficulties, intrigues, and their analogies.",
-          "cn": "乖违与困难、暗中搅局。"
+          "cn": "乖违、困难、阴谋算计，以及与此相类之事。"
         }
       }
     },
@@ -1020,11 +1020,11 @@
       "rws": {
         "up": {
           "en": "Dark young man, faithful, a lover, an envoy, a postman; favourable testimony; a dangerous rival if followed by the Page of Cups; has the chief qualities of his suit; may signify family intelligence.",
-          "cn": "忠实的年轻人、传信者与使者；具本花色诸质；亦指家中音讯。"
+          "cn": "黑发的年轻人、忠实、一位恋人、使者、信差；有利的证言；若其后为圣杯侍从，则是一位危险的对手；具有本牌组的主要特质；或指家中音讯。"
         },
         "rev": {
           "en": "Anecdotes, announcements, evil news; indecision and the instability which accompanies it.",
-          "cn": "传闻与公告、噩耗；摇摆不定。"
+          "cn": "轶闻、公告、噩耗；优柔寡断及其伴随的摇摆不稳。"
         }
       },
       "persona": "手持权杖眺望远方的年轻信使：一腔「想去试试」的热望，火种与新讯息都由他带来。"
@@ -1052,11 +1052,11 @@
       "rws": {
         "up": {
           "en": "Departure, absence, flight, emigration; a dark young man, friendly; change of residence.",
-          "cn": "启程与远走、离乡迁居；友善的年轻人。"
+          "cn": "启程、离开、远行、移居；一位黑发年轻人，态度友善；迁居。"
         },
         "rev": {
           "en": "Rupture, division, interruption, discord.",
-          "cn": "决裂与分裂、中断、失和。"
+          "cn": "决裂、分裂、中断、失和。"
         }
       },
       "persona": "策马疾驰的开拓骑士：行动快过思考，勇气与冒进一线之隔——他追逐的从来是远方本身。"
@@ -1084,11 +1084,11 @@
       "rws": {
         "up": {
           "en": "A dark woman, countrywoman, friendly, chaste, loving, honourable; love of money, or a certain success in business.",
-          "cn": "亲切可敬的女性、贞静有爱；亦指爱财、生意小成。"
+          "cn": "一位黑发女性、乡间女子，亲切、贞洁、有爱、可敬；亦指爱财，或生意上的某种成功。"
         },
         "rev": {
           "en": "Good, economical, obliging, serviceable; also opposition, jealousy, even deceit and infidelity, in certain positions.",
-          "cn": "勤俭而乐于助人；特定牌位下亦指敌意、嫉妒、欺瞒与不忠。"
+          "cn": "良善、节俭、乐于助人、堪当其用；在特定牌位下，亦含敌对、嫉妒，甚至欺瞒与不忠。"
         }
       },
       "persona": "炉火般明亮的向日葵王后：自信与热忱向外辐射，天生能把人气聚成一团旺火。"
@@ -1116,11 +1116,11 @@
       "rws": {
         "up": {
           "en": "Dark man, friendly, countryman, generally married, honest and conscientious; the card always signifies honesty; news concerning an unexpected heritage.",
-          "cn": "诚实有担待的男性、意外遗产的消息；此牌恒指诚信。"
+          "cn": "一位黑发男性，友善、乡野之人、通常已婚，诚实而尽责；此牌恒指诚信；关于意外遗产的消息。"
         },
         "rev": {
           "en": "Good, but severe; austere, yet tolerant.",
-          "cn": "良善而严厉、清峻却宽容。"
+          "cn": "良善但严厉；清峻却宽容。"
         }
       },
       "persona": "执杖掌舵的创业者之王：以远见与魄力服众，火气之下，是看得见的真实影响力。"
@@ -1148,11 +1148,11 @@
       "rws": {
         "up": {
           "en": "House of the true heart, joy, content, abode, nourishment, abundance, fertility; Holy Table, felicity hereof.",
-          "cn": "真心之宅、喜乐与满足、滋养与丰饶。"
+          "cn": "真心之宅、喜乐、满足、居所、滋养、丰裕、多产；圣坛，及其中的福乐。"
         },
         "rev": {
           "en": "House of the false heart, mutation, instability, revolution.",
-          "cn": "假意之宅、变故、不稳、颠覆。"
+          "cn": "假意之宅、变故、不稳定、剧变。"
         }
       }
     },
@@ -1179,11 +1179,11 @@
       "rws": {
         "up": {
           "en": "Love, passion, friendship, affinity, union, concord, sympathy, the interrelation of the sexes.",
-          "cn": "爱与情谊、两情相契、结合与和睦。"
+          "cn": "爱情、激情、友谊、投契、结合、和睦、体恤、两性之间的相互关联。"
         },
         "rev": {
           "en": "Lust, cupidity, jealousy, wish, desire.",
-          "cn": "贪欲与占有、嫉妒、单方面的欲求。"
+          "cn": "淫欲、贪求、嫉妒、心愿、欲望。"
         }
       }
     },
@@ -1210,11 +1210,11 @@
       "rws": {
         "up": {
           "en": "The conclusion of any matter in plenty, perfection and merriment; happy issue, victory, fulfilment, solace, healing.",
-          "cn": "丰美圆满的收束、喜果与痊愈、慰藉。"
+          "cn": "任何事情以丰足、圆满、欢乐收结；圆满的结局、胜利、成就、慰藉、痊愈。"
         },
         "rev": {
           "en": "Expedition, dispatch, achievement, end; also the side of excess in physical enjoyment, and the pleasures of the senses.",
-          "cn": "速成与收尾；亦指感官享乐之过度。"
+          "cn": "成行、速办、成就、终结；亦指肉体享受中过度的一面，与感官的愉悦。"
         }
       }
     },
@@ -1241,11 +1241,11 @@
       "rws": {
         "up": {
           "en": "Weariness, disgust, aversion, imaginary vexations, satiety; another wine is offered the wastrel, but he sees no consolation therein; a card of blended pleasure.",
-          "cn": "倦怠与厌腻、想象出来的烦忧、福至而不觉。"
+          "cn": "倦怠、厌腻、憎恶、想象出的烦忧、餍足；又一杯酒奉到此浪掷之人面前，他却看不出其中有什么慰藉；一张苦乐相掺的愉悦之牌。"
         },
         "rev": {
           "en": "Novelty, presage, new instruction, new relations.",
-          "cn": "新奇与预兆、新的指点、新的关系。"
+          "cn": "新奇、预兆、新的教诲、新的关系。"
         }
       }
     },
@@ -1272,11 +1272,11 @@
       "rws": {
         "up": {
           "en": "A card of loss, but something remains over; three have been taken, but two are left; a card of inheritance, patrimony, transmission, but not corresponding to expectations; with some interpreters, marriage not without bitterness.",
-          "cn": "有失而未尽失——三倾二立；继承与传承、不如所期。"
+          "cn": "一张损失之牌，但尚有留存：已被取走三只，仍有两只在；是一张继承、家产、传续之牌，却与期望不尽相符；在某些解牌者看来，亦指不乏苦涩的婚姻。"
         },
         "rev": {
           "en": "News, alliances, affinity, consanguinity, ancestry, return, false projects.",
-          "cn": "音讯与结盟、亲缘与归返、虚妄的计划。"
+          "cn": "音讯、结盟、亲善、血亲、祖先、归返、虚妄的图谋。"
         }
       }
     },
@@ -1303,11 +1303,11 @@
       "rws": {
         "up": {
           "en": "A card of the past and of memories, looking back on childhood; happiness coming rather from the past; another reading gives new relations, new knowledge, new environment.",
-          "cn": "怀旧与童年记忆、来自过去的快乐；另一解：新环境新关系。"
+          "cn": "一张关于过去与记忆的牌，回望童年；幸福更多来自往昔；另解：新的关系、新的知识、新的环境。"
         },
         "rev": {
           "en": "The future, renewal, that which will come to pass presently.",
-          "cn": "未来将至之事、更新与到来。"
+          "cn": "未来、更新、即将成真之事。"
         }
       }
     },
@@ -1334,11 +1334,11 @@
       "rws": {
         "up": {
           "en": "Fairy favours, images of reflection, sentiment, imagination, things seen in the glass of contemplation; some attainment, but nothing permanent or substantial.",
-          "cn": "镜花水月的意象、情思与想象、有小得而无恒产。"
+          "cn": "仙灵的眷顾、映照之象、情思、想象，凝思之镜中所见之物；小有所成，却无恒久或实质者。"
         },
         "rev": {
           "en": "Desire, will, determination, project.",
-          "cn": "欲念与意志、决心与规划。"
+          "cn": "欲望、意志、决心、计划。"
         }
       }
     },
@@ -1365,11 +1365,11 @@
       "rws": {
         "up": {
           "en": "The decline of a matter, or that a matter thought important is really of slight consequence; other readings antithetical: joy, mildness, timidity, honour, modesty.",
-          "cn": "事态消退、自以为重者实为轻末；另一解：谦和与体面。"
+          "cn": "一件事的衰落，或谓自以为举足轻重之事其实无关宏旨；另有相反一解：喜悦、温和、怯懦、荣誉、谦逊。"
         },
         "rev": {
           "en": "Great joy, happiness, feasting.",
-          "cn": "大喜与欢宴。"
+          "cn": "大喜、幸福，以及欢宴。"
         }
       }
     },
@@ -1396,11 +1396,11 @@
       "rws": {
         "up": {
           "en": "Concord, contentment, physical bien-être; also victory, success, advantage; satisfaction for the Querent.",
-          "cn": "和睦与满足、身心安适、胜算与实利。"
+          "cn": "和睦、满足、身体上的安适；亦含胜利、成功、实利；问卜者得偿所愿。"
         },
         "rev": {
           "en": "Truth, loyalty, liberty; but the readings vary and include mistakes, imperfections.",
-          "cn": "真话与忠诚、自在；另解：差错与不圆满。"
+          "cn": "真话、忠诚、自在；但各家解说不一，亦包括差错、不圆满。"
         }
       }
     },
@@ -1427,11 +1427,11 @@
       "rws": {
         "up": {
           "en": "Contentment, repose of the entire heart; perfection of human love and friendship; the town, village or country inhabited by the Querent.",
-          "cn": "全心安顿、人间爱与友爱的圆满、家宅之邦。"
+          "cn": "满足、整颗心的安歇；人间爱与友谊的圆满；问卜者所居住的城镇、村落或乡邦。"
         },
         "rev": {
           "en": "Repose of the false heart, indignation, violence.",
-          "cn": "假意安顿、愤懑与暴戾。"
+          "cn": "假意之心的安歇、愤慨、暴戾。"
         }
       }
     },
@@ -1458,11 +1458,11 @@
       "rws": {
         "up": {
           "en": "Fair young man, impelled to render service; a studious youth; news, message; application, reflection, meditation.",
-          "cn": "乐于效劳的少年、勤思好学；音讯与消息。"
+          "cn": "俊秀的年轻人，一心想要效劳；勤奋向学的少年；新闻、口信；专注、反思、沉思。"
         },
         "rev": {
           "en": "Taste, inclination, attachment, seduction, deception, artifice.",
-          "cn": "嗜好与依恋、诱惑与巧诈。"
+          "cn": "品味、偏好、依恋、诱惑、欺骗、巧计。"
         }
       },
       "persona": "捧着杯中跃鱼的少年：心思柔软，对情感信号格外敏锐——讯息常以灵感的形式抵达。"
@@ -1490,11 +1490,11 @@
       "rws": {
         "up": {
           "en": "Arrival, approach—sometimes that of a messenger; advances, proposition, invitation, incitement.",
-          "cn": "到来与趋近（常为信使）、提议与邀约、鼓动。"
+          "cn": "到来、临近——有时指信使的来到；主动示好、提议、邀请、怂恿。"
         },
         "rev": {
           "en": "Trickery, artifice, subtlety, swindling, duplicity, fraud.",
-          "cn": "机巧与手腕、诓骗与两面手法。"
+          "cn": "诡计、机巧、精于算计、诓骗、两面手法、欺诈。"
         }
       },
       "persona": "缓缓行来的浪漫骑士：以情动人、以约相邀——承诺说得很美，但需要有人兑现。"
@@ -1522,11 +1522,11 @@
       "rws": {
         "up": {
           "en": "Good, fair woman; honest, devoted woman who will do service; loving intelligence, the gift of vision; success, happiness, pleasure; wisdom, virtue; a perfect spouse and a good mother.",
-          "cn": "良善的女性、深情的智慧与远见、贤妻良母之象。"
+          "cn": "良善而姣好的女性；诚实、肯奉献、乐于助人的女性；深情的智慧、洞见的天赋；成功、幸福、欢愉；智慧、德行；完美的伴侣与良母。"
         },
         "rev": {
           "en": "The accounts vary; distinguished woman but one not to be trusted; perverse woman; vice, dishonour, depravity.",
-          "cn": "诸解不一：不可尽信的显贵女子；失德与败坏。"
+          "cn": "各家解说不一：一位显贵女子，却不可尽信；乖僻的女性；恶行、耻辱、堕落。"
         }
       },
       "persona": "海一般的倾听者：共情是她的天赋，也是需要设界的功课——心要装得下，也要收得住。"
@@ -1554,11 +1554,11 @@
       "rws": {
         "up": {
           "en": "Fair man, man of business, law, or divinity; responsible, disposed to oblige; equity, art and science; creative intelligence.",
-          "cn": "务实公正的男性（商/法/神职）、创造力、乐于成人之美。"
+          "cn": "正直的男性；商界、法律或神职中之人；有担当、乐于助人；公正、艺术与科学；创造性的智慧。"
         },
         "rev": {
           "en": "Dishonest, double-dealing man; roguery, exaction, injustice, vice, scandal, pillage, considerable loss.",
-          "cn": "两面三刀之人、不义与丑闻、重大损失。"
+          "cn": "不诚实的两面派之人；奸诈、强索、不义、恶行、丑闻、劫掠、重大损失。"
         }
       },
       "persona": "深水静流的掌舵者：情绪再涌，也沉稳以对——愿为所爱的人承担与收敛。"
@@ -1586,11 +1586,11 @@
       "rws": {
         "up": {
           "en": "Triumph, the excessive degree in everything, conquest, triumph of force; a card of great force, in love as well as in hatred.",
-          "cn": "彻底的征服、凡事臻于极致、爱与恨皆大力的极端之牌。"
+          "cn": "凯旋、凡事臻于极致、征服、强力的胜利；一张大力之牌，无论在爱还是在恨中。"
         },
         "rev": {
           "en": "The same, but the results are disastrous; another account says—conception, childbirth, augmentation, multiplicity.",
-          "cn": "同类大力但结果成灾；另一解：受孕、生育、增殖。"
+          "cn": "同义，但结果是灾难性的；另解：受孕、分娩、增进、繁多。"
         }
       }
     },
@@ -1617,11 +1617,11 @@
       "rws": {
         "up": {
           "en": "Conformity and the equipoise which it suggests, courage, friendship, concord in a state of arms; another reading: tenderness, affection, intimacy.",
-          "cn": "均衡与相持、武装下的和局；另一解：柔情与亲昵。"
+          "cn": "顺应，及其所暗示的均衡；勇气、友谊、兵戈相持下的和睦；另解：柔情、爱意、亲昵。"
         },
         "rev": {
           "en": "Imposture, falsehood, duplicity, disloyalty.",
-          "cn": "冒名与虚妄、口是心非、不忠。"
+          "cn": "冒名行骗、虚伪、两面三刀、不忠。"
         }
       }
     },
@@ -1648,11 +1648,11 @@
       "rws": {
         "up": {
           "en": "Removal, absence, delay, division, rupture, dispersion.",
-          "cn": "离去与缺席、延宕与分离、决裂。"
+          "cn": "迁离、缺席、延误、分裂、决裂、离散。"
         },
         "rev": {
           "en": "Mental alienation, error, loss, distraction, disorder, confusion.",
-          "cn": "心智迷乱、过错与损失、失序。"
+          "cn": "心智失常、谬误、损失、心神涣散、紊乱、困惑。"
         }
       }
     },
@@ -1679,11 +1679,11 @@
       "rws": {
         "up": {
           "en": "Vigilance, retreat, solitude, hermit's repose, exile, tomb and coffin.",
-          "cn": "警戒与退守、独处与休憩、放逐；墓与棺的终局意象。"
+          "cn": "警戒、退守、独处、隐者式的安歇、流放、坟墓与棺木。"
         },
         "rev": {
           "en": "Wise administration, circumspection, economy, avarice, precaution, testament.",
-          "cn": "稳妥的操持、节俭与戒备、遗嘱。"
+          "cn": "妥善的操持、周虑、节俭、吝啬、预防、遗嘱。"
         }
       }
     },
@@ -1710,11 +1710,11 @@
       "rws": {
         "up": {
           "en": "Degradation, destruction, revocation, infamy, dishonour, loss.",
-          "cn": "败落与撤销、羞辱与损失。"
+          "cn": "贬黜、毁灭、撤销、臭名、耻辱、损失。"
         },
         "rev": {
           "en": "The same; burial and obsequies.",
-          "cn": "同前义；葬仪与收场。"
+          "cn": "同前义；下葬与丧仪。"
         }
       }
     },
@@ -1741,11 +1741,11 @@
       "rws": {
         "up": {
           "en": "Journey by water, route, way, envoy, commissionary, expedient.",
-          "cn": "水路之旅、路线与通道、使者与权宜之计。"
+          "cn": "经水路的旅程、路线、道路、使者、专差、权宜之计。"
         },
         "rev": {
           "en": "Declaration, confession, publicity; a proposal of love.",
-          "cn": "坦白与公开；亦有爱的告白一解。"
+          "cn": "宣告、坦白、公开；一桩爱的表白。"
         }
       }
     },
@@ -1772,11 +1772,11 @@
       "rws": {
         "up": {
           "en": "Design, attempt, wish, hope, confidence; also quarrelling, a plan that may fail, annoyance.",
-          "cn": "图谋与尝试、期望与自信；亦指争执与可能落空的计划。"
+          "cn": "图谋、尝试、心愿、希望、信心；亦含争吵、可能落空的计划、烦扰。"
         },
         "rev": {
           "en": "Good advice, counsel, instruction, slander, babbling.",
-          "cn": "良策与指点；亦指中伤与碎语。"
+          "cn": "良言、劝告、教诲、诽谤、絮聒。"
         }
       }
     },
@@ -1802,11 +1802,11 @@
       "rws": {
         "up": {
           "en": "Bad news, violent chagrin, crisis, censure, power in trammels, conflict, calumny; also sickness.",
-          "cn": "噩耗与剧怒、危机与责难、受缚之力、疾病。"
+          "cn": "噩耗、剧烈的懊恼、危机、责难、受束缚的权力、冲突、中伤；亦含疾病。"
         },
         "rev": {
           "en": "Disquiet, difficulty, opposition, accident, treachery; what is unforeseen; fatality.",
-          "cn": "惶惑与困难、对抗与意外、背叛与不可抗。"
+          "cn": "不安、困难、对抗、意外、背叛；难以预料之事；宿命。"
         }
       }
     },
@@ -1833,11 +1833,11 @@
       "rws": {
         "up": {
           "en": "Death, failure, miscarriage, delay, deception, disappointment, despair.",
-          "cn": "夭折与挫败、延宕与欺骗、失望与绝望。"
+          "cn": "死亡、失败、流产、延误、欺骗、失望、绝望。"
         },
         "rev": {
           "en": "Imprisonment, suspicion, doubt, reasonable fear, shame.",
-          "cn": "困守与猜疑、合理的恐惧、羞愧。"
+          "cn": "监禁、猜疑、怀疑、有理由的恐惧、羞愧。"
         }
       }
     },
@@ -1864,11 +1864,11 @@
       "rws": {
         "up": {
           "en": "Pain, affliction, tears, sadness, desolation; not especially a card of violent death.",
-          "cn": "剧痛与摧折、泪与凄凉（并非横死之牌）。"
+          "cn": "痛苦、折磨、眼泪、悲伤、凄凉；并非专指横死之牌。"
         },
         "rev": {
           "en": "Advantage, profit, success, favour, but none of these are permanent; also power and authority.",
-          "cn": "利益与成功、眷顾与权势——但皆不长久。"
+          "cn": "好处、利益、成功、眷顾，但无一长久；亦含权势与权威。"
         }
       }
     },
@@ -1895,11 +1895,11 @@
       "rws": {
         "up": {
           "en": "Authority, overseeing, secret service, vigilance, spying, examination.",
-          "cn": "监察与督导、耳目与侦讯、警觉。"
+          "cn": "权威、督导、密探事务、警戒、窥探、审查。"
         },
         "rev": {
           "en": "The more evil side of these qualities; what is unforeseen, unprepared state; sickness is also intimated.",
-          "cn": "上述诸义的恶面：猝不及防、毫无准备；亦暗示病痛。"
+          "cn": "上述诸义的更恶一面；难以预料之事、毫无准备之境；亦暗示疾病。"
         }
       },
       "persona": "持剑警戒的年轻哨探：机敏而多疑——情报与真相，是他的安全感来源。"
@@ -1927,11 +1927,11 @@
       "rws": {
         "up": {
           "en": "Skill, bravery, capacity, defence, address, enmity, wrath, war, destruction, opposition, resistance, ruin.",
-          "cn": "骁勇与防御之才；亦含敌意、怒战、毁灭的锋刃面。"
+          "cn": "技艺、英勇、才干、防御、机敏、敌意、愤怒、战争、毁灭、对抗、抵抗、覆灭。"
         },
         "rev": {
           "en": "Imprudence, incapacity, extravagance.",
-          "cn": "轻率与无能、挥霍无度。"
+          "cn": "轻率、无能、挥霍无度。"
         }
       },
       "persona": "冲锋陷阵的急先锋：思维快过言语，言语快过思考——所向披靡，也容易误伤。"
@@ -1959,11 +1959,11 @@
       "rws": {
         "up": {
           "en": "Widowhood, female sadness and embarrassment, absence, sterility, mourning, privation, separation.",
-          "cn": "孀居与哀伤、缺席与分离、贫瘠与悼亡。"
+          "cn": "孀居、女性的悲伤与困窘、缺席、不育、哀悼、匮乏、分离。"
         },
         "rev": {
           "en": "Malice, bigotry, artifice, prudery, bale, deceit.",
-          "cn": "恶意与偏执、伪饰与欺瞒。"
+          "cn": "恶意、偏执、机巧、矫饰、祸害、欺骗。"
         }
       },
       "persona": "明察秋毫的裁断者：界限分明，理性是她的铠甲——曾有伤痛，所以格外清醒。"
@@ -1991,11 +1991,11 @@
       "rws": {
         "up": {
           "en": "Whatsoever arises out of the idea of judgment and all its connexions—power, command, authority, militant intelligence, law, offices of the crown.",
-          "cn": "审判所系的权力与号令、法度、锐智。"
+          "cn": "凡由审判这一观念所生及其一切关联——权力、号令、权威、战斗性的智谋、法律、王室的官职。"
         },
         "rev": {
           "en": "Cruelty, perversity, barbarity, perfidy, evil intention.",
-          "cn": "冷酷与乖张、残暴与背信、不轨之心。"
+          "cn": "残忍、乖张、野蛮、背信、恶念。"
         }
       },
       "persona": "执法者的原型：公正严明，以逻辑与原则立威——他的裁决不容情面，但值得信服。"
@@ -2023,11 +2023,11 @@
       "rws": {
         "up": {
           "en": "Perfect contentment, felicity, ecstasy; also speedy intelligence; gold.",
-          "cn": "圆满的至乐、灵通的快讯、黄金。"
+          "cn": "圆满的满足、幸福、狂喜；亦指灵通的快讯；黄金。"
         },
         "rev": {
           "en": "The evil side of wealth, bad intelligence; also great riches. Prosperity, comfortable material conditions, whether of advantage depending on the card's position.",
-          "cn": "财之恶面与坏消息；亦指巨富——物质丰裕是否为福，视牌位而定。"
+          "cn": "财富的恶面、坏消息；亦指巨富。兴盛、宽裕的物质境况，其为福为祸则视此牌所处位置而定。"
         }
       }
     },
@@ -2054,11 +2054,11 @@
       "rws": {
         "up": {
           "en": "A card of gaiety, recreation; read also as news and messages in writing, as obstacles, agitation, trouble, embroilment.",
-          "cn": "欢愉与消遣；亦指书面音讯、阻碍与搅扰。"
+          "cn": "一张欢愉、消遣之牌；亦可解作书面音讯与文牍往来，或阻碍、激动、麻烦、纠葛。"
         },
         "rev": {
           "en": "Enforced gaiety, simulated enjoyment, literal sense, handwriting, composition, letters of exchange.",
-          "cn": "强颜欢笑、佯乐；文书、手迹、票据往来的字面义。"
+          "cn": "强颜欢笑、佯装的快乐；若取字面义：手迹、撰作、汇票函件。"
         }
       }
     },
@@ -2085,11 +2085,11 @@
       "rws": {
         "up": {
           "en": "Métier, trade, skilled labour; usually regarded as a card of nobility, aristocracy, renown, glory.",
-          "cn": "行当与手艺、专业劳作；常解为名望与荣光。"
+          "cn": "行业、技艺、熟练的劳作；通常视为一张关于高贵、门第、名望、荣耀的牌。"
         },
         "rev": {
           "en": "Mediocrity, in work and otherwise, puerility, pettiness, weakness.",
-          "cn": "平庸之作、幼稚与狭隘、乏力。"
+          "cn": "平庸（无论在做事还是其他方面）、幼稚、琐碎、软弱。"
         }
       }
     },
@@ -2116,11 +2116,11 @@
       "rws": {
         "up": {
           "en": "The surety of possessions, cleaving to that which one has, gift, legacy, inheritance.",
-          "cn": "守产之固、紧握所有；馈赠与遗产。"
+          "cn": "财物的稳固、紧执所有；馈赠、遗赠、继承。"
         },
         "rev": {
           "en": "Suspense, delay, opposition.",
-          "cn": "悬而未决、拖延、阻力。"
+          "cn": "悬而未决、拖延、阻挠。"
         }
       }
     },
@@ -2147,11 +2147,11 @@
       "rws": {
         "up": {
           "en": "Material trouble above all, destitution; for some cartomancists, a card of love and lovers—wife, husband, friend, mistress; concordance, affinities.",
-          "cn": "首指物质困顿与匮乏；另一派解作爱侣与相契。"
+          "cn": "首指物质上的困厄、穷乏；在某些解牌者看来，亦是一张关于爱与爱侣的牌——妻子、丈夫、朋友、情人；相合、投契。"
         },
         "rev": {
           "en": "Disorder, chaos, ruin, discord, profligacy.",
-          "cn": "失序与倾覆、失和、挥霍。"
+          "cn": "失序、混乱、倾覆、失和、放荡挥霍。"
         }
       }
     },
@@ -2178,11 +2178,11 @@
       "rws": {
         "up": {
           "en": "Presents, gifts, gratification; another account: attention, vigilance—now is the accepted time, present prosperity.",
-          "cn": "礼物与馈赠、当下即受施之时、眼前的兴盛。"
+          "cn": "赠礼、馈赠、受惠；另解：留意、警惕——当下即是可受之时，眼前的兴盛。"
         },
         "rev": {
           "en": "Desire, cupidity, envy, jealousy, illusion.",
-          "cn": "欲念与贪婪、妒忌、幻象。"
+          "cn": "欲望、贪婪、嫉妒、妒羡、幻象。"
         }
       }
     },
@@ -2209,11 +2209,11 @@
       "rws": {
         "up": {
           "en": "A card of money, business, barter; but one reading gives altercation, quarrels—and another innocence, ingenuity, purgation.",
-          "cn": "钱财与经营、易货交易；另解：争执、或纯真与涤净。"
+          "cn": "一张关于钱财、生意、交易往来的牌；但有一解主口角、争吵，另有一解主纯真、巧思、涤净。"
         },
         "rev": {
           "en": "Cause for anxiety regarding money which it may be proposed to lend.",
-          "cn": "对拟出借之钱的担忧。"
+          "cn": "对拟议出借之钱财的忧虑缘由。"
         }
       }
     },
@@ -2240,11 +2240,11 @@
       "rws": {
         "up": {
           "en": "Work, employment, commission, craftsmanship, skill in craft and business, perhaps in the preparatory stage.",
-          "cn": "工作与承揽、匠艺与练手、尚在预备阶段。"
+          "cn": "工作、受雇、承揽、匠艺，工艺与经营上的技能，尚在预备阶段。"
         },
         "rev": {
           "en": "Voided ambition, vanity, cupidity, exaction, usury; also ingenious mind turned to cunning and intrigue.",
-          "cn": "壮志落空、虚荣与贪敛；亦指巧智流入狡诈。"
+          "cn": "落空的抱负、虚荣、贪欲、强索、高利盘剥；亦指机巧心智流入狡诈与算计。"
         }
       }
     },
@@ -2271,11 +2271,11 @@
       "rws": {
         "up": {
           "en": "Prudence, safety, success, accomplishment, certitude, discernment.",
-          "cn": "稳健与自安、成事与确信、明辨。"
+          "cn": "审慎、安全、成功、成就、确信、明辨。"
         },
         "rev": {
           "en": "Roguery, deception, voided project, bad faith.",
-          "cn": "无赖与欺瞒、计划落空、居心不良。"
+          "cn": "奸诈、欺骗、落空的计划、不诚。"
         }
       }
     },
@@ -2302,11 +2302,11 @@
       "rws": {
         "up": {
           "en": "Gain, riches; family matters, archives, extraction, the abode of a family.",
-          "cn": "财利与家业、门第与谱系、家族宅邸。"
+          "cn": "获利、财富；家事、档案世系、出身门第、家族的居所。"
         },
         "rev": {
           "en": "Chance, fatality, loss, robbery, games of hazard; sometimes gift, dowry, pension.",
-          "cn": "偶然与宿命、失窃与赌局；另解：赠礼、嫁资、年金。"
+          "cn": "机缘、宿命、损失、劫夺、赌局；有时指赠礼、嫁资、年金。"
         }
       }
     },
@@ -2333,11 +2333,11 @@
       "rws": {
         "up": {
           "en": "Application, study, scholarship, reflection; another reading: news, messages and the bringer thereof; rule, management.",
-          "cn": "勤学与治学、沉思；另解：带来消息之人、治理之才。"
+          "cn": "勤勉、学习、学问、沉思；另解：音讯、消息及其带来者；治理、管理。"
         },
         "rev": {
           "en": "Prodigality, dissipation, liberality, luxury; unfavourable news.",
-          "cn": "挥霍与放纵、奢华；不利音讯。"
+          "cn": "挥霍、放纵、慷慨、奢华；不利的音讯。"
         }
       },
       "persona": "伏案学习的学徒：脚踏实地，相信慢工出细活——一枚星币，在他眼里是整片田野。"
@@ -2365,11 +2365,11 @@
       "rws": {
         "up": {
           "en": "Utility, serviceableness, interest, responsibility, rectitude—all on the normal and external plane.",
-          "cn": "实用与可靠、责任与正直——皆落在寻常外务层面。"
+          "cn": "实用、堪用、利害、责任、端正——皆在寻常而外在的层面上。"
         },
         "rev": {
           "en": "Inertia, idleness, stagnation; also placidity, discouragement, carelessness.",
-          "cn": "惰性与闲置、停滞；亦指迟钝、气馁、疏忽。"
+          "cn": "惰性、怠惰、停滞；亦含迟缓平和、气馁、粗心。"
         }
       },
       "persona": "不换挡的行进者：稳重到近乎固执——认准的路，一步一步走到底。"
@@ -2397,11 +2397,11 @@
       "rws": {
         "up": {
           "en": "Opulence, generosity, magnificence, security, liberty.",
-          "cn": "丰裕与慷慨、雍容、安稳与自在。"
+          "cn": "富足、慷慨、雍容、安稳、自在。"
         },
         "rev": {
           "en": "Evil, suspicion, suspense, fear, mistrust.",
-          "cn": "凶兆与疑心、悬虑、恐惧与不信任。"
+          "cn": "凶恶、猜疑、悬虑、恐惧、不信任。"
         }
       },
       "persona": "丰饶的持家人：把日子过成花园，慷慨而务实——她给出的爱，都带着体温。"
@@ -2429,11 +2429,11 @@
       "rws": {
         "up": {
           "en": "Valour, realizing intelligence, business and normal intellectual aptitude, sometimes mathematical gifts; success in these paths.",
-          "cn": "实干之智与经营之才、数学禀赋，循此路而成。"
+          "cn": "勇毅、务实的智力、经营与寻常的才智天分，有时指数学上的禀赋；循此诸途皆有所成。"
         },
         "rev": {
           "en": "Vice, weakness, ugliness, perversity, corruption, peril.",
-          "cn": "恶行与孱弱、乖僻与堕落、凶险。"
+          "cn": "恶行、软弱、丑陋、乖僻、堕落、危殆。"
         }
       },
       "persona": "资源的掌管者：以稳健与积累立业，是长期主义者的画像——稳字当头，静水流深。"
