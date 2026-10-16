@@ -321,7 +321,7 @@ test('iching.json ↔ corpus/eastern/iching-64.json：64 卦卦名/bits/卦辞/�
   assert.equal(checked, 384, `爻辞比对数应为 384，实际 ${checked}`);
 });
 
-test('iching.json 润色结构锁：386 条爻白话 + 64 卦辞白话 + 64 大象白话非空且不少于下限（防回退）', () => {
+test('iching.json 润色结构锁：386 条爻白话 + 64 卦辞白话 + 64 大象白话 + 64 场景白话非空且不少于下限（防回退）', () => {
   let n = 0;
   for (const h of iching.hexagrams) {
     for (const ln of h.lines) {
@@ -334,6 +334,7 @@ test('iching.json 润色结构锁：386 条爻白话 + 64 卦辞白话 + 64 大�
     }
     assert.ok(typeof h.guaCiBaiHua === 'string' && h.guaCiBaiHua.trim().length >= 20, `卦 ${h.id} 卦辞白话过短或为空`);
     assert.ok(typeof h.daXiangBaiHua === 'string' && h.daXiangBaiHua.trim().length >= 25, `卦 ${h.id} 大象白话过短或为空`);
+    assert.ok(typeof h.scene === 'string' && h.scene.trim().length >= 15, `卦 ${h.id} 场景白话过短或为空`);
   }
   assert.equal(n, 386, `爻白话条数应为 386，实际 ${n}`);
 });
