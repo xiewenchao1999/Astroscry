@@ -146,7 +146,8 @@ test('梅花时间卦独立复算：四组日期（含跨农历年边界与晚�
     const got = plumTimeCast(new Date(y, mo - 1, d, h, 0));
     assert.equal(got.upper, want.upper, `${y}-${mo}-${d} ${h}:00 上卦`);
     assert.equal(got.lower, want.lower, `${y}-${mo}-${d} ${h}:00 下卦`);
-    assert.equal(got.moving, want.moving, `${y}-${mo}-${d} ${h}:00 动爻`);
+    // want.moving 为本文件独立实现的标量动爻位，核心契约 moving 为数组，故包一层比较
+    assert.deepEqual(got.moving, [want.moving], `${y}-${mo}-${d} ${h}:00 动爻`);
     assert.equal(got.bits, want.bits, `${y}-${mo}-${d} ${h}:00 bits`);
   }
 });
@@ -154,7 +155,7 @@ test('梅花时间卦独立复算：四组日期（含跨农历年边界与晚�
 test('梅花时间卦基准锚点：2026-10-15 12:00 → 水风井·五爻动（独立查表复核）', () => {
   const cast = plumTimeCast(new Date(2026, 9, 15, 12, 0, 0));
   assert.equal(hexagramByBits(iching, cast.bits).full, '水风井');
-  assert.equal(cast.moving, 5);
+  assert.deepEqual(cast.moving, [5]);
 });
 
 // ============================================================

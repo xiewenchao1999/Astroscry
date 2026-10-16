@@ -1,6 +1,7 @@
 // iching.mjs — 周易六十四卦核心计算（纯函数，无 DOM / 无网络）
 // 依赖：梅花时间卦需要 vendor/lunar.js 暴露的 globalThis.Solar（农历年支/月/日）；铜钱法与三数法无依赖
 // 约定：爻位自下而上 1..6（初爻=1，上爻=6）；bits 为六位字符串、自下而上，1=阳 0=阴（与 data/iching.json 同口径）
+// 契约：三种起卦法（coin/plum-time/plum-three）返回的 moving 均为动爻位数组 number[]（元素 1..6，单动爻即单元素数组）
 // 变爻取辞：朱熹《易学启蒙》七档（0~6 动），见 resolveReading
 // ponytail: 梅花时间卦的年支按 lunar-javascript 的农历年（正月初一切换）；立春换年流派暂不处理。
 //           晚子时（23:00-23:59）时辰按子时计、日柱不进位——仅影响临界时辰，升级路径=接入真太阳时与流派开关。
@@ -51,16 +52,19 @@ export function castCoinHexagram(rng) {
 function plumFromNumbers(a, b, c, h, method) {
   const upperNum = (a + b + c) % 8 || 8;
   const lowerNum = (a + b + c + h) % 8 || 8;
-  const moving = (a + b + c + h) % 6 || 6;
+  const movingPos = (a + b + c + h) % 6 || 6;
   const upper = NUM_TO_TRIGRAM[upperNum];
   const lower = NUM_TO_TRIGRAM[lowerNum];
-  return { method, nums: { a, b, c, h }, upperNum, lowerNum, upper, lower, moving, bits: TRIGRAM_BITS[lower] + TRIGRAM_BITS[upper] };
+  // moving 恒为数组（与铜钱法契约一致），梅花时间卦恒为单动爻
+  return { method, nums: { a, b, c, h }, upperNum, lowerNum, upper, lower, moving: [movingPos], bits: TRIGRAM_BITS[lower] + TRIGRAM_BITS[upper] };
 }
 
 /**
  * 梅花易数·时间卦（标准式）：年支序(子1..亥12) + 农历月 + 农历日 → mod 8 上卦；
  * 再加时辰序 → mod 8 下卦；总和 → mod 6 动爻；余 0 归模数。
  * @param {Date} dateLocal 当地时间（需 vendor/lunar.js 已加载）
+ * @returns {{ method: 'plum-time', nums: {a,b,c,h}, upperNum: number, lowerNum: number, upper: string, lower: string, moving: number[], bits: string }}
+ *   moving 为动爻位数组（元素 1..6），梅花时间卦恒为单元素数组
  */
 export function plumTimeCast(dateLocal) {
   const Solar = globalThis.Solar;
@@ -78,6 +82,8 @@ export function plumTimeCast(dateLocal) {
  * @param {number} n1 上卦数（正整数）
  * @param {number} n2 下卦数（正整数）
  * @param {number} n3 动爻数（正整数）
+ * @returns {{ method: 'plum-three', nums: {a,b,c,h}, upperNum: number, lowerNum: number, upper: string, lower: string, moving: number[], bits: string }}
+ *   moving 为动爻位数组（元素 1..6），三数法恒为单元素数组
  */
 export function plumThreeCast(n1, n2, n3) {
   for (const [name, v] of [['n1', n1], ['n2', n2], ['n3', n3]]) {
@@ -86,10 +92,11 @@ export function plumThreeCast(n1, n2, n3) {
   // 三数法与时间卦公式不同：上/下卦各取自身之数（时间卦是「年月日 → +时辰」累加式）
   const upperNum = n1 % 8 || 8;
   const lowerNum = n2 % 8 || 8;
-  const moving = (n1 + n2 + n3) % 6 || 6;
+  const movingPos = (n1 + n2 + n3) % 6 || 6;
   const upper = NUM_TO_TRIGRAM[upperNum];
   const lower = NUM_TO_TRIGRAM[lowerNum];
-  return { method: 'plum-three', nums: { a: n1, b: n2, c: n3, h: 0 }, upperNum, lowerNum, upper, lower, moving, bits: TRIGRAM_BITS[lower] + TRIGRAM_BITS[upper] };
+  // moving 恒为数组（与铜钱法契约一致），三数法恒为单动爻
+  return { method: 'plum-three', nums: { a: n1, b: n2, c: n3, h: 0 }, upperNum, lowerNum, upper, lower, moving: [movingPos], bits: TRIGRAM_BITS[lower] + TRIGRAM_BITS[upper] };
 }
 
 // —— bits → 卦 索引（查询主键 = bits）——

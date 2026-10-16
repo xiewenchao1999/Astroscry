@@ -134,7 +134,8 @@ test('梅花时间卦：已知日期基准（2026-10-15 12:00 → 水风井·五
   const cast = plumTimeCast(new Date(2026, 9, 15, 12, 0, 0));
   assert.equal(cast.upper, '坎');
   assert.equal(cast.lower, '巽');
-  assert.equal(cast.moving, 5);
+  // 契约：三法 moving 恒为动爻位数组（单动爻即单元素数组）
+  assert.deepEqual(cast.moving, [5]);
   assert.equal(cast.bits, '011010');
   assert.equal(hexagramByBits(data, cast.bits).full, '水风井');
 });
@@ -143,14 +144,23 @@ test('三数法：11/5/3 → 火风鼎·初爻动；余 0 归模数（8/16/6 →
   const c1 = plumThreeCast(11, 5, 3);
   assert.equal(c1.upper, '离', '11%8=3 → 离');
   assert.equal(c1.lower, '巽', '5 → 巽');
-  assert.equal(c1.moving, 1, '(11+5+3)%6=1 → 初爻');
+  assert.deepEqual(c1.moving, [1], '(11+5+3)%6=1 → 初爻');
   assert.equal(hexagramByBits(data, c1.bits).full, '火风鼎');
 
   const c2 = plumThreeCast(8, 16, 6);
   assert.equal(c2.upper, '坤', '8%8 余 0 → 归 8 坤');
   assert.equal(c2.lower, '坤', '16%8 余 0 → 归 8 坤');
-  assert.equal(c2.moving, 6, '(8+16+6)%6 余 0 → 归 6 上爻');
+  assert.deepEqual(c2.moving, [6], '(8+16+6)%6 余 0 → 归 6 上爻');
   assert.equal(hexagramByBits(data, c2.bits).full, '坤为地');
+});
+
+test('契约防回归：三种起卦法的 moving 均为数组（coin / plum-time / plum-three）', () => {
+  const coin = castCoinHexagram(() => 0.9); // 0.9≥0.5 → 正 → 老阳 9，动爻遍布，数组形态必为真
+  assert.ok(Array.isArray(coin.moving), '铜钱法 moving 应为数组');
+  const plumTime = plumTimeCast(new Date(2026, 9, 15, 12, 0, 0));
+  assert.ok(Array.isArray(plumTime.moving), '梅花时间卦 moving 应为数组');
+  const plumThree = plumThreeCast(11, 5, 3);
+  assert.ok(Array.isArray(plumThree.moving), '三数法 moving 应为数组');
 });
 
 test('三数法：非法输入抛错（0 / 负数 / 非整数）', () => {
