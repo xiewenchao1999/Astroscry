@@ -5,7 +5,7 @@
   "provenance": {
    "repo": "AIzenHi/yijing-qimen（校验源：Mazeye/open-iching）",
    "license": "MIT",
-   "notice": "白话为开源语料整理，仅供文化研究",
+   "notice": "爻辞白话为开源语料整理，2026-10-16 起逐条深度润色改写（语义遵循原语料），仅供文化研究",
    "collected": "2026-10-15"
   },
   "fields": {

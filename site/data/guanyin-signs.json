@@ -5,7 +5,7 @@
   "provenance": {
    "repo": "iowi/guanyin（浅草寺一百观音签体系）",
    "license": "MIT",
-   "notice": "白话为开源语料整理，仅供文化研究",
+   "notice": "分项解与总体断语为开源语料整理，2026-10-16 起逐条深度润色改写（语义遵循原语料），仅供文化研究",
    "collected": "2026-10-15"
   },
   "fields": {
