@@ -321,11 +321,26 @@ test('iching.json ↔ corpus/eastern/iching-64.json：64 卦卦名/bits/卦辞/�
   assert.equal(checked, 384, `爻辞比对数应为 384，实际 ${checked}`);
 });
 
-test('guanyin-signs.json ↔ corpus/eastern/guanyin-signs-100.json：100 签全字段一致；仅快扫记录的 4 处 storyDetail 允许不同（且必须仍不同——防回退）', () => {
+test('iching.json 润色结构锁：386 条 baiHua（384 爻 + 用九用六）非空且不少于 12 字（防回退）', () => {
+  let n = 0;
+  for (const h of iching.hexagrams) {
+    for (const ln of h.lines) {
+      assert.ok(typeof ln.baiHua === 'string' && ln.baiHua.trim().length >= 12, `卦 ${h.id} ${ln.pos} 白话过短或为空`);
+      n++;
+    }
+    if (h.special) {
+      assert.ok(typeof h.special.baiHua === 'string' && h.special.baiHua.trim().length >= 12, `卦 ${h.id} ${h.special.pos} 白话过短或为空`);
+      n++;
+    }
+  }
+  assert.equal(n, 386, `白话条数应为 386，实际 ${n}`);
+});
+
+test('guanyin-signs.json ↔ corpus/eastern/guanyin-signs-100.json：结构字段一致；分项解已整体深润（键集一致 + 1478 条 + 非空下限 + 疾病就医红线）', () => {
   const src = readJSON('docs/research/round2/corpus/eastern/guanyin-signs-100.json');
   const QUICK_SCAN = new Set([7, 10, 51, 84]); // docs/research/round2/语料快扫记录.md 修正清单
   const byId = new Map(signsData.signs.map((s) => [s.id, s]));
-  let checkedInterp = 0;
+  let checkedInterp = 0, illnessChecked = 0;
   for (const sc of src.signs) {
     const ss = byId.get(sc.id);
     assert.ok(ss, `进站数据缺签 id=${sc.id}`);
@@ -335,12 +350,24 @@ test('guanyin-signs.json ↔ corpus/eastern/guanyin-signs-100.json：100 签全�
     } else {
       assert.equal(ss.storyDetail, sc.storyDetail, `签 ${sc.id} storyDetail 与源语料不一致（快扫清单外不得改动）`);
     }
-    for (const [k, v] of Object.entries(sc.interpret ?? {})) {
-      assert.equal(ss.interpret?.[k], v, `签 ${sc.id} 分项解 ${k} 与源语料不一致`);
+    // 分项解已于 2026-10-16 整体深度润色（docs/research/round2/语料润色记录.md）：
+    // 不再与源语料逐字比对，改锁「键集一致 + 覆盖 1478 + 非空下限 12 + 疾病条就医红线」。
+    assert.deepEqual(
+      Object.keys(ss.interpret ?? {}).sort(),
+      Object.keys(sc.interpret ?? {}).sort(),
+      `签 ${sc.id} 分项解键集与源语料不一致（不得增删键）`
+    );
+    for (const [k, v] of Object.entries(ss.interpret ?? {})) {
+      assert.ok(typeof v === 'string' && v.trim().length >= 12, `签 ${sc.id} 分项解「${k}」文案过短或为空`);
+      if (k === '疾病') {
+        assert.ok(v.includes('就医') || v.includes('遵医嘱'), `签 ${sc.id} 疾病条必须提示及时就医`);
+        illnessChecked++;
+      }
       checkedInterp++;
     }
   }
-  assert.ok(checkedInterp > 1000, `分项解比对量异常：${checkedInterp}`);
+  assert.equal(checkedInterp, 1478, `分项解总数应为 1478，实际 ${checkedInterp}`);
+  assert.ok(illnessChecked >= 90, `疾病条比对量异常：${illnessChecked}`);
   // 快扫清单精确性：iching.json 的 3 处 scene 修正同样须保留（防回退）
   const ichSrc = readJSON('docs/research/round2/corpus/eastern/iching-64.json');
   for (const id of [16, 34, 36]) {
